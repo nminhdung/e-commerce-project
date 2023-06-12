@@ -123,7 +123,7 @@ const ratings = asyncHandler(async (req, res) => {
         ratings: { $elemMatch: alreadyRating }, //dieu kien de filter o doi so 1
       },
       {
-        // $ la ket qua cho elemMatch:alreadyRating
+        // $ la ket qua  elemMatch:alreadyRating
         $set: { "ratings.$.star": star, "ratings.$.comment": comment },
       },
       { new: true }
