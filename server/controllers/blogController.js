@@ -28,7 +28,7 @@ const getAllBlogs = asyncHandler(async (req, res) => {
   const response = await Blog.find();
   return res.json({
     success: response ? true : false,
-    updatedBlog: response ? response : "Can not get all blogs",
+    listBlog: response ? response : "Can not get all blogs",
   });
 });
 
@@ -74,41 +74,71 @@ const likeBlog = asyncHandler(async (req, res) => {
   }
 });
 const dislikeBlog = asyncHandler(async (req, res) => {
-    const { _id } = req.user;
-    const { bid } = req.params;
-    if (!bid) {
-      throw new Error("Missing inputs");
-    }
-    const blog = await Blog.findById(bid);
-    const alreadyLiked = blog?.likes?.find(
-      (element) => element.toString() === _id
+  const { _id } = req.user;
+  const { bid } = req.params;
+  if (!bid) {
+    throw new Error("Missing inputs");
+  }
+  const blog = await Blog.findById(bid);
+  const alreadyLiked = blog?.likes?.find(
+    (element) => element.toString() === _id
+  );
+  if (alreadyLiked) {
+    const response = await Blog.findByIdAndUpdate(
+      bid,
+      {
+        $pull: { likes: _id },
+      },
+      { new: true }
     );
-    if (alreadyLiked) {
-      const response = await Blog.findByIdAndUpdate(
-        bid,
-        {
-          $pull: { likes: _id },
-        },
-        { new: true }
-      );
-      return res.json({ status: response ? true : false, result: response });
-    }
-    const disLiked = blog?.dislikes?.find((element) => element.toString() === _id);
-   //khong dislike nua 
-    if (disLiked) {
-      const response = await Blog.findByIdAndUpdate(
-        bid,
-        { $pull: { dislikes: _id } },
-        { new: true }
-      );
-      return res.json({ status: response ? true : false, result: response });
-    } else {
-      const response = await Blog.findByIdAndUpdate(
-        bid,
-        { $push: { dislikes: _id } },
-        { new: true }
-      );
-      return res.json({ status: response ? true : false, result: response });
-    }
+    return res.json({ status: response ? true : false, result: response });
+  }
+  const disLiked = blog?.dislikes?.find(
+    (element) => element.toString() === _id
+  );
+  //khong dislike nua
+  if (disLiked) {
+    const response = await Blog.findByIdAndUpdate(
+      bid,
+      { $pull: { dislikes: _id } },
+      { new: true }
+    );
+    return res.json({ status: response ? true : false, result: response });
+  } else {
+    const response = await Blog.findByIdAndUpdate(
+      bid,
+      { $push: { dislikes: _id } },
+      { new: true }
+    );
+    return res.json({ status: response ? true : false, result: response });
+  }
+});
+const getBlog = asyncHandler(async (req, res) => {
+  const { bid } = req.params;
+  const singleBlog = await Blog.findByIdAndUpdate(
+    bid,
+    { $inc: { numberView: 1 } },
+    { new: true }
+  )
+    .populate("likes", "firstname lastname")
+    .populate("dislikes", "firstname lastname");
+  return res.json({ status: singleBlog ? true : false, result: singleBlog });
+});
+const deleteBlog = asyncHandler(async (req, res) => {
+  const { bid } = req.params;
+  const blog = await Blog.findByIdAndDelete(bid);
+
+  return res.json({
+    status: blog ? true : false,
+    deletedBlog: blog || "Something went wrong",
   });
-module.exports = { createBlog, updateBlog, getAllBlogs, likeBlog,dislikeBlog };
+});
+module.exports = {
+  createBlog,
+  updateBlog,
+  getAllBlogs,
+  likeBlog,
+  dislikeBlog,
+  getBlog,
+  deleteBlog,
+};
