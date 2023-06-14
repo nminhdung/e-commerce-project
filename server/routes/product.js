@@ -7,7 +7,7 @@ router.post("/",[verifyAccessToken,isAdmin], ProductControllers.createProduct);
 router.get("/", ProductControllers.getAllProducts);
 router.put("/ratings",[verifyAccessToken], ProductControllers.ratings);
 
-router.put("/uploadimage/:pid",[verifyAccessToken,isAdmin],uploadFile.single('images') ,ProductControllers.uploadImagesProduct);
+router.put("/uploadimage/:pid",[verifyAccessToken,isAdmin],uploadFile.array('images',10),ProductControllers.uploadImagesProduct);
 router.put("/:pid",[verifyAccessToken,isAdmin] ,ProductControllers.updateProduct);
 router.delete("/:pid",[verifyAccessToken,isAdmin] ,ProductControllers.deleteProduct);
 router.get("/:pid", ProductControllers.getProduct);
