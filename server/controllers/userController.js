@@ -252,29 +252,39 @@ const addToCart = asyncHandler(async (req, res) => {
     (element) => element.product.toString() === pid && element.color === color
   );
   if (alreadyProduct) {
-    if (alreadyProduct.color === color) {
-      const response = await User.updateOne(
-        { cart: { $elemMatch: alreadyProduct } },
-        { $set: { "cart.$.quantity": quantity } },
-        { new: true }
-      );
+    // if (alreadyProduct.color === color) {
+    //   const response = await User.updateOne(
+    //     { cart: { $elemMatch: alreadyProduct } },
+    //     { $set: { "cart.$.quantity": quantity } },
+    //     { new: true }
+    //   );
 
-      return res.json({
-        status: response ? true : false,
-        userCart: response ? response : "Some thing went wrong",
-      });
-    } else {
-      console.log(alreadyProduct);
-      const response = await User.findByIdAndUpdate(
-        _id,
-        { $push: { cart: { product: pid, quantity, color } } },
-        { new: true }
-      );
-      return res.json({
-        success: response ? true : false,
-        userCart: response ? response : "Some thing went wrong",
-      });
-    }
+    //   return res.json({
+    //     status: response ? true : false,
+    //     userCart: response ? response : "Some thing went wrong",
+    //   });
+    // } else {
+    //   console.log(alreadyProduct);
+    //   const response = await User.findByIdAndUpdate(
+    //     _id,
+    //     { $push: { cart: { product: pid, quantity, color } } },
+    //     { new: true }
+    //   );
+    //   return res.json({
+    //     success: response ? true : false,
+    //     userCart: response ? response : "Some thing went wrong",
+    //   });
+    // }
+    const response = await User.updateOne(
+      { cart: { $elemMatch: alreadyProduct } },
+      { $set: { "cart.$.quantity": quantity } },
+      { new: true }
+    );
+
+    return res.json({
+      status: response ? true : false,
+      userCart: response ? response : "Some thing went wrong",
+    });
   } else {
     const response = await User.findByIdAndUpdate(
       _id,

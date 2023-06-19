@@ -164,6 +164,7 @@ const uploadImagesProduct = asyncHandler(async (req, res) => {
     updatedImages: response ? response : "Can not update images product",
   });
 });
+
 module.exports = {
   createProduct,
   getProduct,
