@@ -4,14 +4,14 @@ const asyncHandler = require("express-async-handler");
 const createCategory = asyncHandler(async (req, res) => {
   const response = await ProductCategory.create(req.body);
   return res.json({
-    status: response ? true : false,
+    success: response ? true : false,
     createdCategory: response ? response : "Can't create new product-category",
   });
 });
 const getAllCategories = asyncHandler(async (req, res) => {
   const response = await ProductCategory.find().select("title _id");
   return res.json({
-    status: response ? true : false,
+    success: response ? true : false,
     productCategories: response ? response : "Can not get all categories",
   });
 });
@@ -22,7 +22,7 @@ const updateCategory = asyncHandler(async (req, res) => {
   });
 
   return res.json({
-    status: response ? true : false,
+    success: response ? true : false,
     updatedCategory: response ? response : "Can not update category",
   });
 });
@@ -31,7 +31,7 @@ const deleteCategory = asyncHandler(async (req, res) => {
   const response = await ProductCategory.findByIdAndDelete(pcid);
 
   return res.json({
-    status: response ? true : false,
+    success: response ? true : false,
     deletedCategory: response ? response : "Can not delete category",
   });
 });

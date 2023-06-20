@@ -7,8 +7,8 @@ import paths from "../utils/paths";
 const { RiPhoneFill, MdEmail, BsFillBagFill, BiUser } = icons;
 const Header = () => {
   return (
-    <div className="border w-main flex justify-between h-[110px] py-[35px]">
-     <Link to={`/${paths.HOME}`}> <img src={logo} alt="logo" className="object-contain w-[234px] " /></Link>
+    <header className=" w-main flex justify-between h-[110px] py-[35px]">
+     <Link to={`/${paths.HOME}`}> <img src={logo} alt="logo" className="object-contain w-[234px]  " /></Link>
       <div className="flex text-[13px] ">
         <div className="flex flex-col items-center px-6 ">
           <span className="flex gap-4 items-center">
@@ -34,7 +34,7 @@ const Header = () => {
           <BiUser size={20} />
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 
