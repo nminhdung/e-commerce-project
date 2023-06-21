@@ -7,7 +7,7 @@ const Public = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCategories());
-  }, []);
+  }, [dispatch]);
   return (
     <div className="w-full flex flex-col items-center">
       <Header />
