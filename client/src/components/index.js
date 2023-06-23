@@ -6,3 +6,7 @@ export { default as Product } from "./Product";
 export { default as SelectOptions } from "./SelectOptions";
 export { default as DealDaily } from "./DealDaily";
 export { default as CountDown } from "./CountDown";
+export { default as FeatureProducts } from "./FeatureProducts";
+export { default as ProductCard } from "./ProductCard";
+export { default as NewArrivals } from "./NewArrivals";
+export { default as CustomSlider } from "./CustomSlider";

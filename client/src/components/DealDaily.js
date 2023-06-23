@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import moment from "moment";
 import icons from "../utils/icons";
 import { apiGetProducts } from "../api/product";
 import { formatMoney, renderStarFromNumber } from "../utils/helpers";
 import { CountDown } from "./";
+import { secondsToHms } from "../utils/helpers";
 
 const { AiFillStar, AiOutlineMenu } = icons;
 let idInterval;
@@ -23,7 +25,16 @@ const DealDaily = () => {
 
     if (res.success) {
       setProductDealDaily(res.listProduct[0]);
-      setHour(24);
+      const today = `${moment().format("MM/DD/YYYY")} 7:00:00`;
+      const seconds =
+        new Date(today).getTime() - new Date().getTime() + 24 * 3600 * 1000;
+      console.log(seconds);
+      const day = secondsToHms(seconds);
+      setHour(day.h);
+      setMinute(day.m);
+      setSecond(day.s);
+    } else {
+      setHour(8);
       setMinute(59);
       setSecond(59);
     }
@@ -35,7 +46,6 @@ const DealDaily = () => {
   }, [expireTime]);
   useEffect(() => {
     idInterval = setInterval(() => {
-      console.log("interval");
       if (second > 0) {
         setSecond((prev) => prev - 1);
       } else {

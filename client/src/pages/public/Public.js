@@ -1,13 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
 import { Header, Navigation } from "../../components";
-import { getCategories } from "../../store/asyncThunks";
-import { useDispatch } from "react-redux";
+
 const Public = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getCategories());
-  }, [dispatch]);
+  
   return (
     <div className="w-full flex flex-col items-center">
       <Header />

@@ -25,6 +25,7 @@ const prepareProductCategory = async (category) => {
   await ProductCategory.create({
     title: category?.cate,
     brand: category?.brand || [],
+    image: category?.image,
   });
 };
 const insertProduct = asyncHandler(async (req, res) => {
