@@ -2,11 +2,13 @@
 // eslint-disable-next-line jsx-a11y/img-redundant-alt
 import React, { useState } from "react";
 import defaultImage from "../assets/default.png";
+import {Link} from "react-router-dom"
 import { formatMoney } from "../utils/helpers";
 import label from "../assets/label.png";
 import { renderStarFromNumber } from "../utils/helpers";
 import SelectOptions from "./SelectOptions";
 import icons from "../utils/icons";
+import path from "../utils/paths";
 
 const { AiFillEye, AiOutlineMenu, BsFillSuitHeartFill } = icons;
 
@@ -14,7 +16,7 @@ const Product = ({ productData, isNew }) => {
   const [isShowOptions, setShowOptions] = useState(false);
   return (
     <div className="w-full text-base px-[10px]">
-      <div
+      <Link to={`/${path.PRODUCT_DETAIL}/${productData?._id}/${productData?.title}`}
         className="flex flex-col border h-full w-full p-[15px] items-center "
         onMouseEnter={(e) => {
           e.stopPropagation();
@@ -73,7 +75,7 @@ const Product = ({ productData, isNew }) => {
           <span className="line-clamp-1">{productData.title}</span>
           <span className="">{formatMoney(productData.price)} VND</span>
         </div>
-      </div>
+      </Link>
     </div>
   );
 };

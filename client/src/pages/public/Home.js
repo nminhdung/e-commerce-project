@@ -19,26 +19,25 @@ const Home = () => {
   const categories = useSelector((state) => state.app.categories).filter(
     (el) => el.brand.length > 0
   );
-  console.log(categories);
   return (
     <>
       <div className="w-main grid grid-cols-10">
         <div className="flex flex-col gap-5 col-span-3 ">
           <Sidebar />
-          {/* <DealDaily/> */}
+          <DealDaily/>
         </div>
         <div className="flex flex-col gap-5 pl-5 col-span-7 ">
           <Banner />
           <BestSeller />
         </div>
       </div>
-      <div className="my-8">
+      <div className="my-8 w-full">
         <FeatureProducts />
       </div>
-      <div className="my-8">
+      <div className="my-8 w-full">
         <NewArrivals products={newProducts} />
       </div>
-      <div className="my-8">
+      <div className="my-8 w-full">
         <h3 className="font-semibold capitalize text-[20px] border-b-2 border-main cursor-pointer text-black">
           hot collections
         </h3>
@@ -75,7 +74,12 @@ const Home = () => {
           })}
         </div>
       </div>
-      <div className="w-full h-[500px]"></div>
+      <div className="my-8 w-full">
+        <h3 className="font-semibold capitalize text-[20px] border-b-2 border-main cursor-pointer text-black">
+          blog posts
+        </h3>
+      </div>
+      
     </>
   );
 };

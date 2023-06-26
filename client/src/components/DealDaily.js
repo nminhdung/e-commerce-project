@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import moment from "moment";
 import icons from "../utils/icons";
 import { apiGetProducts } from "../api/product";
@@ -108,4 +108,4 @@ const DealDaily = () => {
   );
 };
 
-export default DealDaily;
+export default memo(DealDaily);

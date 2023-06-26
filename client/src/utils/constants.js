@@ -8,14 +8,14 @@ export const navigation = [
   },
   {
     id: 2,
-    value: "PRODUCT",
-    path: `/${path.PRODUCT}`,
+    value: "PRODUCTS",
+    path: `/${path.PRODUCTS}`,
   },
 
   {
     id: 3,
     value: "BLOGS",
-    path: `/${path.BLOG}`,
+    path: `/${path.BLOGS}`,
   },
   {
     id: 4,
