@@ -16,6 +16,7 @@ const { FaAngleRight } = icons;
 
 const Home = () => {
   const newProducts = useSelector((state) => state.products.products);
+  const { isLoggedIn, current } = useSelector((state) => state.user);
   const categories = useSelector((state) => state.app.categories).filter(
     (el) => el.brand.length > 0
   );
@@ -24,7 +25,7 @@ const Home = () => {
       <div className="w-main grid grid-cols-10">
         <div className="flex flex-col gap-5 col-span-3 ">
           <Sidebar />
-          <DealDaily/>
+          <DealDaily />
         </div>
         <div className="flex flex-col gap-5 pl-5 col-span-7 ">
           <Banner />
@@ -79,7 +80,6 @@ const Home = () => {
           blog posts
         </h3>
       </div>
-      
     </>
   );
 };

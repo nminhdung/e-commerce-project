@@ -85,10 +85,18 @@ const DealDaily = () => {
           {productDealDaily?.title}
         </span>
 
-        <span className="flex h-4">
-          {renderStarFromNumber(productDealDaily?.totalRatings, 20)}
-        </span>
-        <span className="">{formatMoney(productDealDaily?.price)} VND</span>
+       
+        <div className="flex gap-1 h-4">
+            {renderStarFromNumber(productDealDaily?.totalRatings).map(
+              (star, index) => {
+                return (
+                  <span className=" h-[16px]" key={index}>
+                    {star}
+                  </span>
+                );
+              }
+            )}
+          </div>
       </div>
       <div className="mt-8 px-4">
         <div className="flex items-center justify-center gap-2 mb-4 ">

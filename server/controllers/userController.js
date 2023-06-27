@@ -13,10 +13,33 @@ const {
 } = require("../models/user");
 const sendMail = require("../ultils/sendMail");
 const crypto = require("crypto");
+const makeToken = require("uniqid");
+
+// const register = asyncHandler(async (req, res) => {
+//   const { email, password, firstname, lastname } = req.body;
+//   if (!email || !password || !lastname || !firstname) {
+//     return res.status(400).json({
+//       success: false,
+//       mes: "Missing inputs",
+//     });
+//   }
+//   const user = await User.findOne({ email });
+//   if (user) {
+//     throw new Error("User has existed");
+//   } else {
+//     const newUser = await User.create(req.body);
+//     return res.status(200).json({
+//       success: newUser ? true : false,
+//       mes: newUser
+//         ? "Register is successfully. You can login now"
+//         : "Something went wrong",
+//     });
+//   }
+// });
 
 const register = asyncHandler(async (req, res) => {
-  const { email, password, firstname, lastname } = req.body;
-  if (!email || !password || !lastname || !firstname) {
+  const { email, firstname, lastname, password, phone } = req.body;
+  if (!email || !password || !lastname || !firstname || !phone) {
     return res.status(400).json({
       success: false,
       mes: "Missing inputs",
@@ -26,16 +49,49 @@ const register = asyncHandler(async (req, res) => {
   if (user) {
     throw new Error("User has existed");
   } else {
-    const newUser = await User.create(req.body);
-    return res.status(200).json({
-      success: newUser ? true : false,
-      mess: newUser
-        ? "Register is successfully. You can login now"
-        : "Something went wrong",
+    const token = makeToken();
+    res.cookie(
+      "dataregister",
+      { ...req.body, token },
+      {
+        httpOnly: true,
+        maxAge: 15 * 60 * 1000,
+      }
+    );
+    const html = `Xin vui lòng click vào link dưới đây để hoàn tất quá trình đăng ký.Link này chỉ tồn tại trong 15 phút.
+    <a href="${process.env.URL_SERVER}/api/user/confirmregister/${token}">CLick here</a> `;
+    const data = {
+      email,
+      html,
+      subject: "Complete Registed",
+    };
+    await sendMail(data);
+    return res.json({
+      success: true,
+      mes: "Please check your email to active account",
     });
   }
 });
-
+const confirmRegister = asyncHandler(async (req, res) => {
+  const cookie = req.cookies;
+  const { token } = req.params;
+  if (!cookie || cookie?.dataregister?.token !== token) {
+    return res.redirect(`${process.env.CLIENT_URL}/confirmregister/failed`);
+  } else {
+    const newUser = await User.create({
+      email: cookie?.dataregister?.email,
+      firstname: cookie?.dataregister?.firstname,
+      lastname: cookie?.dataregister?.lastname,
+      password: cookie?.dataregister?.password,
+      phone: cookie?.dataregister?.phone,
+    });
+    if (newUser)
+      return res.redirect(`${process.env.CLIENT_URL}/confirmregister/success`);
+    else {
+      return res.redirect(`${process.env.CLIENT_URL}/confirmregister/failed`);
+    }
+  }
+});
 //refresh token => cap moi token
 //access token => xac thuc nguoi dung , phan quyen`
 const login = asyncHandler(async (req, res) => {
@@ -152,6 +208,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     const data = {
       email,
       html,
+      subject: "Forgot password",
     };
     const rs = await sendMail(data);
     return res.status(200).json({
@@ -299,6 +356,7 @@ const addToCart = asyncHandler(async (req, res) => {
 });
 module.exports = {
   register,
+  confirmRegister,
   login,
   expiredToken,
   getUser,
