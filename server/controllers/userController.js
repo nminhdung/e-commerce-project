@@ -63,7 +63,7 @@ const register = asyncHandler(async (req, res) => {
     const data = {
       email,
       html,
-      subject: "Complete Registed",
+      subject: "Complete Signup",
     };
     await sendMail(data);
     return res.json({
@@ -75,21 +75,25 @@ const register = asyncHandler(async (req, res) => {
 const confirmRegister = asyncHandler(async (req, res) => {
   const cookie = req.cookies;
   const { token } = req.params;
+
   if (!cookie || cookie?.dataregister?.token !== token) {
+    res.clearCookie("dataregister");
     return res.redirect(`${process.env.CLIENT_URL}/confirmregister/failed`);
-  } else {
-    const newUser = await User.create({
-      email: cookie?.dataregister?.email,
-      firstname: cookie?.dataregister?.firstname,
-      lastname: cookie?.dataregister?.lastname,
-      password: cookie?.dataregister?.password,
-      phone: cookie?.dataregister?.phone,
-    });
-    if (newUser)
-      return res.redirect(`${process.env.CLIENT_URL}/confirmregister/success`);
-    else {
-      return res.redirect(`${process.env.CLIENT_URL}/confirmregister/failed`);
-    }
+  }
+
+  const newUser = await User.create({
+    email: cookie?.dataregister?.email,
+    firstname: cookie?.dataregister?.firstname,
+    lastname: cookie?.dataregister?.lastname,
+    password: cookie?.dataregister?.password,
+    phone: cookie?.dataregister?.phone,
+  });
+  res.clearCookie("dataregister");
+
+  if (newUser)
+    return res.redirect(`${process.env.CLIENT_URL}/confirmregister/success`);
+  else {
+    return res.redirect(`${process.env.CLIENT_URL}/confirmregister/failed`);
   }
 });
 //refresh token => cap moi token
@@ -189,7 +193,7 @@ const logout = asyncHandler(async (req, res) => {
 // Change password
 
 const forgotPassword = asyncHandler(async (req, res) => {
-  const { email } = req.query;
+  const { email } = req.body;
   if (!email) {
     throw new Error("Missing Email");
   } else {
@@ -202,8 +206,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
     const resetToken = user.createPasswordChangedToken();
     await user.save();
 
-    const html = `Xin vui lòng click vào link dưới đây để thay đổi mật khẩu.Link này chỉ tồn tại trong 15 phút.
-    <a href="${process.env.URL_SERVER}/api/user/reset-password/${resetToken}">CLick here</a> `;
+    const html = `Please click this Link to change password.The link is only valid for 15 minutes.
+    <a href="${process.env.URL_CLIENT}/reset-password/${resetToken}">CLick here</a> `;
 
     const data = {
       email,
@@ -212,8 +216,11 @@ const forgotPassword = asyncHandler(async (req, res) => {
     };
     const rs = await sendMail(data);
     return res.status(200).json({
-      success: true,
+      success: rs.response.includes("OK") ? true : false,
       rs,
+      mes: rs.response.includes("OK")
+        ? "Please check your email to create new password"
+        : "Invalid Email ",
     });
   }
 });
@@ -221,10 +228,12 @@ const forgotPassword = asyncHandler(async (req, res) => {
 const resetPassword = asyncHandler(async (req, res) => {
   const { password, token } = req.body;
   if (!password || !token) throw new Error("Missing input");
+
   const passwordResetToken = crypto
     .createHash("sha256")
     .update(token)
     .digest("hex");
+  
   const user = await User.findOne({
     passwordResetToken,
     passwordResetExprire: { $gt: Date.now() },

@@ -1,7 +1,7 @@
 import React from "react";
 
 const Button = ({
-  name,
+  children,
   handleClick,
   style,
   iconBefore,
@@ -22,7 +22,7 @@ const Button = ({
       }}
     >
       {iconBefore}
-      <span>{name}</span>
+      <span>{children}</span>
       {iconAfter}
     </button>
   );

@@ -7,10 +7,10 @@ const ConfirmRegister = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (status === "failed") {
-      toast.error("Registe Failed");
+      toast.error("Signup Failed");
       navigate(`/${path.LOGIN}`);
     } else {
-      toast.success("Registe Succeed");
+      toast.success("Signup Succeed");
       navigate(`/${path.LOGIN}`);
     }
   }, []);
