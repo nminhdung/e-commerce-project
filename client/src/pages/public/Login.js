@@ -1,12 +1,15 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import path from "../../utils/paths";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { InputField, Button } from "../../components";
 import { apiRegister, apiLogin, apiForgotPassword } from "../../api/user";
 import { useNavigate, useLocation } from "react-router-dom";
-import { register } from "../../store/user/userSlice";
+import { login } from "../../store/user/userSlice";
 import { useDispatch } from "react-redux";
+import { validateInput } from "../../utils/helpers";
+import * as Yup from "yup";
+import { useFormik, FormikProvider, Form, Formik } from "formik";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -32,6 +35,7 @@ const Login = () => {
     });
   };
 
+  const [invalidFields, setInvalidFields] = useState([]);
   const handleForgotPassword = async () => {
     const response = await apiForgotPassword({ email });
     if (response.success) {
@@ -41,30 +45,40 @@ const Login = () => {
       toast.info(response.mes, { theme: "colored" });
     }
   };
+  useEffect(() => {
+    resetPayload();
+  }, [isRegister]);
+  // Submit
   const handleSubmit = useCallback(async () => {
     const { firstname, lastname, phone, ...data } = payload;
-    if (isRegister) {
-      const response = await apiRegister(payload);
-      if (response.success) {
-        toast.success(response.mes);
-        resetPayload();
-        setRegister(false);
+    const invalids = isRegister
+      ? validateInput(payload, setInvalidFields)
+      : validateInput(data, setInvalidFields);
+
+    if (invalids === 0) {
+      if (isRegister) {
+        const response = await apiRegister(payload);
+        if (response.success) {
+          toast.success(response.mes);
+          resetPayload();
+          setRegister(false);
+        } else {
+          toast.error(response.mes);
+        }
       } else {
-        toast.error(response.mes);
-      }
-    } else {
-      const rs = await apiLogin(data);
-      if (rs.success) {
-        dispatch(
-          register({
-            isLoggedIn: true,
-            token: rs.accessToken,
-            current: rs.userData,
-          })
-        );
-        navigate(`/${path.HOME}`);
-      } else {
-        toast.error(rs.mes);
+        const rs = await apiLogin(data);
+        if (rs.success) {
+          dispatch(
+            login({
+              isLoggedIn: true,
+              token: rs.accessToken,
+              current: rs.userData,
+            })
+          );
+          navigate(`/${path.HOME}`);
+        } else {
+          toast.error(rs.mes);
+        }
       }
     }
   }, [payload, isRegister]);
@@ -114,11 +128,15 @@ const Login = () => {
                 value={payload.firstname}
                 setValue={setPayload}
                 nameKey="firstname"
+                invalidFields={invalidFields}
+                setInvalidFields={setInvalidFields}
               />
               <InputField
                 value={payload.lastname}
                 setValue={setPayload}
                 nameKey="lastname"
+                invalidFields={invalidFields}
+                setInvalidFields={setInvalidFields}
               />
             </div>
           )}
@@ -127,12 +145,16 @@ const Login = () => {
             value={payload.email}
             setValue={setPayload}
             nameKey="email"
+            invalidFields={invalidFields}
+            setInvalidFields={setInvalidFields}
           />
           {isRegister && (
             <InputField
               value={payload.phone}
               setValue={setPayload}
               nameKey="phone"
+              invalidFields={invalidFields}
+              setInvalidFields={setInvalidFields}
             />
           )}
 
@@ -140,6 +162,8 @@ const Login = () => {
             value={payload.password}
             setValue={setPayload}
             nameKey="password"
+            invalidFields={invalidFields}
+            setInvalidFields={setInvalidFields}
           />
 
           <Button handleClick={handleSubmit} fullWidth>
@@ -175,6 +199,7 @@ const Login = () => {
         </div>
       </div>
     </div>
+    //validate bằng formik : https://codesandbox.io/s/formik-v2-tutorial-final-ge1pt?file=/src/index.js:539-548
   );
 };
 

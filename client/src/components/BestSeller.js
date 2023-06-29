@@ -26,7 +26,6 @@ const BestSeller = () => {
 
   const fetchProduct = async () => {
     const response = await apiGetProducts({ sort: "-sold" });
-    console.log(response)
     if (response.success) {
       setBestSellerProducts(response.listProduct);
       setProducts(response.listProduct);

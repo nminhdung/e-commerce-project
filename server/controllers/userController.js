@@ -78,7 +78,7 @@ const confirmRegister = asyncHandler(async (req, res) => {
 
   if (!cookie || cookie?.dataregister?.token !== token) {
     res.clearCookie("dataregister");
-    return res.redirect(`${process.env.CLIENT_URL}/confirmregister/failed`);
+    return res.redirect(`${process.env.URL_CLIENT}/confirmregister/failed`);
   }
 
   const newUser = await User.create({
@@ -91,9 +91,9 @@ const confirmRegister = asyncHandler(async (req, res) => {
   res.clearCookie("dataregister");
 
   if (newUser)
-    return res.redirect(`${process.env.CLIENT_URL}/confirmregister/success`);
+    return res.redirect(`${process.env.URL_CLIENT}/confirmregister/success`);
   else {
-    return res.redirect(`${process.env.CLIENT_URL}/confirmregister/failed`);
+    return res.redirect(`${process.env.URL_CLIENT}/confirmregister/failed`);
   }
 });
 //refresh token => cap moi token
