@@ -49,32 +49,42 @@ export const validateInput = (payload, setInvalidFields) => {
       ]);
     }
   }
-  for (let array of formatPayload) {
-    switch (array[0]) {
-      case "email":
-        const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-        if (!array[1].match(regex)) {
-          invalids++;
-          setInvalidFields((prev) => [
-            ...prev,
-            { name: array[0], mes: "Email invalid" },
-          ]);
-        }
+  // for (let array of formatPayload) {
+  //   switch (array[0]) {
+  //     case "email":
+  //       const regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+  //       if (!array[1].match(regex)) {
+  //         invalids++;
+  //         setInvalidFields((prev) => [
+  //           ...prev,
+  //           { name: array[0], mes: "Email invalid" },
+  //         ]);
+  //       }
 
-        break;
-      case "password":
-        if (array[1].length <= 6) {
-          invalids++;
-          setInvalidFields((prev) => [
-            ...prev,
-            { name: array[0], mes: "Password must be at least 6 characters" },
-          ]);
-        }
+  //       break;
+  //     case "password":
+  //       if (array[1].length <= 6) {
+  //         invalids++;
+  //         setInvalidFields((prev) => [
+  //           ...prev,
+  //           { name: array[0], mes: "Password must be at least 6 characters" },
+  //         ]);
+  //       }
 
-        break;
-      default:
-        break;
-    }
-  }
+  //       break;
+  //     case "phone":
+  //       if (array[1].length !== 10) {
+  //         invalids++;
+  //         setInvalidFields((prev) => [
+  //           ...prev,
+  //           { name: array[0], mes: "Phone must be 10 characters" },
+  //         ]);
+  //       }
+
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
   return invalids;
 };

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { apiGetProducts } from "../api/product";
+import * as api from "../api";
 import ProductCard from "./ProductCard";
 const FeatureProducts = () => {
   const [products, setProducts] = useState([]);
   const fetchProducts = async () => {
-    const res = await apiGetProducts({
+    const res = await api.apiGetProducts({
       limit: 9,
       totalRatings: 5,
     });

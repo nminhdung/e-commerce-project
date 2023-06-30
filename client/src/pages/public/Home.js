@@ -22,7 +22,7 @@ const Home = () => {
   );
   return (
     <>
-      <div className="w-main grid grid-cols-10">
+      <div className="w-main grid grid-cols-10 mt-6">
         <div className="flex flex-col gap-5 col-span-3 ">
           <Sidebar />
           <DealDaily />
@@ -32,13 +32,13 @@ const Home = () => {
           <BestSeller />
         </div>
       </div>
-      <div className="my-8 w-full">
+      <div className="my-8 w-main">
         <FeatureProducts />
       </div>
-      <div className="my-8 w-full">
+      <div className="my-8 w-main">
         <NewArrivals products={newProducts} />
       </div>
-      <div className="my-8 w-full">
+      <div className="my-8 w-main">
         <h3 className="font-semibold capitalize text-[20px] border-b-2 border-main cursor-pointer text-black">
           hot collections
         </h3>
@@ -75,7 +75,7 @@ const Home = () => {
           })}
         </div>
       </div>
-      <div className="my-8 w-full">
+      <div className="my-8 w-main">
         <h3 className="font-semibold capitalize text-[20px] border-b-2 border-main cursor-pointer text-black">
           blog posts
         </h3>

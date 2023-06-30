@@ -1,5 +1,5 @@
 import { RiPhoneFill } from "react-icons/ri";
-import { MdEmail,MdLocationOn } from "react-icons/md";
+import { MdEmail, MdLocationOn } from "react-icons/md";
 import {
   BsFillBagFill,
   BsFillSuitHeartFill,
@@ -12,7 +12,10 @@ import {
   AiOutlineStar,
   AiFillEye,
   AiOutlineMenu,
-  AiOutlineMail
+  AiOutlineMail,
+  AiOutlineCloseCircle,
+  AiFillHome,
+  AiOutlineLogout,
 } from "react-icons/ai";
 const icons = {
   RiPhoneFill,
@@ -28,5 +31,8 @@ const icons = {
   FaAngleRight,
   AiOutlineMail,
   MdLocationOn,
+  AiOutlineCloseCircle,
+  AiFillHome,
+  AiOutlineLogout,
 };
 export default icons;

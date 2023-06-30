@@ -3,7 +3,6 @@ import logo from "../assets/logo.png";
 import icons from "../utils/icons";
 import { Link } from "react-router-dom";
 import paths from "../utils/paths";
-
 const { RiPhoneFill, MdEmail, BsFillBagFill, BiUser } = icons;
 const Header = () => {
   return (
@@ -31,7 +30,8 @@ const Header = () => {
           <span>O item(s)</span>
         </div>
         <div className="flex items-center justify-center gap-2 px-6 cursor-pointer">
-          <BiUser size={20} />
+          <BiUser color="red" size={16}/>
+         <span>Profile</span> 
         </div>
       </div>
     </header>

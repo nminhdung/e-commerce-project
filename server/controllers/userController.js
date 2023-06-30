@@ -50,51 +50,52 @@ const register = asyncHandler(async (req, res) => {
     throw new Error("User has existed");
   } else {
     const token = makeToken();
-    res.cookie(
-      "dataregister",
-      { ...req.body, token },
-      {
-        httpOnly: true,
-        maxAge: 15 * 60 * 1000,
-      }
-    );
-    const html = `Xin vui lòng click vào link dưới đây để hoàn tất quá trình đăng ký.Link này chỉ tồn tại trong 15 phút.
-    <a href="${process.env.URL_SERVER}/api/user/confirmregister/${token}">CLick here</a> `;
-    const data = {
-      email,
-      html,
-      subject: "Complete Signup",
-    };
-    await sendMail(data);
+    const emailEdited = btoa(email) + "@" + token;
+    const newUser = await User.create({
+      email: emailEdited,
+      password,
+      firstname,
+      lastname,
+      phone,
+    });
+    if (newUser) {
+      const html = `<h2>Register code:</h2><br/><blockquote>${token}</blockquote> `;
+      const data = {
+        email,
+        html,
+        subject: "Confirm Signup",
+      };
+      await sendMail(data);
+    }
+    setTimeout(async () => {
+      await User.deleteOne({ email: emailEdited });
+    }, [1000 * 60 * 15]);
     return res.json({
-      success: true,
-      mes: "Please check your email to active account",
+      success: newUser ? true : false,
+      mes: newUser
+        ? "Please check your email to active account"
+        : "Something went wrong",
     });
   }
 });
 const confirmRegister = asyncHandler(async (req, res) => {
-  const cookie = req.cookies;
+  // const cookie = req.cookies;
   const { token } = req.params;
 
-  if (!cookie || cookie?.dataregister?.token !== token) {
-    res.clearCookie("dataregister");
-    return res.redirect(`${process.env.URL_CLIENT}/confirmregister/failed`);
-  }
-
-  const newUser = await User.create({
-    email: cookie?.dataregister?.email,
-    firstname: cookie?.dataregister?.firstname,
-    lastname: cookie?.dataregister?.lastname,
-    password: cookie?.dataregister?.password,
-    phone: cookie?.dataregister?.phone,
+  //lay ra thang email co phan` duoi la token
+  const notActivedEmail = await User.findOne({
+    email: new RegExp(`${token}$`),
   });
-  res.clearCookie("dataregister");
-
-  if (newUser)
-    return res.redirect(`${process.env.URL_CLIENT}/confirmregister/success`);
-  else {
-    return res.redirect(`${process.env.URL_CLIENT}/confirmregister/failed`);
+  if (notActivedEmail) {
+    notActivedEmail.email = atob(notActivedEmail?.email?.split("@")[0]);
+    notActivedEmail.save();
   }
+  return res.json({
+    success: notActivedEmail ? true : false,
+    mes: notActivedEmail
+      ? "Register is successfully. You can login now"
+      : "Something went wrong",
+  });
 });
 //refresh token => cap moi token
 //access token => xac thuc nguoi dung , phan quyen`
@@ -233,7 +234,7 @@ const resetPassword = asyncHandler(async (req, res) => {
     .createHash("sha256")
     .update(token)
     .digest("hex");
-  
+
   const user = await User.findOne({
     passwordResetToken,
     passwordResetExprire: { $gt: Date.now() },

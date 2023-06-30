@@ -7,12 +7,21 @@ export const apiRegister = (data) => {
     withCredentials: true,
   });
 };
+export const apiConfirmRegister = (token) => {
+  return axios({
+    url: "/user/confirmregister/" + token,
+    method: "put",
+  });
+};
 export const apiLogin = (data) => {
   return axios({
     url: "/user/login",
     method: "post",
     data,
   });
+};
+export const getCurrentUser = () => {
+  return axios({ url: "/user/current", method: "get" });
 };
 export const apiForgotPassword = (data) => {
   return axios({
