@@ -13,10 +13,10 @@ const CustomSlider = ({ products, activeTab }) => {
   return (
     <div className="w-full">
       {products && (
-        <Slider {...settings}>
+        <Slider {...settings} className="custom-slider">
           {products.map((product) => {
             return (
-              <Product
+              <Product 
                 key={product._id}
                 productData={product}
                 isNew={activeTab === 1 ? false : true}

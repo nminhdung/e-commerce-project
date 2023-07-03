@@ -21,9 +21,9 @@ const Button = ({
         handleClick && handleClick();
       }}
     >
-      {iconBefore}
+      {iconBefore ? iconBefore :""}
       <span>{children}</span>
-      {iconAfter}
+      {iconAfter? iconAfter :""}
     </button>
   );
 };

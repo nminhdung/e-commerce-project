@@ -5,6 +5,9 @@ module.exports = {
     fontFamily: {
       main: ["Poppins", "sans-serif"],
     },
+    listStyleType:{
+      square: 'square',
+    },
     extend: {
       width: {
         main: "1220px",

@@ -16,7 +16,7 @@ const Product = ({ productData, isNew }) => {
   const [isShowOptions, setShowOptions] = useState(false);
   return (
     <div className="w-full text-base px-[10px]">
-      <Link to={`/${path.PRODUCT_DETAIL}/${productData?._id}/${productData?.title}`}
+      <Link to={`/${productData?.category?.toLowerCase()}/${productData?._id}/${productData?.title}`}
         className="flex flex-col border h-full w-full p-[15px] items-center "
         onMouseEnter={(e) => {
           e.stopPropagation();
@@ -60,7 +60,7 @@ const Product = ({ productData, isNew }) => {
         <div className="flex flex-col gap-1 mt-[14px] items-start w-full">
           {/* <span className="flex gap-1 h-[16px]">{renderStarFromNumber(productData.totalRatings) }</span>
            */}
-          <div className="flex gap-1">
+          <div className="flex gap-1 min-h-[16px]">
             {renderStarFromNumber(productData.totalRatings).map(
               (star, index) => {
                 return (

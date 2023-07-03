@@ -88,3 +88,5 @@ export const validateInput = (payload, setInvalidFields) => {
   // }
   return invalids;
 };
+
+export const formatPrice = (number) => Math.round(number / 1000) * 1000;

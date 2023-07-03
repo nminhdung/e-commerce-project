@@ -3,15 +3,22 @@
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,500;1,600;1,700;1,800&display=swap");
 
-button.slick-next {
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+.custom-slider button.slick-next {
   right: 80px;
   z-index: 20;
 }
-button.slick-prev {
+.custom-slider button.slick-prev {
   left: 20px;
   z-index: 20;
 }
-button.slick-next::before {
+.custom-slider button.slick-next::before {
   color: gray;
   content: "\276F";
   width: 80px;
@@ -22,11 +29,43 @@ button.slick-next::before {
   justify-content: center;
   align-items: center;
 }
-button.slick-prev::before {
+.custom-slider button.slick-prev::before {
   color: gray;
   content: "\276E";
   width: 80px;
   height: 80px;
+  background: #ccc;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.custom-images-slider button.slick-next {
+  right: 20px;
+  top:55px;
+  z-index: 20;
+}
+.custom-images-slider button.slick-prev {
+  left: 0px;
+  top:55px;
+  z-index: 20;
+}
+.custom-images-slider button.slick-next::before {
+  color: gray;
+  content: "\276F";
+  width: 40px;
+  height: 40px;
+  background: #ccc;
+  font-size: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.custom-images-slider button.slick-prev::before {
+  color: gray;
+  content: "\276E";
+  width: 40px;
+  height: 40px;
   background: #ccc;
   font-size: 30px;
   display: flex;
