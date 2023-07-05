@@ -43,8 +43,8 @@ const BestSeller = () => {
     }
   }, [activeTab]);
   return (
-    <div>
-      <div className="flex items-center text-xl  ml-[-32px]   ">
+    <div className="col-span-7">
+      <div className=" flex items-center text-xl  ml-[-32px]   ">
         {tabs.map((tab) => {
           return (
             <span
@@ -62,11 +62,11 @@ const BestSeller = () => {
       <div className="mt-4 mx-[-10px] border-main border-t-2 pt-[15px]">
         <CustomSlider products={products} activeTab={activeTab} />
       </div>
-      <div className="flex w-full gap-4 mt-8">
+      <div className="flex flex-col lg:flex-row w-full gap-4 mt-8">
         <img
           src="https://cdn.shopify.com/s/files/1/1903/4853/files/banner2-home2_2000x_crop_center.png?v=1613166657"
           alt="banner1"
-          className="object-contain flex-1"
+          className="object-contain flex-1 lg:"
         />
         <img
           src="https://cdn.shopify.com/s/files/1/1903/4853/files/banner1-home2_2000x_crop_center.png?v=1613166657"

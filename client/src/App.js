@@ -25,14 +25,14 @@ function App() {
   }, [dispatch]);
   return (
     <>
-      <div className="min-h-screen font-main ">
+      <div className="min-h-screen font-main w-full ">
         <Routes>
           <Route path={path.PUBLIC} element={<Public />}>
             <Route path={path.HOME} element={<Home />} />
             <Route path={path.BLOGS} element={<Blogs />} />
-            <Route path={path.PRODUCTS} element={<Products />} />
             <Route path={path.FAQ} element={<FAQ />} />
             <Route path={path.OUR_SERVICES} element={<Services />} />
+            <Route path={path.PRODUCTS} element={<Products />} />
             <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
             <Route
               path={path.PRODUCT_DETAIL_CATEGORY_PID_TITLE}

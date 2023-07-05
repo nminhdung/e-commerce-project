@@ -3,12 +3,33 @@ import logo from "../assets/logo.png";
 import icons from "../utils/icons";
 import { Link } from "react-router-dom";
 import paths from "../utils/paths";
-const { RiPhoneFill, MdEmail, BsFillBagFill, BiUser } = icons;
-const Header = () => {
+import Navigation from "./Navigation";
+const {
+  RiPhoneFill,
+  MdEmail,
+  BsFillBagFill,
+  BiUser,
+  AiOutlineMenu,
+  AiOutlineShoppingCart,
+} = icons;
+const Header = ({ handleNav }) => {
   return (
-    <header className=" w-main flex justify-between h-[110px] py-[35px]">
-     <Link to={`/${paths.HOME}`}> <img src={logo} alt="logo" className="object-contain w-[234px]  " /></Link>
-      <div className="flex text-[13px] ">
+    <header
+      className=" lg:w-main w-full 
+    flex items-center justify-between lg:h-[110px] h-[80px] py-[35px] "
+    >
+      <div className="lg:hidden cursor-pointer" onClick={() => handleNav(true)}>
+        <AiOutlineMenu size={20} color="black" />
+      </div>
+      <Link to={`/${paths.HOME}`}>
+        <img
+          src={logo}
+          alt="logo"
+          className="object-contain h-[30%] lg:w-[234px]  "
+        />
+      </Link>
+
+      <div className="hidden lg:flex text-[13px] ">
         <div className="flex flex-col items-center px-6 ">
           <span className="flex gap-4 items-center">
             <RiPhoneFill color="red" size={15} />
@@ -30,9 +51,13 @@ const Header = () => {
           <span>O item(s)</span>
         </div>
         <div className="flex items-center justify-center gap-2 px-6 cursor-pointer">
-          <BiUser color="red" size={16}/>
-         <span>Profile</span> 
+          <BiUser color="red" size={16} />
+          <span>Profile</span>
         </div>
+      </div>
+      <Navigation />
+      <div className="lg:hidden">
+        <AiOutlineShoppingCart size={30} color="black" />
       </div>
     </header>
   );

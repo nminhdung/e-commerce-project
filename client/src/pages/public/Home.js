@@ -22,27 +22,35 @@ const Home = () => {
   );
   return (
     <>
-      <div className="w-main grid grid-cols-10 mt-6">
-        <div className="flex flex-col gap-5 col-span-3 ">
+      <div className=" w-full lg:w-main grid grid-cols-10 gap-4">
+        <div className="hidden lg:block lg:col-span-3">
           <Sidebar />
+        </div>
+        <div className="col-span-10 lg:col-span-7 ">
+          <Banner />
+        </div>
+      </div>
+
+      <div className="w-full lg:w-main grid grid-cols-10 gap-4 mt-6">
+        <div className="col-span-10 lg:col-span-3">
           <DealDaily />
         </div>
-        <div className="flex flex-col gap-5 pl-5 col-span-7 ">
-          <Banner />
+
+        <div className=" col-span-10 lg:col-span-7 ">
           <BestSeller />
         </div>
       </div>
-      <div className="my-8 w-main">
+      <div className="my-8 w-full lg:w-main">
         <FeatureProducts />
       </div>
-      <div className="my-8 w-main">
+      <div className="my-8 w-full lg:w-main">
         <NewArrivals products={newProducts} />
       </div>
-      <div className="my-8 w-main">
+      <div className="my-8 w-full lg:w-main">
         <h3 className="font-semibold capitalize text-[20px] border-b-2 border-main cursor-pointer text-black">
           hot collections
         </h3>
-        <div className="grid grid-cols-3 gap-4 mt-4">
+        <div className="grid lg:grid-cols-3 gap-4 mt-4">
           {categories.map((cate) => {
             return (
               <div key={cate._id} className="border flex p-8 gap-4 ">
@@ -75,7 +83,7 @@ const Home = () => {
           })}
         </div>
       </div>
-      <div className="my-8 w-main">
+      <div className="my-8 w-full lg:w-main">
         <h3 className="font-semibold capitalize text-[20px] border-b-2 border-main cursor-pointer text-black">
           blog posts
         </h3>

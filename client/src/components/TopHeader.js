@@ -17,7 +17,7 @@ const TopHeader = () => {
     }
   }, [dispatch, isLoggedIn]);
   return (
-    <div className="h-[38px] w-full bg-main flex justify-center items-center">
+    <div className="hidden h-[38px] w-full bg-main lg:flex justify-center items-center">
       <div className="w-main flex items-center justify-between text-xs text-white">
         <div className="flex items-center gap-2">
           <span className="pr-2 border-r">

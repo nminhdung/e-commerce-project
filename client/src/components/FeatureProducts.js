@@ -20,7 +20,7 @@ const FeatureProducts = () => {
       <h3 className="uppercase text-[20px] font-semibold py-4  border-b-2 border-main">
         Feature Products
       </h3>
-      <div className="grid grid-cols-3 gap-6 mt-4">
+      <div className="grid lg:grid-cols-3  gap-6 mt-4">
         {products?.map((product) => {
           return <ProductCard key={product._id} data={product} />;
         })}

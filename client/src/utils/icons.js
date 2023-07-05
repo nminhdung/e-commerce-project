@@ -1,5 +1,6 @@
 import { RiPhoneFill, RiGiftFill } from "react-icons/ri";
 import { MdEmail, MdLocationOn } from "react-icons/md";
+
 import {
   BsFillBagFill,
   BsFillSuitHeartFill,
@@ -7,7 +8,7 @@ import {
   BsShieldShaded,
 } from "react-icons/bs";
 import { BiUser } from "react-icons/bi";
-import { FaAngleRight, FaTruck ,FaBlenderPhone} from "react-icons/fa";
+import { FaAngleRight, FaTruck, FaBlenderPhone } from "react-icons/fa";
 import { GiReturnArrow } from "react-icons/gi";
 
 import {
@@ -19,6 +20,8 @@ import {
   AiOutlineCloseCircle,
   AiFillHome,
   AiOutlineLogout,
+  AiOutlineDown,
+  AiOutlineShoppingCart,
 } from "react-icons/ai";
 const icons = {
   RiPhoneFill,
@@ -42,5 +45,8 @@ const icons = {
   RiGiftFill,
   FaBlenderPhone,
   GiReturnArrow,
+  AiOutlineDown,
+  AiOutlineShoppingCart,
+  
 };
 export default icons;

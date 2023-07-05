@@ -8,18 +8,32 @@ const settings = {
   speed: 500,
   slidesToShow: 3,
   slidesToScroll: 1,
+  responsive: [
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        
+        dots: false,
+        infinite: false,
+        speed: 500,
+      },
+    },
+  ],
 };
-const CustomSlider = ({ products, activeTab }) => {
+const CustomSlider = ({ products, activeTab, normal }) => {
   return (
     <div className="w-full">
       {products && (
-        <Slider {...settings} className="custom-slider">
+        <Slider {...settings} className=" custom-slider">
           {products.map((product) => {
             return (
-              <Product 
+              <Product
                 key={product._id}
                 productData={product}
                 isNew={activeTab === 1 ? false : true}
+                normal={normal}
               />
             );
           })}

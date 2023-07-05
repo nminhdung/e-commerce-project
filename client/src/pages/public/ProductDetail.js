@@ -1,48 +1,22 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import icons from "../../utils/icons";
 import * as api from "../../api";
-import { BreadCumbs, Button, SelectQuantity } from "../../components/";
+import {
+  BreadCumbs,
+  Button,
+  ExtraInfor,
+  ProductInformation,
+  SelectQuantity,
+  CustomSlider,
+} from "../../components/";
+import { extraInfo } from "../../utils/constants";
+
 import {
   formatMoney,
   formatPrice,
   renderStarFromNumber,
 } from "../../utils/helpers";
-
-const { BsShieldShaded, FaTruck, GiReturnArrow, RiGiftFill,FaBlenderPhone } = icons;
-const extraInfo = [
-  {
-    id: 1,
-    title: "guarantee",
-    subTitle: "Quality checked",
-    icon: <BsShieldShaded />,
-  },
-  {
-    id: 2,
-    title: "Free Shipping",
-    subTitle: "Free on all products",
-    icon: <FaTruck />,
-  },
-  {
-    id: 3,
-    title: "Special gift cards",
-    subTitle: "Special gift cards",
-    icon: <RiGiftFill />,
-  },
-  {
-    id: 4,
-    title: "Free return",
-    subTitle: "Within 7 days",
-    icon: <FaBlenderPhone />,
-  },
-  {
-    id: 5,
-    title: "Consultancy",
-    subTitle: "Lifetime 24/7/356",
-    icon: <GiReturnArrow />,
-  },
-];
 
 const settings = {
   dots: false,
@@ -55,6 +29,7 @@ const settings = {
 const ProductDetail = () => {
   const { title, pid, category } = useParams();
   const [product, setProduct] = useState(null);
+  const [relatedProducts, setRelatedProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [previewImg, setPreviewImg] = useState("");
   const fetchProduct = async () => {
@@ -63,9 +38,16 @@ const ProductDetail = () => {
       setProduct(response.productData);
     }
   };
+  const fetchOtherProducts = async () => {
+    const response = await api.apiGetProducts({ category });
+    if (response.success) {
+      setRelatedProduct(response.listProduct);
+    }
+  };
   useEffect(() => {
     if (pid) {
       fetchProduct();
+      fetchOtherProducts();
       setPreviewImg(product?.images[0]);
     }
   }, [pid]);
@@ -151,22 +133,18 @@ const ProductDetail = () => {
         </div>
         <div className="flex-2 flex flex-col gap-2">
           {extraInfo.map((item) => {
-            return (
-              <div
-                className="flex items-center gap-4 border p-2 "
-                key={item.id}
-              >
-                <span className="inline-block rounded-full p-2 text-white bg-[#505050]">
-                  {item.icon}
-                </span>
-                <div className="flex flex-col ">
-                  <span className="text-[14px] text-[#686868] capitalize">{item.title}</span>
-                  <span className="text-[#b5b5b5] text-xs capitalize">{item.subTitle}</span>
-                </div>
-              </div>
-            );
+            return <ExtraInfor item={item} key={item.id} />;
           })}
         </div>
+      </div>
+      <div className="w-main mx-auto mt-4">
+        <ProductInformation productDescription={product?.description}/>
+      </div>
+      <div className="w-main mx-auto mt-4">
+        <h3 className="font-semibold capitalize text-[20px] border-b-2 border-main cursor-pointer text-black">
+          Other Customers also buy:
+        </h3>
+        <CustomSlider products={relatedProducts} normal={true} />
       </div>
       <div className="h-[500px]"></div>
     </div>

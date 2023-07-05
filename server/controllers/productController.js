@@ -45,6 +45,8 @@ const getAllProducts = asyncHandler(async (req, res) => {
   //filter ( chi can go mot tu giong thi se tu dong match ) ex: doi vs nhung san pham ten dai`
   if (queries?.title)
     formatedQueries.title = { $regex: queries.title, $options: "i" };
+  if (queries?.category)
+    formatedQueries.category = { $regex: queries.category, $options: "i" };
   let queryCommand = Product.find(formatedQueries);
   if (req.query.sort) {
     const sortBy = req.query.sort.split(",").join(" ");
@@ -156,9 +158,13 @@ const ratings = asyncHandler(async (req, res) => {
 const uploadImagesProduct = asyncHandler(async (req, res) => {
   const { pid } = req.params;
   if (req.files.length === 0) throw new Error("Missing inputs");
-  const response = await Product.findByIdAndUpdate(pid, {
-    $push: { images: { $each: req.files.map((file) => file.path) } },
-  },{new:true});
+  const response = await Product.findByIdAndUpdate(
+    pid,
+    {
+      $push: { images: { $each: req.files.map((file) => file.path) } },
+    },
+    { new: true }
+  );
   return res.json({
     status: response ? true : false,
     updatedImages: response ? response : "Can not update images product",

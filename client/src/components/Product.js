@@ -2,7 +2,7 @@
 // eslint-disable-next-line jsx-a11y/img-redundant-alt
 import React, { useState } from "react";
 import defaultImage from "../assets/default.png";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 import { formatMoney } from "../utils/helpers";
 import label from "../assets/label.png";
 import { renderStarFromNumber } from "../utils/helpers";
@@ -12,17 +12,22 @@ import path from "../utils/paths";
 
 const { AiFillEye, AiOutlineMenu, BsFillSuitHeartFill } = icons;
 
-const Product = ({ productData, isNew }) => {
+const Product = ({ productData, isNew , normal }) => {
   const [isShowOptions, setShowOptions] = useState(false);
   return (
-    <div className="w-full text-base px-[10px]">
-      <Link to={`/${productData?.category?.toLowerCase()}/${productData?._id}/${productData?.title}`}
+    <div
+      className="w-full text-base px-[10px]"
+    >
+      <Link
+        to={`/${productData?.category?.toLowerCase()}/${productData?._id}/${
+          productData?.title
+        }`}
         className="flex flex-col border h-full w-full p-[15px] items-center "
         onMouseEnter={(e) => {
           e.stopPropagation();
           setShowOptions(true);
         }}
-        onMouseLeave={(e) =>  {
+        onMouseLeave={(e) => {
           e.stopPropagation();
           setShowOptions(false);
         }}
@@ -41,18 +46,17 @@ const Product = ({ productData, isNew }) => {
             className="w-[274px] h-[274px] object-cover flex-shrink-0"
             alt="image"
           />
-          <img
-            className="absolute w-[80px] h-[25px] object-cover top-[-16px] left-[-34px]"
-            src={label}
-            alt="label"
-          />
-          {isNew ? (
+          {!normal && (
+            <img
+              className="absolute w-[80px] h-[25px] object-cover top-[-16px] left-[-34px]"
+              src={label}
+              alt="label"
+            />
+          )}
+
+          {!normal && (
             <span className="absolute top-[-16px] left-[-14px] font-semibold text-sm text-white">
-              New
-            </span>
-          ) : (
-            <span className="absolute top-[-16px] left-[-14px] font-semibold text-sm text-white">
-              Trend
+              {isNew ? "New" : "Trend"}
             </span>
           )}
         </div>

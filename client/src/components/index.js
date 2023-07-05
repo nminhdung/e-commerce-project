@@ -16,4 +16,8 @@ export { default as InputField } from "./InputField";
 export { default as Button } from "./Button";
 export { default as BreadCumbs } from "./BreadCrumbs";
 export { default as SelectQuantity } from "./SelectQuantity";
+export { default as ExtraInfor } from "./ExtraInfor";
+export { default as ProductInformation } from "./ProductInformation";
+export { default as FilterProduct } from "./FilterProduct";
+export { default as SortProduct } from "./SortProduct";
 
