@@ -8,11 +8,11 @@ const Footer = () => {
     <div className="w-full ">
       <div className="h-[103px] bg-main w-full flex items-center justify-center">
         <div className="w-main flex justify-between items-center">
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1 gap-1">
             <span className="text-white text-xs lg:text-[20px] tracking-[2px]">
               Sign up to Newsletter
             </span>
-            <small className="text-[10px] text-[13px] text-gray-300">
+            <small className="text-[10px] lg:text-[13px] text-gray-300">
               Subscribe now and receive weekly newsletter
             </small>
           </div>

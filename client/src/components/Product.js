@@ -43,7 +43,7 @@ const Product = ({ productData, isNew , normal }) => {
 
           <img
             src={productData.thumb || defaultImage}
-            className="w-[274px] h-[274px] object-cover flex-shrink-0"
+            className="lg:w-[274px] lg:h-[274px] object-cover flex-shrink-0"
             alt="image"
           />
           {!normal && (

@@ -10,7 +10,7 @@ module.exports = {
     },
     extend: {
       width: {
-        main: "1220px",
+        main: "1240px",
       },
       backgroundColor: {
         main: "#ee3a3a",
@@ -68,4 +68,5 @@ module.exports = {
     },
   },
   plugins: [require("@tailwindcss/line-clamp")],
+
 };

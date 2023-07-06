@@ -68,7 +68,6 @@ export const productInfo = [
   {
     id: 1,
     title: "description",
-
   },
   {
     id: 2,
@@ -109,6 +108,15 @@ export const productInfo = [
   {
     id: 5,
     title: "customer review",
-    content:"review"
+    content: "review",
   },
+];
+export const colors = [
+  "gray",
+  "white",
+  "black",
+  "red",
+  "brown",
+  "gold",
+  "mineral",
 ];

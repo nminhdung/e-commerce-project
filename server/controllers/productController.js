@@ -38,16 +38,24 @@ const getAllProducts = asyncHandler(async (req, res) => {
     /\b(gte|gt|lt|lte)\b/g,
     (matchedElement) => `$${matchedElement}`
   );
-  console.log(queryString);
-  const formatedQueries = JSON.parse(queryString);
-  console.log(formatedQueries);
 
+  const formatedQueries = JSON.parse(queryString);
+  let colorQueryObject = {};
   //filter ( chi can go mot tu giong thi se tu dong match ) ex: doi vs nhung san pham ten dai`
   if (queries?.title)
     formatedQueries.title = { $regex: queries.title, $options: "i" };
   if (queries?.category)
     formatedQueries.category = { $regex: queries.category, $options: "i" };
-  let queryCommand = Product.find(formatedQueries);
+  if (queries?.color) {
+    delete formatedQueries.color;
+    const colorArray = queries.color?.split(",");
+    const colorQuery = colorArray.map((item) => {
+      return { color: { $regex: item, $options: "i" } };
+    });
+    colorQueryObject = { $or: colorQuery };
+  }
+  const q = { ...colorQueryObject, ...formatedQueries };
+  let queryCommand = Product.find(q);
   if (req.query.sort) {
     const sortBy = req.query.sort.split(",").join(" ");
     queryCommand = queryCommand.sort(sortBy);
@@ -65,7 +73,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
   //so luong san pham thoa dieu kien
   queryCommand.then(async (response, err) => {
     if (err) throw new Error(err.message);
-    const counts = await Product.find(formatedQueries).countDocuments();
+    const counts = await Product.find(q).countDocuments();
 
     return res.status(200).json({
       success: response ? true : false,

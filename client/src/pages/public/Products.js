@@ -7,15 +7,28 @@ const Products = () => {
   const { category } = useParams();
   const [products, setProducts] = useState(null);
   const [activeClick, setActiveClick] = useState("");
+  const [params] = useSearchParams();
+
   const fetchProductsByCategory = async (queries) => {
-    const response = await api.apiGetProducts({ queries });
+    const response = await api.apiGetProducts( queries );
+    console.log(queries)
     if (response.success) {
       setProducts(response.listProduct);
     }
   };
   useEffect(() => {
-    fetchProductsByCategory();
-  }, []);
+    let paramsList = [];
+    for (let i of params.entries()) {
+      paramsList.push(i);
+    }
+    const queries = {};
+    for (let i of paramsList) {
+      queries[i[0]] = i[1];
+    }
+    // console.log(queries)
+    // console.log(paramsList);
+    fetchProductsByCategory(queries);
+  }, [params]);
   const changeFilter = useCallback(
     (name) => {
       if (activeClick === name) {
@@ -42,6 +55,7 @@ const Products = () => {
               name="price"
               activeClick={activeClick}
               changeFilter={changeFilter}
+              type="input"
             />
             <FilterProduct
               name="color"
