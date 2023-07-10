@@ -4,6 +4,7 @@ import { colors } from "../utils/constants";
 import { createSearchParams, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import * as api from "../api";
+import useDebounce from "../hooks/useDebounce";
 
 const { AiOutlineDown } = icons;
 
@@ -16,6 +17,7 @@ const FilterProduct = ({
   const [selected, setSelected] = useState([]);
   const { category } = useParams();
   const [highestPrice, setHighestPrice] = useState();
+  const [price, setPrice] = useState({ from: "", to: "" });
   const navigate = useNavigate();
 
   const handleSelect = (e) => {
@@ -48,7 +50,25 @@ const FilterProduct = ({
       fetchHighestProduct();
     }
   }, [type]);
+  const debouncePriceFrom = useDebounce(price.from,1000)
+  const debouncePriceTo = useDebounce(price.to,1000)
 
+  useEffect(() => {
+    const data = {};
+    if (Number(price.from) > 0) {
+      data.from = price.from;
+    }
+    if (Number(price.to) > 0) {
+      data.to = price.to;
+    }
+
+   
+      navigate({
+        pathname: `/${category}`,
+        search: createSearchParams(data).toString(),
+      });
+    
+  }, [debouncePriceFrom,debouncePriceTo]);
   return (
     <div
       className="p-3 border text-gray-500 relative border-gray-800 flex items-center gap-2 cursor-pointer"
@@ -106,7 +126,8 @@ const FilterProduct = ({
                   className="underline cursor-pointer font-semibold"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setSelected([]);
+                    setPrice({from:"",to:""});
+                    changeFilter(null)
                   }}
                 >
                   Reset
@@ -119,14 +140,28 @@ const FilterProduct = ({
                     type="number"
                     className="outline-none bg-[#f6f6f6] py-2 px-4"
                     id="from"
+                    name="from"
+                    value={price[0]}
+                    onChange={(e) =>
+                      setPrice((prev) => {
+                        return { ...prev, [e.target.name]: e.target.value };
+                      })
+                    }
                   />
                 </div>
                 <div className="flex items-center justify-between  p-4">
                   <label htmlFor="to">To:</label>
                   <input
                     type="number"
+                    name="to"
                     className="outline-none bg-[#f6f6f6] py-2 px-4"
                     id="to"
+                    value={price.to}
+                    onChange={(e) =>
+                      setPrice((prev) => {
+                        return { ...prev, [e.target.name]: e.target.value };
+                      })
+                    }
                   />
                 </div>
               </div>

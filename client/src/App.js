@@ -25,7 +25,7 @@ function App() {
   }, [dispatch]);
   return (
     <>
-      <div className="min-h-screen font-main w-full ">
+      <div className=" font-main overflow-hidden ">
         <Routes>
           <Route path={path.PUBLIC} element={<Public />}>
             <Route path={path.HOME} element={<Home />} />

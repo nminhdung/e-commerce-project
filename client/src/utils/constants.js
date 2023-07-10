@@ -120,3 +120,30 @@ export const colors = [
   "gold",
   "mineral",
 ];
+export const sorts = [
+  {
+    id: 1,
+    type: "-sold",
+    display: "best selling",
+  },
+  {
+    id: 2,
+    type: "-title",
+    display: "Alphabetically, A-Z",
+  },
+  {
+    id: 3,
+    type: "title",
+    display: "Alphabetically, Z-A",
+  },
+  {
+    id: 4,
+    type: "-price",
+    display: "Price, high to low",
+  },
+  {
+    id: 5,
+    type: "price",
+    display: "Price, low to high",
+  },
+];

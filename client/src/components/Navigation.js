@@ -8,7 +8,7 @@ const { AiOutlineCloseCircle } = icons;
 const Navigation = ({ isNav, handleNav }) => {
   return (
     <>
-      <div className="hidden w-full lg:w-main h-[48px] py-2 text-sm border-y mb-6 lg:flex items-center">
+      <div className="hidden w-full mx-auto lg:w-main h-[48px] py-2 text-sm border-y mb-6 lg:flex items-center">
         {navigation.map((navElement) => {
           return (
             <NavLink

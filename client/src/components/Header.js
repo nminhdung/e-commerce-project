@@ -15,8 +15,8 @@ const Header = ({ handleNav }) => {
   return (
     <>
       <header
-        className=" lg:w-main w-full 
-  flex items-center justify-between lg:h-[110px] h-[80px] py-[35px] "
+        className=" xl:w-main w-full  mx-auto
+  flex items-center justify-between  lg:h-[110px] h-[80px] py-[35px] "
       >
         <div
           className="lg:hidden cursor-pointer"

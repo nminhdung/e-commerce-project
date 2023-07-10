@@ -22,16 +22,16 @@ const Home = () => {
   );
   return (
     <>
-      <div className=" w-full lg:w-main grid grid-cols-10 gap-4">
-        <div className="hidden lg:block lg:col-span-3">
+      <div className=" w-full xl:w-main grid grid-cols-10 gap-4">
+        <div className="hidden md:block md:col-span-3">
           <Sidebar />
         </div>
-        <div className="col-span-10 lg:col-span-7 ">
+        <div className="col-span-10 md:col-span-7 ">
           <Banner />
         </div>
       </div>
 
-      <div className="w-full lg:w-main grid grid-cols-10 gap-4 mt-6">
+      <div className="w-full xl:w-main grid grid-cols-10 gap-4 mt-6">
         <div className="col-span-10 lg:col-span-3">
           <DealDaily />
         </div>
@@ -40,13 +40,13 @@ const Home = () => {
           <BestSeller />
         </div>
       </div>
-      <div className="my-8 w-full lg:w-main">
+      <div className="my-8 w-full xl:w-main">
         <FeatureProducts />
       </div>
-      <div className="my-8 w-full lg:w-main">
+      <div className="my-8 w-full xl:w-main">
         <NewArrivals products={newProducts} />
       </div>
-      <div className="my-8 w-full lg:w-main">
+      <div className="my-8 w-full xl:w-main">
         <h3 className="font-semibold capitalize text-[20px] border-b-2 border-main cursor-pointer text-black">
           hot collections
         </h3>
@@ -83,7 +83,7 @@ const Home = () => {
           })}
         </div>
       </div>
-      <div className="my-8 w-full lg:w-main">
+      <div className="my-8 w-full xl:w-main">
         <h3 className="font-semibold capitalize text-[20px] border-b-2 border-main cursor-pointer text-black">
           blog posts
         </h3>

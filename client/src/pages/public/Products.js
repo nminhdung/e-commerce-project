@@ -1,34 +1,29 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import {
+  createSearchParams,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { BreadCumbs, Product } from "../../components";
 import { FilterProduct, SortProduct } from "../../components";
 import * as api from "../../api";
+import { sorts } from "../../utils/constants";
 const Products = () => {
   const { category } = useParams();
   const [products, setProducts] = useState(null);
   const [activeClick, setActiveClick] = useState("");
   const [params] = useSearchParams();
+  const [sort, setSort] = useState("");
+  const navigate = useNavigate();
 
   const fetchProductsByCategory = async (queries) => {
-    const response = await api.apiGetProducts( queries );
-    console.log(queries)
+    const response = await api.apiGetProducts(queries);
+
     if (response.success) {
       setProducts(response.listProduct);
     }
   };
-  useEffect(() => {
-    let paramsList = [];
-    for (let i of params.entries()) {
-      paramsList.push(i);
-    }
-    const queries = {};
-    for (let i of paramsList) {
-      queries[i[0]] = i[1];
-    }
-    // console.log(queries)
-    // console.log(paramsList);
-    fetchProductsByCategory(queries);
-  }, [params]);
   const changeFilter = useCallback(
     (name) => {
       if (activeClick === name) {
@@ -39,10 +34,59 @@ const Products = () => {
     },
     [activeClick]
   );
+  const changeValue = useCallback(
+    (value) => {
+      setSort(value);
+    },
+    [sort]
+  );
+
+  useEffect(() => {
+    let paramsList = [];
+    for (let i of params.entries()) {
+      paramsList.push(i);
+    }
+    const queries = {};
+    for (let i of paramsList) {
+      queries[i[0]] = i[1];
+    }
+    let priceQuery = {};
+    if (queries.from && queries.to) {
+      priceQuery = {
+        $and: [
+          { price: { gte: queries.from } },
+          { price: { lte: queries.to } },
+        ],
+      };
+      delete queries.price;
+    }
+    if (queries.from) {
+      queries.price = { gte: queries.from };
+    }
+    if (queries.to) {
+      queries.price = { lte: queries.to };
+    }
+    delete queries.from;
+    delete queries.to;
+    console.log(queries);
+    // console.log(paramsList);
+    const q = { ...queries, ...priceQuery };
+    console.log(q);
+    fetchProductsByCategory(q);
+  }, [params]);
+  useEffect(() => {
+    navigate({
+      pathname: `/${category}`,
+      search: createSearchParams({
+        sort: sort,
+      }).toString(),
+    });
+  }, [sort]);
+  console.log(sort);
   return (
     <div className="w-full">
       <div className="bg-gray-100 h-[81px] flex justify-center items-center">
-        <div className="w-main">
+        <div className="xl:w-main w-full">
           <h3 className="font-bold uppercase">{category}</h3>
           <BreadCumbs category={category} />
         </div>
@@ -64,7 +108,10 @@ const Products = () => {
             />
           </div>
         </div>
-        <div className="lg:flex-2">Sort by</div>
+        <div className="lg:flex-2 flex flex-col gap-2">
+          <span className="font-semibold text-sm">Sort by:</span>
+          <SortProduct options={sorts} value={sort} changeValue={changeValue} />
+        </div>
       </div>
       <div className="w-main mx-auto mt-8">
         <div className="grid lg:grid-cols-4 gap-y-4 mx-[-10px]">
