@@ -32,10 +32,12 @@ const ProductDetail = () => {
   const [relatedProducts, setRelatedProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [previewImg, setPreviewImg] = useState("");
+  const [update, setUpdate] = useState(false);
   const fetchProduct = async () => {
     const response = await api.apiGetProduct(pid);
     if (response.success) {
       setProduct(response.productData);
+      setPreviewImg(response.productData?.thumb);
     }
   };
   const fetchOtherProducts = async () => {
@@ -48,9 +50,17 @@ const ProductDetail = () => {
     if (pid) {
       fetchProduct();
       fetchOtherProducts();
-      setPreviewImg(product?.images[0]);
     }
+    window.scrollTo(0, 0);
   }, [pid]);
+  useEffect(() => {
+    if (pid) {
+      fetchProduct();
+    }
+  }, [update]);
+  const rerender = useCallback(() => {
+    setUpdate(!update);
+  }, [update]);
   const handleQuantity = useCallback(
     (number) => {
       if (!Number(number) || Number(number) < 1) {
@@ -73,17 +83,17 @@ const ProductDetail = () => {
     [quantity]
   );
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       <div className="bg-gray-100 h-[81px] flex justify-center items-center">
         <div className="w-main">
           <h3 className="font-bold">{title}</h3>
           <BreadCumbs title={title} category={category} />
         </div>
       </div>
-      <div className="w-main mx-auto mt-4 flex">
-        <div className="flex-4 flex flex-col gap-4 w-full">
+      <div className="xl:w-main mx-auto mt-4 flex">
+        <div className="flex-4 flex flex-col gap-4 w-full ">
           <img
-            src={product?.images[0]}
+            src={previewImg}
             alt=""
             className="h-[458px] w-[458px] object-cover border"
           />
@@ -93,6 +103,7 @@ const ProductDetail = () => {
                 return (
                   <div key={index}>
                     <img
+                      onClick={() => setPreviewImg(img)}
                       src={img}
                       alt="img"
                       className="h-[143px] w-[143px] border object-cover cursor-pointer "
@@ -137,11 +148,18 @@ const ProductDetail = () => {
           })}
         </div>
       </div>
-      <div className="w-main mx-auto mt-4">
-        <ProductInformation productDescription={product?.description}/>
+      <div className="xl:w-main mx-auto mt-4">
+        <ProductInformation
+          productDescription={product?.description}
+          totalRatings={product?.totalRatings}
+          ratings={product?.ratings}
+          nameProduct={product?.title}
+          pid={product?._id}
+          rerender={rerender}
+        />
       </div>
-      <div className="w-main mx-auto mt-4">
-        <h3 className="font-semibold capitalize text-[20px] border-b-2 border-main cursor-pointer text-black">
+      <div className="xl:w-main mx-auto mt-4">
+        <h3 className="font-semibold capitalize text-[20px] border-b-2 border-main cursor-pointer text-black mb-2">
           Other Customers also buy:
         </h3>
         <CustomSlider products={relatedProducts} normal={true} />

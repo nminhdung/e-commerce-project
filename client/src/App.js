@@ -13,19 +13,22 @@ import {
   ResetPassword,
 } from "./pages/public";
 import { getCategories } from "./store/app/asyncThunks";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
 import path from "./utils/paths";
+import { Modal } from "./components";
 
 function App() {
   const dispatch = useDispatch();
+  const {isShowModal,modalChildren} = useSelector((state) => state.app);
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
   return (
     <>
-      <div className=" font-main overflow-hidden ">
+      <div className=" font-main overflow-hidden relative ">
+        {isShowModal &&<Modal modalChildren={modalChildren} />}
         <Routes>
           <Route path={path.PUBLIC} element={<Public />}>
             <Route path={path.HOME} element={<Home />} />

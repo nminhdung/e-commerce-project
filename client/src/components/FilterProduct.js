@@ -52,7 +52,7 @@ const FilterProduct = ({
   }, [type]);
   const debouncePriceFrom = useDebounce(price.from,1000)
   const debouncePriceTo = useDebounce(price.to,1000)
-
+ 
   useEffect(() => {
     const data = {};
     if (Number(price.from) > 0) {

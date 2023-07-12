@@ -5,7 +5,7 @@ const { verifyAccessToken, isAdmin } = require("../middlewares/verifyToken");
 
 router.post("/",[verifyAccessToken,isAdmin], ProductControllers.createProduct);
 router.get("/", ProductControllers.getAllProducts);
-router.put("/ratings",[verifyAccessToken], ProductControllers.ratings);
+router.put("/rating",[verifyAccessToken], ProductControllers.rating);
 
 router.put("/uploadimage/:pid",[verifyAccessToken,isAdmin],uploadFile.array('images',10),ProductControllers.uploadImagesProduct);
 router.put("/:pid",[verifyAccessToken,isAdmin] ,ProductControllers.updateProduct);

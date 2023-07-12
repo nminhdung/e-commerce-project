@@ -1,10 +1,10 @@
 import React, { memo, useEffect, useState } from "react";
 import moment from "moment";
-import icons from "../utils/icons";
-import * as api from "../api";
-import { formatMoney, renderStarFromNumber } from "../utils/helpers";
-import { CountDown } from "./";
-import { secondsToHms } from "../utils/helpers";
+import icons from "../../utils/icons";
+import * as api from "../../api";
+import { formatMoney, renderStarFromNumber } from "../../utils/helpers";
+import CountDown  from "./CountDown";
+import { secondsToHms } from "../../utils/helpers";
 
 const { AiFillStar, AiOutlineMenu } = icons;
 let idInterval;
@@ -84,18 +84,17 @@ const DealDaily = () => {
           {productDealDaily?.title}
         </span>
 
-       
         <div className="flex gap-1 h-4">
-            {renderStarFromNumber(productDealDaily?.totalRatings).map(
-              (star, index) => {
-                return (
-                  <span className=" h-[16px]" key={index}>
-                    {star}
-                  </span>
-                );
-              }
-            )}
-          </div>
+          {renderStarFromNumber(productDealDaily?.totalRatings).map(
+            (star, index) => {
+              return (
+                <span className=" h-[16px]" key={index}>
+                  {star}
+                </span>
+              );
+            }
+          )}
+        </div>
       </div>
       <div className="mt-8 px-4">
         <div className="flex items-center justify-center gap-2 mb-4 ">

@@ -115,7 +115,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
     deletedData: deletedProduct ? deletedProduct : "Can not delete product",
   });
 });
-const ratings = asyncHandler(async (req, res) => {
+const rating = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { star, comment, pid } = req.body;
   if (!star || !pid) throw new Error("Missing input");
@@ -185,6 +185,6 @@ module.exports = {
   getAllProducts,
   updateProduct,
   deleteProduct,
-  ratings,
+  rating,
   uploadImagesProduct,
 };

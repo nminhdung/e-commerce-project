@@ -68,21 +68,20 @@ const Products = () => {
     }
     delete queries.from;
     delete queries.to;
-    console.log(queries);
+    // console.log(queries);
     // console.log(paramsList);
     const q = { ...queries, ...priceQuery };
-    console.log(q);
+    // console.log(q);
     fetchProductsByCategory(q);
   }, [params]);
   useEffect(() => {
     navigate({
       pathname: `/${category}`,
-      search: createSearchParams({
-        sort: sort,
-      }).toString(),
+      search: createSearchParams(sort ? {
+       sort:sort
+      }:{}).toString(),
     });
   }, [sort]);
-  console.log(sort);
   return (
     <div className="w-full">
       <div className="bg-gray-100 h-[81px] flex justify-center items-center">
