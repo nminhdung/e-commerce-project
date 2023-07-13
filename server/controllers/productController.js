@@ -19,7 +19,13 @@ const createProduct = asyncHandler(async (req, res) => {
 
 const getProduct = asyncHandler(async (req, res) => {
   const { pid } = req.params;
-  const product = await Product.findById(pid);
+  const product = await Product.findById(pid).populate({
+    path: "ratings",
+    populate: {
+      path: "postedBy",
+      select: "firstname lastname",
+    },
+  });
 
   return res.status(200).json({
     success: product ? true : false,
@@ -117,14 +123,14 @@ const deleteProduct = asyncHandler(async (req, res) => {
 });
 const rating = asyncHandler(async (req, res) => {
   const { _id } = req.user;
-  const { star, comment, pid } = req.body;
+  const { star, comment, pid, updatedAt } = req.body;
   if (!star || !pid) throw new Error("Missing input");
   //user da~ danh gia roi
   const ratingProduct = await Product.findById(pid);
   const alreadyRating = ratingProduct?.ratings?.find(
     (element) => element.postedBy.toString() === _id
   );
-  console.log(alreadyRating);
+
   if (alreadyRating) {
     //update star && comment
     //Bang Product => Update 1 document co Array ratings va ratings co chua mot element giong voi alreadyRating
@@ -134,7 +140,11 @@ const rating = asyncHandler(async (req, res) => {
       },
       {
         // $ la ket qua  elemMatch:alreadyRating
-        $set: { "ratings.$.star": star, "ratings.$.comment": comment },
+        $set: {
+          "ratings.$.star": star,
+          "ratings.$.comment": comment,
+          "ratings.$.updatedAt": updatedAt,
+        },
       },
       { new: true }
     );
@@ -144,7 +154,7 @@ const rating = asyncHandler(async (req, res) => {
       pid,
       //dung toan tu push cua mongoose de push vao mang Ratings
       {
-        $push: { ratings: { star, comment, postedBy: _id } },
+        $push: { ratings: { star, comment, postedBy: _id,updatedAt } },
       },
       { new: true }
     );

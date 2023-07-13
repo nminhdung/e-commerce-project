@@ -85,19 +85,19 @@ const ProductDetail = () => {
   return (
     <div className="w-full relative">
       <div className="bg-gray-100 h-[81px] flex justify-center items-center">
-        <div className="w-main">
+        <div className="md:w-main">
           <h3 className="font-bold">{title}</h3>
           <BreadCumbs title={title} category={category} />
         </div>
       </div>
-      <div className="xl:w-main mx-auto mt-4 flex">
-        <div className="flex-4 flex flex-col gap-4 w-full ">
+      <div className="xl:w-main mx-auto mt-4 flex flex-col lg:flex-row md:gap-1 gap-2">
+        <div className=" lg:flex-4 flex flex-col gap-4 w-full ">
           <img
             src={previewImg}
-            alt=""
-            className="h-[458px] w-[458px] object-cover border"
+            alt="previewImg"
+            className="lg:h-[458px] lg:w-[458px] object-cover border"
           />
-          <div className="w-[458px] flex items-center justify-between ">
+          <div className=" w-full gap-2 lg:w-[458px] flex items-center justify-between ">
             {product?.images
               .map((img, index) => {
                 return (
@@ -106,7 +106,7 @@ const ProductDetail = () => {
                       onClick={() => setPreviewImg(img)}
                       src={img}
                       alt="img"
-                      className="h-[143px] w-[143px] border object-cover cursor-pointer "
+                      className="h-[143px] w-[143px] border object-contain cursor-pointer "
                     />
                   </div>
                 );
@@ -114,7 +114,7 @@ const ProductDetail = () => {
               .slice(0, 3)}
           </div>
         </div>
-        <div className="flex-4 flex flex-col gap-4">
+        <div className="lg:flex-4 flex flex-col md:gap-1 xl:gap-4">
           <h3 className="font-semibold text-[30px] ">
             {`${formatMoney(formatPrice(product?.price))}`} VND
           </h3>
@@ -124,7 +124,7 @@ const ProductDetail = () => {
             })}
             <span className="ml-1">1 reviews</span>
           </div>
-          <ul className=" text-sm text-gray-500 list-square pl-4">
+          <ul className="text-sm text-gray-500 list-square pl-4">
             {product?.description.map((des, index) => {
               return (
                 <li key={index} className="leading-6">
@@ -142,7 +142,7 @@ const ProductDetail = () => {
             <Button fullWidth>Add to cart</Button>
           </div>
         </div>
-        <div className="flex-2 flex flex-col gap-2">
+        <div className="lg:flex-2 flex flex-col gap-2">
           {extraInfo.map((item) => {
             return <ExtraInfor item={item} key={item.id} />;
           })}
@@ -152,7 +152,7 @@ const ProductDetail = () => {
         <ProductInformation
           productDescription={product?.description}
           totalRatings={product?.totalRatings}
-          ratings={product?.ratings}
+          ratingsList={product?.ratings}
           nameProduct={product?.title}
           pid={product?._id}
           rerender={rerender}

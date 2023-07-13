@@ -19,10 +19,11 @@ export const renderStarFromNumber = (number, size = 16) => {
 
   //4 = > [1,1,1,1,0]
   const starsArr = [];
-  for (let i = 0; i < +number; i++) {
+  // lam` tron` duoi'
+  for (let i = 0; i < +Math.floor(+number); i++) {
     starsArr.push(<AiFillStar color="orange" size={size} />);
   }
-  for (let i = 5; i > +number; i--) {
+  for (let i = 5; i > +Math.floor(+number); i--) {
     starsArr.push(<AiOutlineStar size={size} />);
   }
   return starsArr;

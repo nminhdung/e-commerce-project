@@ -26,10 +26,9 @@ const VoteOption = ({ nameProduct, handleSubmitVote }) => {
       ref={modalRef}
       className="bg-white max-w-[700px]  p-4 flex flex-col items-center gap-4 justify-center"
     >
-            <img src={logo} alt="logo" className="object-cover" />
+      <img src={logo} alt="logo" className="object-cover" />
       {isLoggedIn ? (
         <>
-  
           <h2 className="text-center font-medium text-lg">{`Voting product ${nameProduct}`}</h2>
           <textarea
             className="outline-blue-500 border-2 w-full placeholder:text-xs placeholder:italic p-2"
@@ -45,8 +44,8 @@ const VoteOption = ({ nameProduct, handleSubmitVote }) => {
                 return (
                   <div
                     key={item.id}
-                    className="flex p-4 bg-gray-200 hover:bg-gray-300 
-                h-[100px] w-[100px] flex-col items-center gap-4 justify-center cursor-pointer"
+                    className="flex md:p-4 md:bg-gray-200 md:hover:bg-gray-300 w-[50px] h-[50px]
+                     md:h-[100px] md:w-[100px] flex-col items-center gap-4 justify-center cursor-pointer "
                     onClick={() => setChosenStar(item.id)}
                   >
                     {item.id <= chosenStar ? (
@@ -54,7 +53,7 @@ const VoteOption = ({ nameProduct, handleSubmitVote }) => {
                     ) : (
                       <AiFillStar color="gray" />
                     )}
-                    <span>{item.text}</span>
+                    <span className="text-[10px] md:text-xs">{item.text}</span>
                   </div>
                 );
               })}

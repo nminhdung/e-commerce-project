@@ -160,7 +160,7 @@ const expiredToken = asyncHandler(async (req, res) => {
   }
 });
 const getUser = asyncHandler(async (req, res) => {
-  console.log(req.user);
+  
   const { _id } = req.user;
   // khong hien thi 3 truong trong select
   const user = await User.findById(_id).select("-refreshToken -password -role");

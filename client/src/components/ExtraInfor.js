@@ -2,7 +2,7 @@ import React from "react";
 
 const ExtraInfor = ({ item }) => {
   return (
-    <div className="flex items-center gap-4 border p-2 " >
+    <div className="flex  items-center gap-4 border p-2 " >
       <span className="inline-block rounded-full p-2 text-white bg-[#505050]">
         {item.icon}
       </span>

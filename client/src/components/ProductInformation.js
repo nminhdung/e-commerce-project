@@ -1,6 +1,6 @@
 import React, { memo, useState } from "react";
 import { productInfo } from "../utils/constants";
-import { VoteBar, VoteOption } from "./Vote";
+import { Comment, VoteBar, VoteOption } from "./Vote";
 import { renderStarFromNumber } from "../utils/helpers";
 import { Button } from "./";
 import { closeModal, showModal } from "../store/app/appSlice";
@@ -12,10 +12,10 @@ import { useDispatch, useSelector } from "react-redux";
 const ProductInformation = ({
   productDescription,
   totalRatings,
-  ratings,
+  ratingsList,
   nameProduct,
   pid,
-  rerender
+  rerender,
 }) => {
   const dispatch = useDispatch();
 
@@ -27,7 +27,12 @@ const ProductInformation = ({
       toast.info("Please vote when click submit", { theme: "colored" });
       return;
     } else {
-      const response = await apiRating({ comment, star, pid });
+      const response = await apiRating({
+        comment,
+        star,
+        pid,
+        updatedAt: Date.now(),
+      });
       if (response.status) {
         toast.success("Successfully Voted", { theme: "colored" });
         dispatch(closeModal({ modalChildren: null }));
@@ -37,11 +42,11 @@ const ProductInformation = ({
   };
   return (
     <div className="">
-      <div className="flex items-center gap-2 relative bottom-[-1px]">
+      <div className="flex flex-col md:flex-row items-center gap-2 relative bottom-[-1px] ">
         {productInfo.map((item) => {
           return (
             <p
-              className={`py-2 px-5 uppercase  cursor-pointer hover:bg-white transition duration-400 ${
+              className={`py-2 px-5 uppercase w-full md:w-fit cursor-pointer hover:bg-white transition duration-400 ${
                 activedTab === item.id
                   ? "bg-white border border-b-0"
                   : "bg-[#f1f1f1]"
@@ -53,81 +58,84 @@ const ProductInformation = ({
             </p>
           );
         })}
-        <div
-          className={`py-2 px-5 uppercase  cursor-pointer hover:bg-white transition duration-400 ${
-            activedTab === 5 ? "bg-white border border-b-0" : "bg-[#f1f1f1]"
-          }`}
-          onClick={() => setActivetab(5)}
-        >
-          customer review
-        </div>
       </div>
       <div className="w-full min-h-[300px] border p-4 transition duration-400">
         {productInfo.find((item) => item.id === activedTab)?.content}
-        {!productInfo.find((item) => item.id === activedTab)?.content &&
-          activedTab !== 5 && (
-            <ul className="list-square pl-4 ">
-              {productDescription?.map((desc, index) => {
-                return <li key={index}>{desc}</li>;
-              })}
-            </ul>
-          )}
-
-        {activedTab === 5 && (
-          <>
-            {" "}
-            <div className="flex p-4">
-              <div className="flex-4 border border-red-500 flex flex-col items-center justify-center gap-2">
-                <p className="text-3xl md:text-2xl   font-semibold">
-                  <span className="text-main">{`${totalRatings}`} </span>/5
-                </p>
-                <div className="flex gap-1 items-center">
-                  {renderStarFromNumber(totalRatings).map((item, index) => {
-                    return <span key={index}>{item}</span>;
-                  })}
-                </div>
-                <span>{ratings.length} reviewers</span>
-              </div>
-              <div className="flex-6 border flex flex-col p-4 gap-2">
-                {Array.from(Array(5).keys())
-                  .reverse()
-                  .map((item, index) => {
-                    return (
-                      <VoteBar
-                        key={index}
-                        number={item + 1}
-                        ratingTotal={ratings.length}
-                        ratingCount={
-                          ratings?.filter(
-                            (element) => element.star === item + 1
-                          ).length
-                        }
-                      />
-                    );
-                  })}
-              </div>
-            </div>
-            <div className="flex flex-col items-center gap-2 p-4">
-              <span>Do you want to review this product ?</span>
-              <Button
-                handleClick={() =>
-                  dispatch(
-                    showModal({
-                      modalChildren: (
-                        <VoteOption
-                          nameProduct={nameProduct}
-                          handleSubmitVote={handleSubmitVote}
-                        />
-                      ),
-                    })
-                  )
-                }
-              >
-                Vote now!
-              </Button>
-            </div>
-          </>
+        {!productInfo.find((item) => item.id === activedTab)?.content && (
+          <ul className="list-square pl-4 ">
+            {productDescription?.map((desc, index) => {
+              return <li key={index} className="text-xs md:text-sm">{desc}</li>;
+            })}
+          </ul>
         )}
+      </div>
+      <div className="flex flex-col xl:w-main mt-4">
+        <p className="text-white uppercase bg-main p-2 text-center">
+          Customer Review
+        </p>
+        <div className="flex md:flex-row  flex-col ">
+          <div className="flex-4 border border-red-500 flex flex-col items-center justify-center gap-2">
+            <p className="text-3xl md:text-2xl   font-semibold">
+              <span className="text-main">{`${totalRatings}`} </span>/5
+            </p>
+            <div className="flex gap-1 items-center">
+              {renderStarFromNumber(totalRatings).map((item, index) => {
+                return <span key={index}>{item}</span>;
+              })}
+            </div>
+            <span>{ratingsList?.length} reviewers</span>
+          </div>
+          <div className="flex-6 border flex flex-col p-4 gap-2">
+            {Array.from(Array(5).keys())
+              .reverse()
+              .map((item, index) => {
+                return (
+                  <VoteBar
+                    key={index}
+                    number={item + 1}
+                    ratingTotal={ratingsList?.length}
+                    ratingCount={
+                      ratingsList?.filter((element) => element.star === item + 1)
+                        ?.length
+                    }
+                  />
+                );
+              })}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center gap-2 p-4">
+        <span>Do you want to review this product ?</span>
+        <Button
+          handleClick={() =>
+            dispatch(
+              showModal({
+                modalChildren: (
+                  <VoteOption
+                    nameProduct={nameProduct}
+                    handleSubmitVote={handleSubmitVote}
+                  />
+                ),
+              })
+            )
+          }
+        >
+          Vote now!
+        </Button>
+      </div>
+      <div className="flex flex-col gap-4">
+        {ratingsList?.map((item) => {
+          return (
+            <Comment
+              key={item._id}
+              star={item.star}
+              comment={item.comment}
+              updatedAt={item.updatedAt}
+              name={`${item.postedBy?.firstname} ${item.postedBy?.lastname}`}
+            />
+          );
+        })}
       </div>
     </div>
   );
