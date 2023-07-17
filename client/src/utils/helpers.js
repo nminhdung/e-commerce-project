@@ -91,3 +91,9 @@ export const validateInput = (payload, setInvalidFields) => {
 };
 
 export const formatPrice = (number) => Math.round(number / 1000) * 1000;
+
+export const generateArr = (start, end) => {
+  return Array.from({ length: end - start + 1 }, (_, index) => {
+    return start + index;
+  });
+};

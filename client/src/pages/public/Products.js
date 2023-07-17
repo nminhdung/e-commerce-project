@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { BreadCumbs, Product } from "../../components";
 import { FilterProduct, SortProduct } from "../../components";
+import { Paginate } from "../../components/Pagination";
 import * as api from "../../api";
 import { sorts } from "../../utils/constants";
 const Products = () => {
@@ -77,9 +78,13 @@ const Products = () => {
   useEffect(() => {
     navigate({
       pathname: `/${category}`,
-      search: createSearchParams(sort ? {
-       sort:sort
-      }:{}).toString(),
+      search: createSearchParams(
+        sort
+          ? {
+              sort: sort,
+            }
+          : {}
+      ).toString(),
     });
   }, [sort]);
   return (
@@ -118,6 +123,9 @@ const Products = () => {
             return <Product key={item._id} productData={item} normal={true} />;
           })}
         </div>
+      </div>
+      <div className="w-main mx-auto mt-8 flex justify-center">
+        <Paginate />
       </div>
       <div className="w-full h-[500px]"></div>
     </div>
