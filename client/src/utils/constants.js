@@ -123,12 +123,12 @@ export const sorts = [
   },
   {
     id: 2,
-    type: "-title",
+    type: "title",
     display: "Alphabetically, A-Z",
   },
   {
     id: 3,
-    type: "title",
+    type: "-title",
     display: "Alphabetically, Z-A",
   },
   {

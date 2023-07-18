@@ -10,7 +10,7 @@ import {
   apiForgotPassword,
   apiConfirmRegister,
 } from "../../api/user";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link,useHistory } from "react-router-dom";
 import { login } from "../../store/user/userSlice";
 import { useDispatch } from "react-redux";
 import { validateInput } from "../../utils/helpers";
@@ -20,7 +20,7 @@ const { AiOutlineCloseCircle, AiFillHome } = icons;
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+ 
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [tokenConfirm, setTokenConfirm] = useState("");
   const [isVerifyEmail, setVerifyEmail] = useState(false);
@@ -84,7 +84,8 @@ const Login = () => {
               current: rs.userData,
             })
           );
-          navigate(`/${path.HOME}`);
+          //go to back previous page
+          navigate(-1);
         } else {
           toast.error(rs.mes);
         }

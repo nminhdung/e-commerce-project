@@ -12,7 +12,7 @@ import * as api from "../../api";
 import { sorts } from "../../utils/constants";
 const Products = () => {
   const { category } = useParams();
-  const [products, setProducts] = useState(null);
+  const [data, setData] = useState(null);
   const [activeClick, setActiveClick] = useState("");
   const [params] = useSearchParams();
   const [sort, setSort] = useState("");
@@ -22,7 +22,7 @@ const Products = () => {
     const response = await api.apiGetProducts(queries);
 
     if (response.success) {
-      setProducts(response.listProduct);
+      setData(response);
     }
   };
   const changeFilter = useCallback(
@@ -60,31 +60,40 @@ const Products = () => {
         ],
       };
       delete queries.price;
+    } else {
+      if (queries.from) {
+        queries.price = { gte: queries.from };
+      }
+      if (queries.to) {
+        queries.price = { lte: queries.to };
+      }
     }
-    if (queries.from) {
-      queries.price = { gte: queries.from };
-    }
-    if (queries.to) {
-      queries.price = { lte: queries.to };
-    }
+
     delete queries.from;
     delete queries.to;
-    // console.log(queries);
-    // console.log(paramsList);
+    console.log(queries);
+    console.log(paramsList);
     const q = { ...queries, ...priceQuery };
     // console.log(q);
     fetchProductsByCategory(q);
-  }, [params]);
+  }, [params, sort]);
   useEffect(() => {
+    const paramsList = [];
+    //giu lai cac truong filter truoc do
+    for (let i of params.entries()) {
+      paramsList.push(i);
+    }
+    const queries = {};
+    for (let i of paramsList) {
+      queries[i[0]] = i[1];
+    }
+    //###############################
+    if (sort) {
+      queries.sort = sort;
+    } else delete queries.sort;
     navigate({
       pathname: `/${category}`,
-      search: createSearchParams(
-        sort
-          ? {
-              sort: sort,
-            }
-          : {}
-      ).toString(),
+      search: createSearchParams(queries).toString(),
     });
   }, [sort]);
   return (
@@ -119,13 +128,13 @@ const Products = () => {
       </div>
       <div className="w-main mx-auto mt-8">
         <div className="grid lg:grid-cols-4 gap-y-4 mx-[-10px]">
-          {products?.map((item) => {
+          {data?.listProduct?.map((item) => {
             return <Product key={item._id} productData={item} normal={true} />;
           })}
         </div>
       </div>
-      <div className="w-main mx-auto mt-8 flex justify-center">
-        <Paginate />
+      <div className="w-main mx-auto mt-8 flex ">
+        <Paginate totalProduct={data?.counts} />
       </div>
       <div className="w-full h-[500px]"></div>
     </div>

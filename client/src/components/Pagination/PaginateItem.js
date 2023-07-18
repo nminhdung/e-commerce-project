@@ -1,13 +1,53 @@
-import React from "react";
+import React, { useEffect } from "react";
+import {
+  createSearchParams,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 
 const PaginateItem = ({ children }) => {
+  const [params] = useSearchParams();
+
+  const { category } = useParams();
+  const navigate = useNavigate();
+  const handlePage = () => {
+    let paramsList = [];
+    //giu lai cac truong filter truoc do
+    for (let i of params.entries()) {
+      paramsList.push(i);
+    }
+    const queries = {};
+    for (let i of paramsList) {
+      queries[i[0]] = i[1];
+      // [["color","black"],["page","1"]]
+      // => queries = {color:"black",page:"1"}
+    }
+   
+    // ################################
+    if (Number(children)) queries.page = children;
+    console.log(queries);
+    navigate({
+      pathname: `/${category}`,
+      search: createSearchParams(queries).toString(),
+    });
+  };
+
   return (
-    <div
-      className="px-4 py-2 cursor-pointer rounded-md hover:bg-main hover:text-white 
-      transition duration-300"
+    <button
+      onClick={handlePage}
+      className={`px-4 py-2 } rounded-md ${
+        +params.get("page") === +children ? "bg-black text-white" : ""
+      } ${!+params.get("page") && children === 1 && "bg-black text-white"}
+      transition duration-300 ${
+        Number(children) ? "hover:bg-main hover:text-white " : ""
+      }`}
+      type="button"
+      disabled={Number(children) ? false : true}
+      // type={!Number(children) ? disabled : }
     >
       {children}
-    </div>
+    </button>
   );
 };
 

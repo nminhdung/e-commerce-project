@@ -1,7 +1,12 @@
 import React, { memo, useState } from "react";
 import icons from "../utils/icons";
 import { colors } from "../utils/constants";
-import { createSearchParams, useNavigate, useParams } from "react-router-dom";
+import {
+  createSearchParams,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { useEffect } from "react";
 import * as api from "../api";
 import useDebounce from "../hooks/useDebounce";
@@ -16,6 +21,7 @@ const FilterProduct = ({
 }) => {
   const [selected, setSelected] = useState([]);
   const { category } = useParams();
+  const [params] = useSearchParams();
   const [highestPrice, setHighestPrice] = useState();
   const [price, setPrice] = useState({ from: "", to: "" });
   const navigate = useNavigate();
@@ -33,42 +39,60 @@ const FilterProduct = ({
     if (res.success) setHighestPrice(res.listProduct[0]?.price);
   };
   useEffect(() => {
-    if (selected.length > 0) {
-      navigate({
-        pathname: `/${category}`,
-        search: createSearchParams({
-          color: selected.join(","),
-        }).toString(),
-      });
-    } else {
-      navigate(`/${category}`);
+    let paramsList = [];
+
+    //giu lai cac truong filter truoc do
+    for (let i of params.entries()) {
+      paramsList.push(i);
     }
+    const queries = {};
+    for (let i of paramsList) {
+      queries[i[0]] = i[1];
+    }
+    //###############################
+    
+    if (selected.length > 0) {
+      queries.color = selected.join(",");
+      queries.page = 1;
+    } else delete queries.color;
+    navigate({
+      pathname: `/${category}`,
+      search: createSearchParams(queries).toString(),
+    });
   }, [selected]);
+
+  const debouncePriceFrom = useDebounce(price.from, 2000);
+  const debouncePriceTo = useDebounce(price.to, 2000);
+
+  useEffect(() => {
+    const paramsList = [];
+    //giu lai cac truong filter truoc do
+    for (let i of params.entries()) {
+      paramsList.push(i);
+    }
+    const queries = {};
+    for (let i of paramsList) {
+      queries[i[0]] = i[1];
+    }
+    //###############################
+    if (Number(price.from) > 0) {
+      queries.from = price.from;
+    } else delete queries.from;
+    if (Number(price.to) > 0) {
+      queries.to = price.to;
+    } else delete queries.to;
+    queries.page = 1;
+    navigate({
+      pathname: `/${category}`,
+      search: createSearchParams(queries).toString(),
+    });
+  }, [debouncePriceFrom, debouncePriceTo]);
 
   useEffect(() => {
     if (type === "input") {
       fetchHighestProduct();
     }
   }, [type]);
-  const debouncePriceFrom = useDebounce(price.from,1000)
-  const debouncePriceTo = useDebounce(price.to,1000)
- 
-  useEffect(() => {
-    const data = {};
-    if (Number(price.from) > 0) {
-      data.from = price.from;
-    }
-    if (Number(price.to) > 0) {
-      data.to = price.to;
-    }
-
-   
-      navigate({
-        pathname: `/${category}`,
-        search: createSearchParams(data).toString(),
-      });
-    
-  }, [debouncePriceFrom,debouncePriceTo]);
   return (
     <div
       className="p-3 border text-gray-500 relative border-gray-800 flex items-center gap-2 cursor-pointer"
@@ -90,6 +114,7 @@ const FilterProduct = ({
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelected([]);
+                    changeFilter(null);
                   }}
                 >
                   Reset
@@ -126,8 +151,8 @@ const FilterProduct = ({
                   className="underline cursor-pointer font-semibold"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setPrice({from:"",to:""});
-                    changeFilter(null)
+                    setPrice({ from: "", to: "" });
+                    changeFilter(null);
                   }}
                 >
                   Reset
