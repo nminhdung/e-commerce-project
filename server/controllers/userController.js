@@ -134,7 +134,7 @@ const login = asyncHandler(async (req, res) => {
       userData: data,
     });
   } else {
-    throw new Error("Invalid credentials!");
+    throw new Error("Invalid user please check your email or password!");
   }
 });
 const expiredToken = asyncHandler(async (req, res) => {
@@ -160,10 +160,9 @@ const expiredToken = asyncHandler(async (req, res) => {
   }
 });
 const getUser = asyncHandler(async (req, res) => {
-  
   const { _id } = req.user;
   // khong hien thi 3 truong trong select
-  const user = await User.findById(_id).select("-refreshToken -password -role");
+  const user = await User.findById(_id).select("-refreshToken -password ");
   return res.status(200).json({
     success: user ? true : false,
     result: user ? user : "User not found",

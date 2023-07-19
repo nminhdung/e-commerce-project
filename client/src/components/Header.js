@@ -3,6 +3,8 @@ import logo from "../assets/logo.png";
 import icons from "../utils/icons";
 import { Link } from "react-router-dom";
 import paths from "../utils/paths";
+import path from "../utils/paths";
+import { useSelector } from "react-redux";
 const {
   RiPhoneFill,
   MdEmail,
@@ -12,6 +14,7 @@ const {
   AiOutlineShoppingCart,
 } = icons;
 const Header = ({ handleNav }) => {
+  const { current } = useSelector((state) => state.user);
   return (
     <>
       <header
@@ -49,14 +52,21 @@ const Header = ({ handleNav }) => {
             </span>
             <span>Online Support 24/7</span>
           </div>
-          <div className="flex items-center justify-center gap-2 border-r px-6 cursor-pointer">
-            <BsFillBagFill color="red" size={15} />
-            <span>O item(s)</span>
-          </div>
-          <div className="flex items-center justify-center gap-2 px-6 cursor-pointer">
-            <BiUser color="red" size={16} />
-            <span>Profile</span>
-          </div>
+          {current && (
+            <>
+              <div className="flex items-center justify-center gap-2 border-r px-6 cursor-pointer">
+                <BsFillBagFill color="red" size={15} />
+                <span>O item(s)</span>
+              </div>
+              <Link
+                to={+current?.role === 12 ? `/${path.ADMIN}` : `${path.MEMBER}`}
+                className="flex items-center justify-center gap-2 px-6 cursor-pointer"
+              >
+                <BiUser color="red" size={16} />
+                <span>Profile</span>
+              </Link>
+            </>
+          )}
         </div>
 
         <div className="lg:hidden">

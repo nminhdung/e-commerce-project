@@ -1,26 +1,28 @@
 import React, { useCallback, useEffect } from "react";
 import path from "../../utils/paths";
+import icons from "../../utils/icons";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { InputField, Button } from "../../components";
-import icons from "../../utils/icons";
 import {
   apiRegister,
   apiLogin,
   apiForgotPassword,
   apiConfirmRegister,
 } from "../../api/user";
-import { useNavigate, Link,useHistory } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { login } from "../../store/user/userSlice";
 import { useDispatch } from "react-redux";
 import { validateInput } from "../../utils/helpers";
+import {Loading} from "../../components";
+import { closeModal, showModal } from "../../store/app/appSlice";
 
 const { AiOutlineCloseCircle, AiFillHome } = icons;
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
- 
+
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [tokenConfirm, setTokenConfirm] = useState("");
   const [isVerifyEmail, setVerifyEmail] = useState(false);
@@ -65,7 +67,9 @@ const Login = () => {
 
     if (invalids === 0) {
       if (isRegister) {
+        dispatch(showModal({ modalChildren: <Loading /> }));
         const response = await apiRegister(payload);
+        dispatch(closeModal({ modalChildren: null }));
         if (response.success) {
           setVerifyEmail(true);
           toast.success(response.mes);
@@ -75,6 +79,7 @@ const Login = () => {
           toast.error(response.mes);
         }
       } else {
+        dispatch(showModal({ modalChildren: <Loading /> }));
         const rs = await apiLogin(data);
         if (rs.success) {
           dispatch(
@@ -84,6 +89,7 @@ const Login = () => {
               current: rs.userData,
             })
           );
+          dispatch(closeModal({ modalChildren: null }));
           //go to back previous page
           navigate(-1);
         } else {
@@ -215,6 +221,7 @@ const Login = () => {
             value={payload.password}
             setValue={setPayload}
             nameKey="password"
+            type="password"
             invalidFields={invalidFields}
             setInvalidFields={setInvalidFields}
           />

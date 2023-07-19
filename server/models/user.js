@@ -24,11 +24,12 @@ var userSchema = new mongoose.Schema(
     phone: {
       type: String,
       required: true,
-      // unique: true,
+      unique: true,
     },
     role: {
-      type: String,
-      default: "user",
+      type: Number,
+      enum:[12,13],
+      default: 13,
     },
     cart: [
       {

@@ -5,6 +5,7 @@ import * as api from "../../api";
 import { formatMoney, renderStarFromNumber } from "../../utils/helpers";
 import CountDown  from "./CountDown";
 import { secondsToHms } from "../../utils/helpers";
+import defaultImg from "../../assets/default.png"
 
 const { AiFillStar, AiOutlineMenu } = icons;
 let idInterval;
@@ -76,7 +77,7 @@ const DealDaily = () => {
       </div>
       <div className="w-full flex flex-col items-center pt-8 gap-2">
         <img
-          src={productDealDaily?.thumb}
+          src={productDealDaily?.thumb || defaultImg}
           alt="thumb"
           className="object-contain w-full"
         />

@@ -10,6 +10,7 @@ import { FilterProduct, SortProduct } from "../../components";
 import { Paginate } from "../../components/Pagination";
 import * as api from "../../api";
 import { sorts } from "../../utils/constants";
+
 const Products = () => {
   const { category } = useParams();
   const [data, setData] = useState(null);

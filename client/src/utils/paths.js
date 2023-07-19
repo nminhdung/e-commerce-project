@@ -11,6 +11,16 @@ const path = {
   
   CONFIRM_REGISTER: 'confirmregister/:status',
   RESET_PASSWORD: 'reset-password/:token',
+  
+  //Admin 
+  ADMIN:"admin",
+  DASHBOARD:"dash-board",
+  MANAGE_PRODUCTS:"manage-products",
+  MANAGE_USERS:"manage-users",
+  CREATE_PRODUCT:"create-product",
+  //Member
+  MEMBER:"member",
+  PERSONAL:"personal",
 };
 
 export default path;

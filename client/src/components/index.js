@@ -20,6 +20,7 @@ export { default as ExtraInfor } from "./ExtraInfor";
 export { default as ProductInformation } from "./ProductInformation";
 export { default as FilterProduct } from "./FilterProduct";
 export { default as SortProduct } from "./SortProduct";
+export { default as Loading } from "./Loading";
 // export { default as VoteBar } from "./VoteBar";
 // export { default as VoteOption } from "./Vote/VoteOption";
 export { default as Modal } from "./Modal";

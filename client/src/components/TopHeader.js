@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import path from "../utils/paths";
 import { getCurrentUser } from "../store/user/asyncThunk";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../store/user/userSlice";
+import { clearMess, logout } from "../store/user/userSlice";
 import icons from "../utils/icons";
+import { toast } from "react-toastify";
 
 const { AiOutlineLogout } = icons;
 const TopHeader = () => {
   const dispatch = useDispatch();
-  const { isLoggedIn, current } = useSelector((state) => state.user);
+  const { isLoggedIn, current, mes } = useSelector((state) => state.user);
 
   useEffect(() => {
     const setTimeoutId = setTimeout(() => {
@@ -19,6 +20,24 @@ const TopHeader = () => {
     }, 500);
     return () => clearTimeout(setTimeoutId);
   }, [dispatch, isLoggedIn]);
+  useEffect(() => {
+    if (mes) {
+      dispatch(clearMess());
+      toast.warning(() => {
+        return (
+          <div className="gap-1">
+            <span>{mes}</span>
+            <Link
+              to={`/${path.LOGIN}`}
+              className="underline rounded-md text-blue-500 ml-2"
+            >
+              Go to login
+            </Link>
+          </div>
+        );
+      });
+    }
+  }, [mes]);
   return (
     <div className="hidden h-[38px] w-full bg-main lg:flex justify-center items-center">
       <div className="w-main flex items-center justify-between text-xs text-white">
@@ -29,7 +48,7 @@ const TopHeader = () => {
           <span>VND</span>
         </div>
         <div className="flex items-center ">
-          {isLoggedIn ? (
+          {isLoggedIn && current ? (
             <div className="flex items-center gap-2 text-sm">
               <span>{`Welcome, ${current?.firstname} ${current?.lastname}`}</span>
               <span
