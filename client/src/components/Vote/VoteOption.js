@@ -6,7 +6,7 @@ import { voteOptions } from "../../utils/constants";
 import { closeModal } from "../../store/app/appSlice";
 import logo from "../../assets/logo.png";
 import path from "../../utils/paths";
-import Button from "../Button";
+import Button from "../Buttons/Button";
 
 const VoteOption = ({ nameProduct, handleSubmitVote }) => {
   const [chosenStar, setChosenStar] = useState(0);

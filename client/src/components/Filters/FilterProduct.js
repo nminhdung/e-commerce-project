@@ -1,6 +1,6 @@
 import React, { memo, useState } from "react";
-import icons from "../utils/icons";
-import { colors } from "../utils/constants";
+import icons from "../../utils/icons";
+import { colors } from "../../utils/constants";
 import {
   createSearchParams,
   useNavigate,
@@ -8,8 +8,8 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { useEffect } from "react";
-import * as api from "../api";
-import useDebounce from "../hooks/useDebounce";
+import * as api from "../../api";
+import useDebounce from "../../hooks/useDebounce";
 
 const { AiOutlineDown } = icons;
 

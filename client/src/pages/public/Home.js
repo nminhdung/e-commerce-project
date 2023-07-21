@@ -7,9 +7,9 @@ import {
   Sidebar,
   FeatureProducts,
   NewArrivals,
+  BestSeller
 } from "../../components";
 
-import BestSeller from "../../components/BestSeller";
 import icons from "../../utils/icons";
 
 const { FaAngleRight } = icons;

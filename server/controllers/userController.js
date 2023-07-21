@@ -11,6 +11,7 @@ const {
   findOne,
   findOneAndUpdate,
 } = require("../models/user");
+const { users } = require("../ultils/constants");
 const sendMail = require("../ultils/sendMail");
 const crypto = require("crypto");
 const makeToken = require("uniqid");
@@ -253,11 +254,58 @@ const resetPassword = asyncHandler(async (req, res) => {
   }
 });
 const getUsers = asyncHandler(async (req, res) => {
-  //ham find() khong truyen dieu kien se lay tat ca
-  const response = await User.find().select("-refreshToken -password -role");
-  return res.status(200).json({
-    success: response ? true : false,
-    users: response,
+  const queries = { ...req.query };
+  console.log(queries);
+  //Tach cac truong dac biet ra khoi query
+  const excludeFields = ["limit", "sort", "page", "fields"];
+  excludeFields.forEach((element) => delete queries[element]);
+
+  //Format lai cac operators cho dung cu phap mongoose
+  let queryString = JSON.stringify(queries).replace(
+    /\b(gte|gt|lt|lte)\b/g,
+    (matchedElement) => `$${matchedElement}`
+  );
+
+  const formatedQueries = JSON.parse(queryString);
+
+
+  if (queries?.name)
+    formatedQueries.name = { $regex: queries.title, $options: "i" };
+  if (req.query.searchKey) {
+    delete formatedQueries.searchKey
+    formatedQueries["$or"] = [
+      { firstname: { $regex: req.query.searchKey, $options: "i" } },
+      { lastname: { $regex: req.query.searchKey, $options: "i" } },
+      { email: { $regex: req.query.searchKey, $options: "i" } },
+    ];
+  }
+ 
+
+  let queryCommand = User.find(formatedQueries);
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(",").join(" ");
+    queryCommand = queryCommand.sort(sortBy);
+  }
+  //fields limit
+  if (req.query.fields) {
+    const fields = req.query.fields.split(",").join(" ");
+    queryCommand = queryCommand.select(fields);
+  }
+  //pagination
+  const page = +req.query.page || 1;
+  const limit = +req.query.limit || process.env.LIMIT_PRODUCT;
+  const skip = (page - 1) * limit;
+  queryCommand.skip(skip).limit(limit);
+  //so luong san pham thoa dieu kien
+  queryCommand.then(async (response, err) => {
+    if (err) throw new Error(err.message);
+    const counts = await User.find(formatedQueries).countDocuments();
+
+    return res.status(200).json({
+      success: response ? true : false,
+      listUser: response ? response : "Cant not get all products",
+      counts,
+    });
   });
 });
 const deleteUser = asyncHandler(async (req, res) => {
@@ -363,6 +411,14 @@ const addToCart = asyncHandler(async (req, res) => {
     });
   }
 });
+
+const createUsers = asyncHandler(async (req, res) => {
+  const rs = await User.create(users);
+  return res.status(200).json({
+    success: rs ? true : false,
+    listUser: rs ? rs : "Something went wrong",
+  });
+});
 module.exports = {
   register,
   confirmRegister,
@@ -378,4 +434,5 @@ module.exports = {
   updateUserByAdmin,
   updateAddressUser,
   addToCart,
+  createUsers,
 };

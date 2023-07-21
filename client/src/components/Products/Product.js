@@ -1,23 +1,21 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 // eslint-disable-next-line jsx-a11y/img-redundant-alt
 import React, { useState } from "react";
-import defaultImage from "../assets/default.png";
+import defaultImage from "../../assets/default.png";
 import { Link } from "react-router-dom";
-import { formatMoney } from "../utils/helpers";
-import label from "../assets/label.png";
-import { renderStarFromNumber } from "../utils/helpers";
-import SelectOptions from "./SelectOptions";
-import icons from "../utils/icons";
-import path from "../utils/paths";
+import { formatMoney } from "../../utils/helpers";
+import label from "../../assets/label.png";
+import { renderStarFromNumber } from "../../utils/helpers";
+import { SelectOptions } from "../../components";
+import icons from "../../utils/icons";
+import path from "../../utils/paths";
 
 const { AiFillEye, AiOutlineMenu, BsFillSuitHeartFill } = icons;
 
-const Product = ({ productData, isNew , normal }) => {
+const Product = ({ productData, isNew, normal }) => {
   const [isShowOptions, setShowOptions] = useState(false);
   return (
-    <div
-      className="w-full text-base px-[10px]"
-    >
+    <div className="w-full text-base px-[10px]">
       <Link
         to={`/${productData?.category?.toLowerCase()}/${productData?._id}/${
           productData?.title

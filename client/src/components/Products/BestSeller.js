@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import * as api from "../api"
-import { Product, CustomSlider } from "./";
-import Slider from "react-slick";
+import * as api from "../../api"
+import { Product, CustomSlider } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
-import { getNewProducts } from "../store/products/asyncThunks";
+import { getNewProducts } from "../../store/products/asyncThunks";
 
 const tabs = [
   {

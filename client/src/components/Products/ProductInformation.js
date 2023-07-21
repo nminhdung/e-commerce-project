@@ -1,13 +1,13 @@
 import React, { memo, useState } from "react";
-import { productInfo } from "../utils/constants";
-import { Comment, VoteBar, VoteOption } from "./Vote";
-import { renderStarFromNumber } from "../utils/helpers";
-import { Button } from "./";
-import { closeModal, showModal } from "../store/app/appSlice";
+import { productInfo } from "../../utils/constants";
+import { Comment, VoteBar, VoteOption } from "..";
+import { renderStarFromNumber } from "../../utils/helpers";
+import { Button } from "..";
+import { closeModal, showModal } from "../../store/app/appSlice";
 import { toast } from "react-toastify";
-import { apiRating } from "../api";
-import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { apiRating } from "../../api";
+
+import { useDispatch } from "react-redux";
 
 const ProductInformation = ({
   productDescription,

@@ -1,10 +1,10 @@
 import React, { memo, useEffect } from "react";
 import { Link } from "react-router-dom";
-import path from "../utils/paths";
-import { getCurrentUser } from "../store/user/asyncThunk";
+import path from "../../utils/paths";
+import { getCurrentUser } from "../../store/user/asyncThunk";
 import { useDispatch, useSelector } from "react-redux";
-import { clearMess, logout } from "../store/user/userSlice";
-import icons from "../utils/icons";
+import { clearMess, logout } from "../../store/user/userSlice";
+import icons from "../../utils/icons";
 import { toast } from "react-toastify";
 
 const { AiOutlineLogout } = icons;
@@ -16,6 +16,7 @@ const TopHeader = () => {
     const setTimeoutId = setTimeout(() => {
       if (isLoggedIn) {
         dispatch(getCurrentUser());
+      
       }
     }, 500);
     return () => clearTimeout(setTimeoutId);

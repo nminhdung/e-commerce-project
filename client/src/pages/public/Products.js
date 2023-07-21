@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import { BreadCumbs, Product } from "../../components";
 import { FilterProduct, SortProduct } from "../../components";
-import { Paginate } from "../../components/Pagination";
+import { Paginate } from "../../components";
 import * as api from "../../api";
 import { sorts } from "../../utils/constants";
 
@@ -76,7 +76,7 @@ const Products = () => {
     console.log(paramsList);
     const q = { ...queries, ...priceQuery };
     // console.log(q);
-    fetchProductsByCategory(q);
+    fetchProductsByCategory({...q,limit:+process.env.REACT_APP_ITEM_PERPAGE});
   }, [params, sort]);
   useEffect(() => {
     const paramsList = [];

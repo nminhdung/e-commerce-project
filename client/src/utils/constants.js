@@ -30,8 +30,16 @@ export const navigation = [
   },
 ];
 
-const { BsShieldShaded, FaTruck, GiReturnArrow, RiGiftFill, FaBlenderPhone } =
-  icons;
+const {
+  BsShieldShaded,
+  FaTruck,
+  GiReturnArrow,
+  RiGiftFill,
+  FaBlenderPhone,
+  MdDashboard,
+  MdGroups,
+  FaProductHunt,
+} = icons;
 export const extraInfo = [
   {
     id: 1,
@@ -162,5 +170,59 @@ export const voteOptions = [
   {
     id: 5,
     text: "Perfect",
+  },
+];
+export const adminSidebarList = [
+  {
+    id: 1,
+    type: "single",
+    text: "Dashboard",
+    path: `/${path.ADMIN}/${path.DASHBOARD}`,
+    icon: <MdDashboard />,
+  },
+  {
+    id: 2,
+    type: "parent",
+    text: "Manage User",
+    path: `/${path.ADMIN}/${path.MANAGE_USERS}`,
+    icon: <MdGroups />,
+    submenu: [
+      {
+        text: "Create Product",
+        path: `/${path.ADMIN}/${path.CREATE_PRODUCT}`,
+      },
+      {
+        text: "Manage Users",
+        path: `/${path.ADMIN}/${path.MANAGE_USERS}`,
+      },
+    ],
+  },
+  {
+    id: 3,
+    type: "parent",
+    text: "Manage Products",
+    path: `/${path.ADMIN}/${path.MANAGE_PRODUCTS}`,
+    icon: <FaProductHunt />,
+
+    submenu: [
+      {
+        text: "Create Product",
+        path: `/${path.ADMIN}/${path.CREATE_PRODUCT}`,
+      },
+      {
+        text: "Manage Products",
+        path: `/${path.ADMIN}/${path.MANAGE_PRODUCTS}`,
+      },
+    ],
+  },
+];
+export const roles = [
+  {
+    code: 12,
+    value: "admin",
+  },
+  {
+    code: 13,
+    value: "user",
   },
 ];

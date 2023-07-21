@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { useDispatch } from "react-redux";
-import { closeModal } from "../store/app/appSlice";
+import { closeModal } from "../../store/app/appSlice";
 
 const Modal = ({ modalChildren }) => {
   const dispatch = useDispatch();

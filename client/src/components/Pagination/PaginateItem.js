@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import {
   createSearchParams,
+  useLocation,
   useNavigate,
   useParams,
   useSearchParams,
@@ -8,7 +9,7 @@ import {
 
 const PaginateItem = ({ children }) => {
   const [params] = useSearchParams();
-
+  const location = useLocation();
   const { category } = useParams();
   const navigate = useNavigate();
   const handlePage = () => {
@@ -23,12 +24,12 @@ const PaginateItem = ({ children }) => {
       // [["color","black"],["page","1"]]
       // => queries = {color:"black",page:"1"}
     }
-   
+
     // ################################
     if (Number(children)) queries.page = children;
     console.log(queries);
     navigate({
-      pathname: `/${category}`,
+      pathname: location.pathname,
       search: createSearchParams(queries).toString(),
     });
   };

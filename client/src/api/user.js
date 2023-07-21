@@ -4,7 +4,6 @@ export const apiRegister = (data) => {
     url: "/user/register",
     method: "post",
     data,
-   
   });
 };
 export const apiConfirmRegister = (token) => {
@@ -36,4 +35,8 @@ export const apiResetPassword = (data) => {
     method: "put",
     data,
   });
+};
+
+export const apiGetUsers = (params) => {
+  return axios({ url: "/user/", method: "get", params });
 };

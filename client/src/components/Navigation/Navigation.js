@@ -1,11 +1,11 @@
 import React from "react";
-import { navigation } from "../utils/constants";
+import { navigation } from "../../utils/constants";
 import { NavLink } from "react-router-dom";
-import icons from "../utils/icons";
-import path from "../utils/paths";
+import icons from "../../utils/icons";
+import path from "../../utils/paths";
 import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineLogout } from "react-icons/ai";
-import { logout } from "../store/user/userSlice";
+import { logout } from "../../store/user/userSlice";
 const { AiOutlineCloseCircle } = icons;
 
 const Navigation = ({ isNav, handleNav }) => {

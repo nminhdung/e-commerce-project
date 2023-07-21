@@ -1,9 +1,8 @@
 import React from "react";
-import logo from "../assets/logo.png";
-import icons from "../utils/icons";
+import logo from "../../assets/logo.png";
+import icons from "../../utils/icons";
 import { Link } from "react-router-dom";
-import paths from "../utils/paths";
-import path from "../utils/paths";
+import path from "../../utils/paths";
 import { useSelector } from "react-redux";
 const {
   RiPhoneFill,
@@ -27,7 +26,7 @@ const Header = ({ handleNav }) => {
         >
           <AiOutlineMenu size={20} color="black" />
         </div>
-        <Link to={`/${paths.HOME}`}>
+        <Link to={`/${path.HOME}`}>
           <img
             src={logo}
             alt="logo"

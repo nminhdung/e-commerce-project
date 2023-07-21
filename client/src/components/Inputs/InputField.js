@@ -5,8 +5,8 @@ const InputField = ({
   setValue,
   nameKey,
   type = "text",
-  invalidFields,
-  setInvalidFields,
+  invalidFields = [],
+  setInvalidFields = () => {},
 }) => {
   return (
     <div className="w-full relative flex flex-col mb-2 ">
@@ -28,7 +28,7 @@ const InputField = ({
         onChange={(e) =>
           setValue((prev) => ({ ...prev, [nameKey]: e.target.value }))
         }
-        onFocus={()=>setInvalidFields([])}
+        onFocus={() => setInvalidFields([])}
       />
       {invalidFields?.some((item) => item.name === nameKey) && (
         <small className="text-main text-[10px] italic">
@@ -38,8 +38,5 @@ const InputField = ({
     </div>
   );
 };
-
-
-
 
 export default InputField;
