@@ -309,14 +309,14 @@ const getUsers = asyncHandler(async (req, res) => {
   });
 });
 const deleteUser = asyncHandler(async (req, res) => {
-  const { _id } = req.query;
-  if (!_id) throw new Error("Missing input");
-  const response = await User.findByIdAndDelete(_id);
+  const { uid } = req.params;
+  if (!uid) throw new Error("Missing input");
+  const response = await User.findByIdAndDelete(uid);
   return res.status(200).json({
     success: response ? true : false,
-    deletedUser: response
+    mes: response
       ? `User with email ${response.email} deleted`
-      : "No user delete",
+      : "Can't not delete",
   });
 });
 const updateUser = asyncHandler(async (req, res) => {

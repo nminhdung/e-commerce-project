@@ -2,16 +2,35 @@ import moment from "moment";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { apiGetUsers } from "../../api";
-import { Paginate } from "../../components";
+import { apiDeleteUser, apiGetUsers, apiUpdateUser } from "../../api";
+import { InputForm, Paginate } from "../../components";
 import useDebounce from "../../hooks/useDebounce";
 import { roles } from "../../utils/constants";
 import { useSearchParams } from "react-router-dom";
-
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const ManageUsers = () => {
   const [params] = useSearchParams();
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    setValue,
+    reset,
+  } = useForm({
+    email: "",
+    firstname: "",
+    lastname: "",
+    phone: "",
+    role: "",
+    status: "",
+  });
+  const [editUser, setEditUser] = useState(null);
+  const [isEdit, setIsEdit] = useState(false);
   const [users, setUsers] = useState();
+
   const [searchTerm, setSearchTerm] = useState({
     searchValue: "",
   });
@@ -21,6 +40,34 @@ const ManageUsers = () => {
     if (res.success) {
       setUsers(res);
     }
+  };
+  const onSubmitEdit = async (data) => {
+    const res = await apiUpdateUser(data, editUser?._id);
+
+    if (res.success) {
+      setIsEdit(false);
+      setEditUser(null);
+      toast.success("Updated");
+    } else {
+      toast.error("Can't not update user");
+    }
+  };
+  const handleDeleteUser = (uid) => {
+    Swal.fire({
+      title: "Are you sure....",
+      text: "Do you want to remove this user?",
+      showCancelButton: true,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await apiDeleteUser(uid);
+        if (res.success) {
+          toast.success(res.mes);
+          fetchUsers({ limit: 2 });
+        } else {
+          toast.error(res.mes);
+        }
+      }
+    });
   };
   const queriesDebounce = useDebounce(searchTerm.searchValue, 2000);
   useEffect(() => {
@@ -33,11 +80,11 @@ const ManageUsers = () => {
     for (let i of paramsList) {
       queries[i[0]] = i[1];
     }
-    
+
     if (queriesDebounce) queries.searchKey = queriesDebounce;
 
     fetchUsers(queries);
-  }, [queriesDebounce,params]);
+  }, [queriesDebounce, params, isEdit]);
 
   return (
     <div className="w-full">
@@ -57,52 +104,137 @@ const ManageUsers = () => {
           />
           <button className="px-4 py-2 bg-green-600 rounded-md">Add new</button>
         </div>
-        <table className="table-auto mb-2 text-left w-full ">
-          <thead className="font-bold border text-sm bg-black">
-            <tr>
-              <th className="px-4 py-2 border-r">#</th>
-              <th className="px-4 py-2 border-r">Email</th>
-              <th className="px-4 py-2 border-r">Full Name</th>
-              <th className="px-4 py-2 border-r">Phone</th>
-              <th className="px-4 py-2 border-r">Role</th>
-              <th className="px-4 py-2 border-r">Status</th>
-              <th className="px-4 py-2 border-r">Created At</th>
-              <th className="px-4 py-2 border-r">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users?.listUser?.map((user, index) => {
-              return (
-                <tr key={user._id} className="border ">
-                  <td className="py-2 px-4 border-r">{index + 1}</td>
-                  <td className="py-2 px-4 border-r">{user.email}</td>
-                  <td className="py-2 px-4 border-r">{`${user.firstname} ${user.lastname}`}</td>
-                  <td className="py-2 px-4 border-r">{user.phone}</td>
-                  <td className="py-2 px-4 border-r">
-                    {roles.find((role) => role.code === user.role)?.value}
-                  </td>
-                  <td className="py-2 px-4 border-r">
-                    {user.isBlocked ? "Blocked" : "Active"}
-                  </td>
-                  <td className="py-2 px-4 border-r">
-                    {moment(user.createdAt).format("DD/MM/YYYY")}
-                  </td>
-                  <td className="py-2 px-4 border-r">
-                    <span className="px-1 hover:underline text-orange-400  cursor-pointer">
-                      Edit
-                    </span>
-                    <span className="px-1 hover:underline text-main  cursor-pointer">
-                      Delete
-                    </span>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <div className="w-full">
-          <Paginate totalProduct={users?.counts} />
-        </div>
+
+        {!isEdit ? (
+          <table className="table-auto mb-2 text-left w-full ">
+            <thead className="font-bold border text-sm bg-black">
+              <tr>
+                <th className="px-4 py-2 border-r">#</th>
+                <th className="px-4 py-2 border-r">Email</th>
+                <th className="px-4 py-2 border-r">First Name</th>
+                <th className="px-4 py-2 border-r">Last Name</th>
+                <th className="px-4 py-2 border-r">Phone</th>
+                <th className="px-4 py-2 border-r">Role</th>
+                <th className="px-4 py-2 border-r">Status</th>
+                <th className="px-4 py-2 border-r">Created At</th>
+                <th className="px-4 py-2 border-r">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users?.listUser?.map((user, index) => {
+                return (
+                  <tr key={user._id} className="border ">
+                    <td className="py-2 px-4 border-r">{index + 1}</td>
+                    <td className="py-2 px-4 border-r">{user.email}</td>
+                    <td className="py-2 px-4 border-r">{user.firstname} </td>
+                    <td className="py-2 px-4 border-r">{user.lastname} </td>
+
+                    <td className="py-2 px-4 border-r">{user.phone}</td>
+                    <td className="py-2 px-4 border-r">
+                      {roles.find((role) => role.code === user.role)?.value}
+                    </td>
+                    <td className="py-2 px-4 border-r">
+                      {user.isBlocked ? "Blocked" : "Active"}
+                    </td>
+                    <td className="py-2 px-4 border-r">
+                      {moment(user.createdAt).format("DD/MM/YYYY")}
+                    </td>
+                    <td className="py-2 px-4 border-r">
+                      <span
+                        onClick={() => {
+                          setValue("email", user.email);
+                          setValue("firstname", user.firstname);
+                          setValue("lastname", user.lastname);
+                          setValue("phone", user.phone);
+                          setEditUser(user);
+                          setIsEdit(true);
+                        }}
+                        className="px-1 hover:underline text-orange-400  cursor-pointer"
+                      >
+                        Edit
+                      </span>
+                      <span
+                        onClick={() => handleDeleteUser(user._id)}
+                        className="px-1 hover:underline text-main  cursor-pointer"
+                      >
+                        Delete
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        ) : (
+          <form onSubmit={handleSubmit(onSubmitEdit)}>
+            <InputForm
+              register={register}
+              errors={errors}
+              validate={{
+                required: "Require fill.",
+                pattern: {
+                  value: /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/i,
+                  message: "Invalid email address",
+                },
+              }}
+              name="email"
+              label="Email"
+              defaultValue={editUser?.email ? editUser.email : ""}
+            />
+            <InputForm
+              register={register}
+              errors={errors}
+              validate={{ required: "Require fill." }}
+              name="firstname"
+              label="First Name"
+              defaultValue={editUser?.firstname ? editUser.firstname : ""}
+            />
+            <InputForm
+              register={register}
+              errors={errors}
+              validate={{ required: "Require fill." }}
+              name="lastname"
+              label="Last Name"
+              defaultValue={editUser?.lastname ? editUser.lastname : ""}
+            />
+            <InputForm
+              register={register}
+              errors={errors}
+              validate={{
+                required: "Require fill.",
+                pattern: {
+                  value: /^[62|0]+\d{9}/gi,
+                  message: "Invalid phone number",
+                },
+              }}
+              name="phone"
+              label="phone"
+              defaultValue={editUser?.phone ? editUser.phone : ""}
+            />
+            <div className="flex items-center gap-2">
+              <button
+                className="px-4 py-2 bg-main rounded-md"
+                onClick={() => {
+                  setEditUser(null);
+                  setIsEdit(false);
+                }}
+              >
+                Back
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-green-500 rounded-md"
+              >
+                Update
+              </button>
+            </div>
+          </form>
+        )}
+        {!isEdit && (
+          <div className="w-full">
+            <Paginate totalProduct={users?.counts} />
+          </div>
+        )}
       </div>
     </div>
   );

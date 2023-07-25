@@ -27,6 +27,7 @@ export { default as Paginate } from "./Pagination/Paginate";
 export { default as PaginateItem } from "./Pagination/PaginateItem";
 export { default as Footer } from "./Footer/Footer";
 export { default as InputField } from "./Inputs/InputField";
+export { default as InputForm } from "./Inputs/InputForm";
 export { default as Button } from "./Buttons/Button";
 //ADmin
 export { default as AdminSidebar } from "./Admin/Sidebar/AdminSidebar";

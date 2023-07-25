@@ -10,7 +10,6 @@ import {
 const PaginateItem = ({ children }) => {
   const [params] = useSearchParams();
   const location = useLocation();
-  const { category } = useParams();
   const navigate = useNavigate();
   const handlePage = () => {
     let paramsList = [];
@@ -45,7 +44,7 @@ const PaginateItem = ({ children }) => {
       }`}
       type="button"
       disabled={Number(children) ? false : true}
-      // type={!Number(children) ? disabled : }
+     
     >
       {children}
     </button>

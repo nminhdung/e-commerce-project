@@ -16,7 +16,7 @@ const Paginate = ({ totalProduct }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [params] = useSearchParams();
-  const { category } = useParams();
+  
 
   const pagination = usePaginate(totalProduct, +params.get("page") || 1);
 

@@ -18,6 +18,7 @@ import {
   Dashboard,
   ManageProducts,
   ManageUsers,
+ 
 } from "./pages/admin";
 import { MemberLayout, Personal } from "./pages/member";
 import { getCategories } from "./store/app/asyncThunks";
@@ -53,7 +54,9 @@ function App() {
           <Route path={path.ADMIN} element={<AdminLayout />}>
             <Route path={path.DASHBOARD} element={<Dashboard />} />
             <Route path={path.MANAGE_PRODUCTS} element={<ManageProducts />} />
+
             <Route path={path.MANAGE_USERS} element={<ManageUsers />} />
+
             <Route path={path.CREATE_PRODUCT} element={<CreateProduct />} />
           </Route>
           <Route path={path.MEMBER} element={<MemberLayout />}>

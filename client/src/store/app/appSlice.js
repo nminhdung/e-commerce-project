@@ -27,7 +27,7 @@ export const appSlice = createSlice({
       state.isLoading = false;
       state.categories = action.payload;
     });
-    builder.addCase(actions.getCategories, (state) => {
+    builder.addCase(actions.getCategories.rejected, (state) => {
       state.isLoading = false;
     });
   },

@@ -40,3 +40,9 @@ export const apiResetPassword = (data) => {
 export const apiGetUsers = (params) => {
   return axios({ url: "/user/", method: "get", params });
 };
+export const apiUpdateUser = (data, uid) => {
+  return axios({ url: "/user/" + uid, method: "put", data });
+};
+export const apiDeleteUser = (uid) => {
+  return axios({ url: "/user/" + uid, method: "delete" });
+};
