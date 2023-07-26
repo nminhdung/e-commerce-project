@@ -182,20 +182,20 @@ export const adminSidebarList = [
   },
   {
     id: 2,
-    type: "parent",
+    type: "single",
     text: "Manage User",
     path: `/${path.ADMIN}/${path.MANAGE_USERS}`,
     icon: <MdGroups />,
-    submenu: [
-      {
-        text: "Create Product",
-        path: `/${path.ADMIN}/${path.CREATE_PRODUCT}`,
-      },
-      {
-        text: "Manage Users",
-        path: `/${path.ADMIN}/${path.MANAGE_USERS}`,
-      },
-    ],
+    // submenu: [
+    //   {
+    //     text: "Create Product",
+    //     path: `/${path.ADMIN}/${path.CREATE_PRODUCT}`,
+    //   },
+    //   {
+    //     text: "Manage Users",
+    //     path: `/${path.ADMIN}/${path.MANAGE_USERS}`,
+    //   },
+    // ],
   },
   {
     id: 3,
@@ -224,5 +224,15 @@ export const roles = [
   {
     code: 13,
     value: "user",
+  },
+];
+export const blockStatus = [
+  {
+    code: true,
+    value: "Blocked",
+  },
+  {
+    code: false,
+    value: "Active",
   },
 ];

@@ -7,9 +7,11 @@ const Button = ({
   iconBefore,
   iconAfter,
   fullWidth,
+  type = "button",
 }) => {
   return (
     <button
+      type
       className={
         style
           ? style
@@ -21,9 +23,9 @@ const Button = ({
         handleClick && handleClick();
       }}
     >
-      {iconBefore ? iconBefore :""}
+      {iconBefore ? iconBefore : ""}
       <span>{children}</span>
-      {iconAfter? iconAfter :""}
+      {iconAfter ? iconAfter : ""}
     </button>
   );
 };

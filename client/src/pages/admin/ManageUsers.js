@@ -3,12 +3,13 @@ import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { apiDeleteUser, apiGetUsers, apiUpdateUser } from "../../api";
-import { InputForm, Paginate } from "../../components";
+import { InputForm, Paginate, SelectForm } from "../../components";
 import useDebounce from "../../hooks/useDebounce";
-import { roles } from "../../utils/constants";
+import { roles, blockStatus } from "../../utils/constants";
 import { useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+
 import Swal from "sweetalert2";
 
 const ManageUsers = () => {
@@ -25,7 +26,7 @@ const ManageUsers = () => {
     lastname: "",
     phone: "",
     role: "",
-    status: "",
+    isBlocked: false,
   });
   const [editUser, setEditUser] = useState(null);
   const [isEdit, setIsEdit] = useState(false);
@@ -42,6 +43,7 @@ const ManageUsers = () => {
     }
   };
   const onSubmitEdit = async (data) => {
+
     const res = await apiUpdateUser(data, editUser?._id);
 
     if (res.success) {
@@ -92,7 +94,7 @@ const ManageUsers = () => {
         Manage Users
       </h1>
       <div className="mt-2 w-full p-4">
-        <div className="flex mb-4 justify-between">
+        <div className="mb-4 ">
           <input
             type="text"
             value={searchTerm.value}
@@ -102,7 +104,7 @@ const ManageUsers = () => {
             placeholder="Search name or email"
             onChange={(e) => setSearchTerm({ [e.target.name]: e.target.value })}
           />
-          <button className="px-4 py-2 bg-green-600 rounded-md">Add new</button>
+          
         </div>
 
         {!isEdit ? (
@@ -142,10 +144,15 @@ const ManageUsers = () => {
                     <td className="py-2 px-4 border-r">
                       <span
                         onClick={() => {
-                          setValue("email", user.email);
-                          setValue("firstname", user.firstname);
-                          setValue("lastname", user.lastname);
-                          setValue("phone", user.phone);
+                          if (user) {
+                            Object.entries(user).forEach(([name, value]) => {
+                              setValue(name, value);
+                            });
+                          }
+                          // setValue("email", user.email);
+                          // setValue("firstname", user.firstname);
+                          // setValue("lastname", user.lastname);
+                          // setValue("phone", user.phone);
                           setEditUser(user);
                           setIsEdit(true);
                         }}
@@ -179,7 +186,7 @@ const ManageUsers = () => {
               }}
               name="email"
               label="Email"
-              defaultValue={editUser?.email ? editUser.email : ""}
+              // defaultValue={editUser?.email ? editUser.email : ""}
             />
             <InputForm
               register={register}
@@ -187,7 +194,7 @@ const ManageUsers = () => {
               validate={{ required: "Require fill." }}
               name="firstname"
               label="First Name"
-              defaultValue={editUser?.firstname ? editUser.firstname : ""}
+              // defaultValue={editUser?.firstname ? editUser.firstname : ""}
             />
             <InputForm
               register={register}
@@ -195,7 +202,7 @@ const ManageUsers = () => {
               validate={{ required: "Require fill." }}
               name="lastname"
               label="Last Name"
-              defaultValue={editUser?.lastname ? editUser.lastname : ""}
+              // defaultValue={editUser?.lastname ? editUser.lastname : ""}
             />
             <InputForm
               register={register}
@@ -208,8 +215,26 @@ const ManageUsers = () => {
                 },
               }}
               name="phone"
-              label="phone"
-              defaultValue={editUser?.phone ? editUser.phone : ""}
+              label="Phone"
+              // defaultValue={editUser?.phone ? editUser.phone : ""}
+            />
+            <SelectForm
+              register={register}
+              errors={errors}
+              // defaultValue={editUser?.code}
+              label="Role"
+              name="role"
+              options={roles}
+              validate={{ required: "Require fill." }}
+            />
+            <SelectForm
+              register={register}
+              errors={errors}
+              // defaultValue={editUser?.isBlocked}
+              name="isBlocked"
+              label="Status"
+              options={blockStatus}
+              validate={{}}
             />
             <div className="flex items-center gap-2">
               <button

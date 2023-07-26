@@ -64,7 +64,11 @@ const ProductInformation = ({
         {!productInfo.find((item) => item.id === activedTab)?.content && (
           <ul className="list-square pl-4 ">
             {productDescription?.map((desc, index) => {
-              return <li key={index} className="text-xs md:text-sm">{desc}</li>;
+              return (
+                <li key={index} className="text-xs md:text-sm">
+                  {desc}
+                </li>
+              );
             })}
           </ul>
         )}
@@ -95,8 +99,9 @@ const ProductInformation = ({
                     number={item + 1}
                     ratingTotal={ratingsList?.length}
                     ratingCount={
-                      ratingsList?.filter((element) => element.star === item + 1)
-                        ?.length
+                      ratingsList?.filter(
+                        (element) => element.star === item + 1
+                      )?.length
                     }
                   />
                 );
