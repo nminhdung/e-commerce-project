@@ -125,13 +125,17 @@ const ProductDetail = () => {
             <span className="ml-1">1 reviews</span>
           </div>
           <ul className="text-sm text-gray-500 list-square pl-4">
-            {product?.description.map((des, index) => {
-              return (
-                <li key={index} className="leading-6">
-                  {des}
-                </li>
-              );
-            })}
+            {product?.description?.length > 1 &&
+              product?.description.map((des, index) => {
+                return (
+                  <li key={index} className="leading-6">
+                    {des}
+                  </li>
+                );
+              })}
+            {product?.description?.length === 1 && (
+              <div className="line-clamp-6" dangerouslySetInnerHTML={{ __html:product.description[0]}}></div>
+            )}
           </ul>
           <div className="flex flex-col gap-8">
             <SelectQuantity

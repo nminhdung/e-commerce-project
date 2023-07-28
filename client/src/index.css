@@ -8,9 +8,17 @@
   input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
-    
   }
-  body{overflow-x:hidden}
+  body {
+    overflow-x: hidden;
+  }
+}
+.ck-editor__main {
+  max-width: calc(100vw - 330px);
+  overflow: hidden;
+}
+.ck-editor__editable {
+  min-height: 500px;
 }
 .custom-slider button.slick-next {
   right: 80px;
@@ -44,12 +52,12 @@
 }
 .custom-images-slider button.slick-next {
   right: 20px;
-  top:55px;
+  top: 55px;
   z-index: 20;
 }
 .custom-images-slider button.slick-prev {
   left: 0px;
-  top:55px;
+  top: 55px;
   z-index: 20;
 }
 .custom-images-slider button.slick-next::before {

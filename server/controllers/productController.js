@@ -4,15 +4,21 @@ const slugify = require("slugify");
 
 //CRUD Product
 const createProduct = asyncHandler(async (req, res) => {
-  if (Object.keys(req.body).length === 0) {
+  const { title, price, description, brand, category, color } = req.body;
+  console.log(req.files);
+  if (!title || !price || !description || !brand || !category || !color)
     throw new Error("Missing inputs");
-  }
+  const thumb = req.files.thumb[0].path;
+  const images = req.files?.images?.map((item) => item.path);
+  if (thumb) req.body.thumb = thumb;
+  if (images) req.body.images = images;
   if (req.body.title) {
     req.body.slug = slugify(req.body.title);
   }
   const newProduct = await Product.create(req.body);
   return res.status(200).json({
     success: newProduct ? true : false,
+    mes: newProduct ? "Created new product" : "Can't create new product",
     createdProduct: newProduct ? newProduct : "Can not create new product",
   });
 });
@@ -154,7 +160,7 @@ const rating = asyncHandler(async (req, res) => {
       pid,
       //dung toan tu push cua mongoose de push vao mang Ratings
       {
-        $push: { ratings: { star, comment, postedBy: _id,updatedAt } },
+        $push: { ratings: { star, comment, postedBy: _id, updatedAt } },
       },
       { new: true }
     );

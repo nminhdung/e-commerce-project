@@ -17,6 +17,13 @@ export const apiRating = (data) => {
   return axios({
     url: "/product/rating",
     method: "put",
-    data
+    data,
+  });
+};
+export const apiCreateProduct = (data) => {
+  return axios({
+    url: "/product/create",
+    method: "post",
+    data,
   });
 };

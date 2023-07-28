@@ -11,7 +11,7 @@ const Button = ({
 }) => {
   return (
     <button
-      type
+      type={type.toString()}
       className={
         style
           ? style

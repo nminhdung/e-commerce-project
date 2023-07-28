@@ -5,7 +5,7 @@ import {
   BsFillBagFill,
   BsFillSuitHeartFill,
   BsArrowRightShort,
-  BsShieldShaded,
+  BsShieldShaded,BsFillTrash3Fill
 } from "react-icons/bs";
 import { BiUser } from "react-icons/bi";
 import {
@@ -57,5 +57,6 @@ const icons = {
   MdDashboard,
   MdGroups,
   FaProductHunt,
+  BsFillTrash3Fill
 };
 export default icons;

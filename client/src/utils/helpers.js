@@ -97,3 +97,11 @@ export const generateArr = (start, end) => {
     return start + index;
   });
 };
+export const fileToBase64 = (filename) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(filename);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+  });
+};

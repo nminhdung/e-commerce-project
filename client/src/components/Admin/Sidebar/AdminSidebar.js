@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logoAdmin from "../../../assets/logoadmin.png";
 import { adminSidebarList } from "../../../utils/constants";
 import { AiOutlineDown, AiOutlineRight } from "react-icons/ai";
@@ -20,10 +20,10 @@ const Sidebar = () => {
   };
   return (
     <div className=" w-full h-full bg-zinc-800">
-      <div className="flex flex-col p-4 items-center gap-2 ">
+      <Link to={"/"} className="flex flex-col p-4 items-center gap-2 ">
         <img src={logoAdmin} alt="logo" className="object-cover w-[200px]" />
         <span>Admin site</span>
-      </div>
+      </Link>
       <div>
         {adminSidebarList?.map((item) => {
           return (

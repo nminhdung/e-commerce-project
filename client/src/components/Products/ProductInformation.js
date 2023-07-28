@@ -63,13 +63,19 @@ const ProductInformation = ({
         {productInfo.find((item) => item.id === activedTab)?.content}
         {!productInfo.find((item) => item.id === activedTab)?.content && (
           <ul className="list-square pl-4 ">
-            {productDescription?.map((desc, index) => {
-              return (
-                <li key={index} className="text-xs md:text-sm">
-                  {desc}
-                </li>
-              );
-            })}
+            {productDescription?.length > 1 &&
+              productDescription?.map((desc, index) => {
+                return (
+                  <li key={index} className="text-xs md:text-sm">
+                    {desc}
+                  </li>
+                );
+              })}
+            {productDescription?.length === 1 && (
+              <div className="line-clamp-5"
+                dangerouslySetInnerHTML={{ __html: productDescription[0] }}
+              ></div>
+            )}
           </ul>
         )}
       </div>
