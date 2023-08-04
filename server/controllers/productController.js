@@ -56,8 +56,9 @@ const getAllProducts = asyncHandler(async (req, res) => {
   //filter ( chi can go mot tu giong thi se tu dong match ) ex: doi vs nhung san pham ten dai`
   if (queries?.title)
     formatedQueries.title = { $regex: queries.title, $options: "i" };
-  if (queries?.category)
+  if (queries?.category) {
     formatedQueries.category = { $regex: queries.category, $options: "i" };
+  }
   if (queries?.color) {
     delete formatedQueries.color;
     const colorArray = queries.color?.split(",");
@@ -66,7 +67,18 @@ const getAllProducts = asyncHandler(async (req, res) => {
     });
     colorQueryObject = { $or: colorQuery };
   }
-  const q = { ...colorQueryObject, ...formatedQueries };
+  let querySearchObject = {};
+  if (queries?.search) {
+    delete formatedQueries.search;
+    querySearchObject = {
+      $or: [
+        { title: { $regex: queries.search, $options: "i" } },
+        { category: { $regex: queries.search, $options: "i" } },
+        { brand: { $regex: queries.search, $options: "i" } },
+      ],
+    };
+  }
+  const q = { ...colorQueryObject, ...formatedQueries, ...querySearchObject };
   let queryCommand = Product.find(q);
   if (req.query.sort) {
     const sortBy = req.query.sort.split(",").join(" ");
@@ -107,7 +119,14 @@ const getAllProducts = asyncHandler(async (req, res) => {
 });
 const updateProduct = asyncHandler(async (req, res) => {
   const { pid } = req.params;
-  if (req.body && req.title) {
+  const files = req?.files;
+  if (files?.thumb) {
+    req.body.thumb = files?.thumb[0]?.path;
+  }
+  if (files?.images) {
+    req.body.images = files.images?.map((item) => item.path);
+  }
+  if (req.body && req.body.title) {
     req.body.slug = slugify(req.body.title);
   }
   const updatedProduct = await Product.findByIdAndUpdate(pid, req.body, {
@@ -115,7 +134,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   });
   return res.status(200).json({
     success: updatedProduct ? true : false,
-    updatedData: updatedProduct ? updatedProduct : "Can not update product",
+    mes: updatedProduct ? "Updated" : "Can not update product",
   });
 });
 const deleteProduct = asyncHandler(async (req, res) => {
@@ -124,7 +143,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
   const deletedProduct = await Product.findByIdAndDelete(pid);
   return res.status(200).json({
     success: deletedProduct ? true : false,
-    deletedData: deletedProduct ? deletedProduct : "Can not delete product",
+    mes: deletedProduct ? "Deleted" : "Can not delete product",
   });
 });
 const rating = asyncHandler(async (req, res) => {

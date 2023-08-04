@@ -1,21 +1,23 @@
 /* eslint-disable react/style-prop-object */
 import React, { useEffect, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Button, InputForm, SelectForm } from "../../components";
-import { useSelector } from "react-redux";
+import { Button, InputForm, SelectForm, Loading } from "../../components";
+import { useSelector, useDispatch } from "react-redux";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 // import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import ClassicEditor from "../../ckeditor/build/ckeditor";
 import { fileToBase64 } from "../../utils/helpers";
 import { toast } from "react-toastify";
 import { apiCreateProduct } from "../../api";
-import { BsFillTrash3Fill } from "react-icons/bs";
+import { closeModal, showModal } from "../../store/app/appSlice";
+import { useNavigate,useLocation } from "react-router-dom";
 
 const CreateProduct = () => {
   const { categories } = useSelector((state) => state.app);
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const editorRef = useRef();
-
   const [hoverImg, setHoverImg] = useState("");
   const [previewImg, setPreviewImg] = useState({
     thumb: null,
@@ -41,23 +43,24 @@ const CreateProduct = () => {
     if (data.thumb) formData.append("thumb", data.thumb[0]);
     if (data.images) {
       for (let image of data.images) {
-        console.log(image);
         formData.append("images", image);
       }
     }
-
+    dispatch(showModal({ modalChildren: <Loading /> }));
     const res = await apiCreateProduct(formData);
+   
     if (res.success) {
       reset();
       toast.success(res.mes);
       setPreviewImg({ thumb: null, images: [] });
       editorRef.current?.setData(""); // Reset the CKEditor content
+      dispatch(closeModal({ modalChildren: null }));
     } else {
       toast.error(res.mes);
     }
-    console.log(res);
-    console.log(formData);
-    console.log(data);
+    // console.log(res);
+    // console.log(formData);
+    // console.log(data);
   };
   const handlePreviewThumb = async (file) => {
     const base64Thumb = await fileToBase64(file);

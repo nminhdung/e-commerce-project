@@ -23,7 +23,8 @@ const Paginate = ({ totalProduct }) => {
   const rangeProduct = () => {
     const currentPage = +params.get("page");
     const itemPerPage = +process.env.REACT_APP_ITEM_PERPAGE || 10;
-    const start = (currentPage - 1) * itemPerPage + 1;
+    const start =  Math.min((currentPage - 1) * itemPerPage + 1,totalProduct)
+    
     const end =
       currentPage * itemPerPage > totalProduct
         ? totalProduct

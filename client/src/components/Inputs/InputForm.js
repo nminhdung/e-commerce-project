@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 const InputForm = ({
-  label = "test",
+  label,
   disabled,
   register,
   errors,

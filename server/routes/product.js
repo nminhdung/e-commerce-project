@@ -28,6 +28,10 @@ router.put(
 router.put(
   "/:pid",
   [verifyAccessToken, isAdmin],
+  uploadFile.fields([
+    { name: "images", maxCount: 10 },
+    { name: "thumb", maxCount: 1 },
+  ]),
   ProductControllers.updateProduct
 );
 router.delete(

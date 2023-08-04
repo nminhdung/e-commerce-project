@@ -4,13 +4,15 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { apiDeleteUser, apiGetUsers, apiUpdateUser } from "../../api";
 import { InputForm, Paginate, SelectForm } from "../../components";
-import useDebounce from "../../hooks/useDebounce";
 import { roles, blockStatus } from "../../utils/constants";
 import { useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-
+import { FaAngleUp, FaAngleDown } from "react-icons/fa";
+import { BiEdit, BiTrash } from "react-icons/bi";
+import useDebounce from "../../hooks/useDebounce";
 import Swal from "sweetalert2";
+import _ from "lodash";
 
 const ManageUsers = () => {
   const [params] = useSearchParams();
@@ -42,8 +44,13 @@ const ManageUsers = () => {
       setUsers(res);
     }
   };
-  const onSubmitEdit = async (data) => {
+  const handleSort = (sortBy, sortField) => {
+    let newList = [...users.listUser];
+    newList = _.orderBy(newList, [sortField], [sortBy]);
 
+    setUsers((prev) => ({ ...prev, listUser: newList }));
+  };
+  const onSubmitEdit = async (data) => {
     const res = await apiUpdateUser(data, editUser?._id);
 
     if (res.success) {
@@ -58,6 +65,7 @@ const ManageUsers = () => {
     Swal.fire({
       title: "Are you sure....",
       text: "Do you want to remove this user?",
+      icon: "warning",
       showCancelButton: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
@@ -104,17 +112,51 @@ const ManageUsers = () => {
             placeholder="Search name or email"
             onChange={(e) => setSearchTerm({ [e.target.name]: e.target.value })}
           />
-          
         </div>
 
         {!isEdit ? (
           <table className="table-auto mb-2 text-left w-full ">
-            <thead className="font-bold border text-sm bg-black">
+            <thead className="table-auto font-bold border text-sm bg-black">
               <tr>
                 <th className="px-4 py-2 border-r">#</th>
-                <th className="px-4 py-2 border-r">Email</th>
-                <th className="px-4 py-2 border-r">First Name</th>
+                <th className="px-4 py-2 border-r flex gap-1 items-center justify-between">
+                  Email
+                  <div className="flex items-center gap-1">
+                    <span
+                      onClick={() => handleSort("desc", "email")}
+                      className="cursor-pointer"
+                    >
+                      <FaAngleUp />
+                    </span>
+                    <span
+                      onClick={() => handleSort("asc", "email")}
+                      className="cursor-pointer"
+                    >
+                      <FaAngleDown />
+                    </span>
+                  </div>
+                </th>
+                <th className="px-4 py-2 border-r ">
+                  <div className="flex gap-1 items-center justify-between">
+                    First Name
+                    <div className="flex items-center gap-1">
+                      <span
+                        onClick={() => handleSort("desc", "firstname")}
+                        className="cursor-pointer"
+                      >
+                        <FaAngleUp />
+                      </span>
+                      <span
+                        onClick={() => handleSort("asc", "firstname")}
+                        className="cursor-pointer"
+                      >
+                        <FaAngleDown />
+                      </span>
+                    </div>
+                  </div>
+                </th>
                 <th className="px-4 py-2 border-r">Last Name</th>
+
                 <th className="px-4 py-2 border-r">Phone</th>
                 <th className="px-4 py-2 border-r">Role</th>
                 <th className="px-4 py-2 border-r">Status</th>

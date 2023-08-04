@@ -18,6 +18,7 @@ const Products = () => {
   const [params] = useSearchParams();
   const [sort, setSort] = useState("");
   const navigate = useNavigate();
+  console.log(category);
 
   const fetchProductsByCategory = async (queries) => {
     const response = await api.apiGetProducts(queries);
@@ -74,10 +75,19 @@ const Products = () => {
     delete queries.to;
     console.log(queries);
     console.log(paramsList);
+
     const q = { ...queries, ...priceQuery };
+    if (category.toLowerCase() === "all") {
+      delete q.category;
+    } else {
+      q.category = category;
+    }
     // console.log(q);
-    fetchProductsByCategory({...q,limit:+process.env.REACT_APP_ITEM_PERPAGE});
-  }, [params, sort]);
+    fetchProductsByCategory({
+      ...q,
+      limit: +process.env.REACT_APP_ITEM_PERPAGE,
+    });
+  }, [params, sort, category]);
   useEffect(() => {
     const paramsList = [];
     //giu lai cac truong filter truoc do
