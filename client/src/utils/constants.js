@@ -236,3 +236,30 @@ export const blockStatus = [
     value: "Active",
   },
 ];
+export const MemberSidebarList = [
+  {
+    id: 1,
+    type: "single",
+    text: "Personal",
+    path: `/${path.MEMBER}/${path.PERSONAL}`,
+    icon: <MdDashboard />,
+  },
+  {
+    id: 2,
+    type: "single",
+    text: "My Cart",
+    path: `/${path.MEMBER}/${path.CART}`,
+    icon: <MdGroups />,
+    // submenu: [
+    //   {
+    //     text: "Create Product",
+    //     path: `/${path.ADMIN}/${path.CREATE_PRODUCT}`,
+    //   },
+    //   {
+    //     text: "Manage Users",
+    //     path: `/${path.ADMIN}/${path.MANAGE_USERS}`,
+    //   },
+    // ],
+  },
+  
+];

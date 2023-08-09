@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../assets/logo.png";
 import icons from "../../utils/icons";
 import { Link } from "react-router-dom";
 import path from "../../utils/paths";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store/user/userSlice";
 const {
   RiPhoneFill,
   MdEmail,
@@ -14,6 +15,8 @@ const {
 } = icons;
 const Header = ({ handleNav }) => {
   const { current } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const [showOption, setShowOption] = useState(false);
   return (
     <>
       <header
@@ -57,13 +60,41 @@ const Header = ({ handleNav }) => {
                 <BsFillBagFill color="red" size={15} />
                 <span>O item(s)</span>
               </div>
-              <Link
-                to={+current?.role === 12 ? `/${path.ADMIN}` : `${path.MEMBER}`}
-                className="flex items-center justify-center gap-2 px-6 cursor-pointer"
+              <div
+                className="relative flex gap-2 px-6 items-center"
+                onMouseEnter={() => setShowOption(true)}
               >
-                <BiUser color="red" size={16} />
-                <span>Profile</span>
-              </Link>
+                <BiUser color="red" size={16} />{" "}
+                <span className="cursor-pointer">Profile</span>
+                {showOption && (
+                  <div
+                    onMouseEnter={() => setShowOption(true)}
+                    onMouseLeave={() => setShowOption(false)}
+                    className="absolute top-full left-[10px] w-full bg-white shadow-md min-w-[200px]"
+                  >
+                    <Link
+                      to={`/${path.MEMBER}/${path.PERSONAL}`}
+                      className="p-2 flex text-sm hover:bg-sky-100 transition duration-300"
+                    >
+                      Personal
+                    </Link>
+                    {+current.role === 12 && (
+                      <Link
+                        to={`/${path.ADMIN}`}
+                        className="p-2 flex text-sm hover:bg-sky-100 transition duration-300"
+                      >
+                        Admin
+                      </Link>
+                    )}
+                    <span 
+                      onClick={() => dispatch(logout())}
+                      className="p-2 w-full cursor-pointer hover:bg-sky-100 flex transition duration-300"
+                    >
+                      Log out
+                    </span>
+                  </div>
+                )}
+              </div>
             </>
           )}
         </div>

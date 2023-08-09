@@ -203,7 +203,7 @@ const ManageProducts = () => {
                     <td className="py-2 px-4 border-r">
                       {moment(product.createdAt).format("DD/MM/YYYY")}
                     </td>
-                    <td className="py-2 px-4 border-r f ">
+                    <td className="py-2 px-4 border-r  ">
                       <div className="flex items-center gap-1 justify-center">
                        
                         <span

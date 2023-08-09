@@ -103,7 +103,7 @@ const FilterProduct = ({
       {activeClick === name && (
         <div
           className="absolute w-fit left-0 top-[calc(100%+1px)] bg-white  border z-10 min-w-[150px]"
-          onClick={(e) => e.stopPropagation()}
+          // onClick={(e) => e.stopPropagation()}
         >
           {type === "checkbox" && (
             <div className="">

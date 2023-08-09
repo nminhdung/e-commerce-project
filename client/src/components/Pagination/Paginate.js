@@ -74,7 +74,7 @@ const Paginate = ({ totalProduct }) => {
   };
 
   return (
-    <div className="flex w-full justify-between items-center">
+    <div className="flex flex-col md:flex-row w-full justify-between items-center">
       {!+params.get("page") ? (
         <span className="text-sm italic flex">{`Show products 1 - ${
           +process.env.REACT_APP_ITEM_PERPAGE || 10

@@ -184,30 +184,32 @@ const ManageUsers = () => {
                       {moment(user.createdAt).format("DD/MM/YYYY")}
                     </td>
                     <td className="py-2 px-4 border-r">
-                      <span
-                        onClick={() => {
-                          if (user) {
-                            Object.entries(user).forEach(([name, value]) => {
-                              setValue(name, value);
-                            });
-                          }
-                          // setValue("email", user.email);
-                          // setValue("firstname", user.firstname);
-                          // setValue("lastname", user.lastname);
-                          // setValue("phone", user.phone);
-                          setEditUser(user);
-                          setIsEdit(true);
-                        }}
-                        className="px-1 hover:underline text-orange-400  cursor-pointer"
-                      >
-                        Edit
-                      </span>
-                      <span
-                        onClick={() => handleDeleteUser(user._id)}
-                        className="px-1 hover:underline text-main  cursor-pointer"
-                      >
-                        Delete
-                      </span>
+                      <div className="flex items-center gap-1 justify-center">
+                        <span
+                          onClick={() => {
+                            if (user) {
+                              Object.entries(user).forEach(([name, value]) => {
+                                setValue(name, value);
+                              });
+                            }
+                            // setValue("email", user.email);
+                            // setValue("firstname", user.firstname);
+                            // setValue("lastname", user.lastname);
+                            // setValue("phone", user.phone);
+                            setEditUser(user);
+                            setIsEdit(true);
+                          }}
+                          className=" hover:underline text-orange-400  cursor-pointer"
+                        >
+                          <BiEdit className="text-2xl" />
+                        </span>
+                        <span
+                          onClick={() => handleDeleteUser(user._id)}
+                          className=" hover:underline text-main  cursor-pointer"
+                        >
+                          <BiTrash className="text-2xl" />
+                        </span>
+                      </div>
                     </td>
                   </tr>
                 );

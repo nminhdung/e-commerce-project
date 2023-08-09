@@ -15,9 +15,9 @@ const Button = ({
       className={
         style
           ? style
-          : `px-4 py-2 rounded-md text-white bg-main font-semibold ${
+          : `px-4 py-2 rounded-md text-white bg-main font-semibold cursor-pointer ${
               fullWidth ? "w-full" : "w-fit"
-            }`
+            } `
       }
       onClick={() => {
         handleClick && handleClick();

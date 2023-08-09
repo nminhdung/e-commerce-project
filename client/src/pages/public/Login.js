@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import path from "../../utils/paths";
 import icons from "../../utils/icons";
+import loginBg from "../../assets/bglogin.jpg"
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { InputField, Button } from "../../components";
@@ -12,9 +13,9 @@ import {
 } from "../../api/user";
 import { useNavigate, Link } from "react-router-dom";
 import { login } from "../../store/user/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { validateInput } from "../../utils/helpers";
-import {Loading} from "../../components";
+import { Loading } from "../../components";
 import { closeModal, showModal } from "../../store/app/appSlice";
 
 const { AiOutlineCloseCircle, AiFillHome } = icons;
@@ -23,6 +24,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { isLoggedIn } = useSelector((state) => state.user);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [tokenConfirm, setTokenConfirm] = useState("");
   const [isVerifyEmail, setVerifyEmail] = useState(false);
@@ -58,6 +60,12 @@ const Login = () => {
   useEffect(() => {
     resetPayload();
   }, [isRegister]);
+  useEffect(() => {
+    if (isLoggedIn) {
+      toast.success("You Logined")
+      navigate(`/${path.HOME}`);
+    }
+  }, [isLoggedIn]);
   // Submit
   const handleSubmit = useCallback(async () => {
     const { firstname, lastname, phone, ...data } = payload;
@@ -172,8 +180,8 @@ const Login = () => {
       )}
 
       <img
-        src="https://images.pexels.com/photos/3937174/pexels-photo-3937174.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-        alt=""
+        src={loginBg}
+        alt="background"
         className="w-full h-full  object-cover"
       />
       <div className="absolute top-0 bottom-0 lef-0 right-1/2 flex items-center ">

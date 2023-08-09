@@ -13,7 +13,6 @@ import { closeModal, showModal } from "../../store/app/appSlice";
 
 const EditProduct = ({ editProduct, setEditProduct, render }) => {
   const { categories } = useSelector((state) => state.app);
-
   const [previewImg, setPreviewImg] = useState({
     thumb: null,
     images: [],
@@ -42,14 +41,15 @@ const EditProduct = ({ editProduct, setEditProduct, render }) => {
     }
     console.log(data.images);
     if (data.images)
-      data.images = data.images?.length === 0 ? previewImg.images : data.images;
-
+      data.images =
+        data.images?.length === 0
+          ? previewImg.images
+          : data.images
+    console.log(data.images);
     for (let image of data.images) {
       formData.append("images", image);
     }
-
-    
-    console.log(formData.getAll("images"));
+   
 
     dispatch(showModal({ modalChildren: <Loading /> }));
     const res = await apiUpdateProduct(formData, editProduct._id);
@@ -97,7 +97,7 @@ const EditProduct = ({ editProduct, setEditProduct, render }) => {
     }
     setPreviewImg({
       thumb: editProduct?.thumb || "",
-      images: editProduct?.images || [],
+      images: editProduct?.images.filter(item=>item!=="[object FileList]") || [],
     });
     setValue("description", description);
   }, [editProduct]);
@@ -114,6 +114,7 @@ const EditProduct = ({ editProduct, setEditProduct, render }) => {
       handlePreviewImg(watch("images"));
     }
   }, [watch("images")]);
+  console.log(previewImg.images)
   return (
     <form onSubmit={handleSubmit(onSubmitEdit)}>
       <InputForm

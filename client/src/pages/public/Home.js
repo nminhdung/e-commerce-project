@@ -53,11 +53,11 @@ const Home = () => {
         <div className="grid lg:grid-cols-3 gap-4 mt-4">
           {categories.map((cate) => {
             return (
-              <div key={cate._id} className="border flex p-8 gap-4 ">
+              <div key={cate._id} className="border flex p-8 gap-4 w-full shadow-md">
                 <img
                   src={cate.image}
                   alt="cate-image"
-                  className="object-contain max-w-[180px] max-h-[150px] "
+                  className="object-contain min-w-[180px] max-h-[150px] "
                 />
                 <div className="text-gray-700">
                   <h3 className="text-base uppercase font-semibold">

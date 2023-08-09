@@ -26,6 +26,9 @@ var userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    avatar:{
+      type:String,
+    },
     role: {
       type: Number,
       enum:[12,13],

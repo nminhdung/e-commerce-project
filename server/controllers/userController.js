@@ -268,18 +268,16 @@ const getUsers = asyncHandler(async (req, res) => {
 
   const formatedQueries = JSON.parse(queryString);
 
-
   if (queries?.name)
     formatedQueries.name = { $regex: queries.title, $options: "i" };
   if (req.query.searchKey) {
-    delete formatedQueries.searchKey
+    delete formatedQueries.searchKey;
     formatedQueries["$or"] = [
       { firstname: { $regex: req.query.searchKey, $options: "i" } },
       { lastname: { $regex: req.query.searchKey, $options: "i" } },
       { email: { $regex: req.query.searchKey, $options: "i" } },
     ];
   }
- 
 
   let queryCommand = User.find(formatedQueries);
   if (req.query.sort) {
@@ -321,14 +319,19 @@ const deleteUser = asyncHandler(async (req, res) => {
 });
 const updateUser = asyncHandler(async (req, res) => {
   const { _id } = req.user;
+  const { firstname, lastname, email, phone } = req.body;
+  const data = { firstname, lastname, email, phone };
   if (!_id || Object.keys(req.body).length === 0)
     throw new Error("Missing input");
-  const response = await User.findByIdAndUpdate(_id, req.body, {
+  if (req.file) {
+    data.avatar = req.file.path;
+  }
+  const response = await User.findByIdAndUpdate(_id, data, {
     new: true,
-  }).select("-password -role");
+  }).select("-password -role -refreshToken");
   return res.status(200).json({
     success: response ? true : false,
-    updatedUser: response ? response : "Something went wrong",
+    mes: response ? "Updated" : "Something went wrong",
   });
 });
 const updateUserByAdmin = asyncHandler(async (req, res) => {

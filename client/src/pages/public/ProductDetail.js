@@ -85,7 +85,7 @@ const ProductDetail = () => {
   return (
     <div className="w-full relative">
       <div className="bg-gray-100 h-[81px] flex justify-center items-center">
-        <div className="md:w-main">
+        <div className="xl:w-main">
           <h3 className="font-bold">{title}</h3>
           <BreadCumbs title={title} category={category} />
         </div>

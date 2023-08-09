@@ -18,9 +18,8 @@ import {
   Dashboard,
   ManageProducts,
   ManageUsers,
- 
 } from "./pages/admin";
-import { MemberLayout, Personal } from "./pages/member";
+import { Cart, MemberLayout, Personal } from "./pages/member";
 import { getCategories } from "./store/app/asyncThunks";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
@@ -31,6 +30,7 @@ import { Modal } from "./components";
 function App() {
   const dispatch = useDispatch();
   const { isShowModal, modalChildren } = useSelector((state) => state.app);
+  const { isLoggedIn, current } = useSelector((state) => state.user);
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
@@ -45,13 +45,14 @@ function App() {
             <Route path={path.FAQ} element={<FAQ />} />
             <Route path={path.OUR_SERVICES} element={<Services />} />
             <Route path={path.PRODUCTS} element={<Products />} />
-            {/* <Route path={path.PRODUCTS_CATEGORY} element={<Products />} /> */}
             <Route path={path.RESET_PASSWORD} element={<ResetPassword />} />
             <Route
               path={path.PRODUCT_DETAIL_CATEGORY_PID_TITLE}
               element={<ProductDetail />}
             />
           </Route>
+          <Route path={path.LOGIN} element={<Login />} />
+
           <Route path={path.ADMIN} element={<AdminLayout />}>
             <Route path={path.DASHBOARD} element={<Dashboard />} />
             <Route path={path.MANAGE_PRODUCTS} element={<ManageProducts />} />
@@ -62,9 +63,9 @@ function App() {
           </Route>
           <Route path={path.MEMBER} element={<MemberLayout />}>
             <Route path={path.PERSONAL} element={<Personal />} />
+            <Route path={path.CART} element={<Cart />} />
           </Route>
           <Route path={path.CONFIRM_REGISTER} element={<ConfirmRegister />} />
-          <Route path={path.LOGIN} element={<Login />} />
         </Routes>
       </div>
       <ToastContainer

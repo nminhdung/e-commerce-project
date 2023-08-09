@@ -28,7 +28,7 @@ const InputForm = ({
         // defaultValue={defaultValue}
         disabled={disabled}
         placeholder={placeholder}
-        className="w-full outline-none p-2 rounded-md text-black"
+        className="w-full outline-none border p-2 rounded-md text-black"
       />
       {errors[name] && (
         <small className="text-xs text-main">{errors[name]?.message}</small>
