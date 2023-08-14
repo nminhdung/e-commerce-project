@@ -5,7 +5,7 @@ import { Header, TopHeader, Footer, Navigation } from "../../components";
 const Public = () => {
   const [isNav, setNav] = useState(false);
   return (
-    <div className="w-full  md:max-width-[1640px]">
+    <div className="w-full max-h-screen overflow-y-auto  md:max-width-[1640px]">
       <TopHeader />
       <Header isNav={isNav} handleNav={setNav} />
       <Navigation isNav={isNav} handleNav={setNav} />

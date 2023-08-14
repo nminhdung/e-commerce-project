@@ -37,8 +37,9 @@ const ManageUsers = () => {
   const [searchTerm, setSearchTerm] = useState({
     searchValue: "",
   });
+  console.log(users)
   const fetchUsers = async (params) => {
-    const res = await apiGetUsers({ ...params, limit: 2 });
+    const res = await apiGetUsers({ ...params, limit: process.env.REACT_APP_ITEM_PERPAGE });
     console.log(res);
     if (res.success) {
       setUsers(res);
@@ -72,7 +73,7 @@ const ManageUsers = () => {
         const res = await apiDeleteUser(uid);
         if (res.success) {
           toast.success(res.mes);
-          fetchUsers({ limit: 2 });
+          fetchUsers({limit:process.env.REACT_APP_ITEM_PERPAGE});
         } else {
           toast.error(res.mes);
         }
@@ -92,6 +93,7 @@ const ManageUsers = () => {
     }
 
     if (queriesDebounce) queries.searchKey = queriesDebounce;
+  
 
     fetchUsers(queries);
   }, [queriesDebounce, params, isEdit]);

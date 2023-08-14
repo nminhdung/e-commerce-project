@@ -268,8 +268,8 @@ const getUsers = asyncHandler(async (req, res) => {
 
   const formatedQueries = JSON.parse(queryString);
 
-  if (queries?.name)
-    formatedQueries.name = { $regex: queries.title, $options: "i" };
+  // if (queries?.name)
+  //   formatedQueries.name = { $regex: queries.title, $options: "i" };
   if (req.query.searchKey) {
     delete formatedQueries.searchKey;
     formatedQueries["$or"] = [
@@ -278,7 +278,7 @@ const getUsers = asyncHandler(async (req, res) => {
       { email: { $regex: req.query.searchKey, $options: "i" } },
     ];
   }
-
+  console.log(formatedQueries)
   let queryCommand = User.find(formatedQueries);
   if (req.query.sort) {
     const sortBy = req.query.sort.split(",").join(" ");
@@ -366,32 +366,10 @@ const addToCart = asyncHandler(async (req, res) => {
   if (!pid || !quantity || !color) throw new Error("Missing Inputs");
   const user = await User.findById(_id).select("cart");
   const alreadyProduct = user?.cart?.find(
-    (element) => element.product.toString() === pid && element.color === color
+    (element) => element.product.toString() === pid && element.color.toLowerCase() === color.toLowerCase()
   );
   if (alreadyProduct) {
-    // if (alreadyProduct.color === color) {
-    //   const response = await User.updateOne(
-    //     { cart: { $elemMatch: alreadyProduct } },
-    //     { $set: { "cart.$.quantity": quantity } },
-    //     { new: true }
-    //   );
 
-    //   return res.json({
-    //     status: response ? true : false,
-    //     userCart: response ? response : "Some thing went wrong",
-    //   });
-    // } else {
-    //   console.log(alreadyProduct);
-    //   const response = await User.findByIdAndUpdate(
-    //     _id,
-    //     { $push: { cart: { product: pid, quantity, color } } },
-    //     { new: true }
-    //   );
-    //   return res.json({
-    //     success: response ? true : false,
-    //     userCart: response ? response : "Some thing went wrong",
-    //   });
-    // }
     const response = await User.updateOne(
       { cart: { $elemMatch: alreadyProduct } },
       { $set: { "cart.$.quantity": quantity } },
@@ -399,8 +377,8 @@ const addToCart = asyncHandler(async (req, res) => {
     );
 
     return res.json({
-      status: response ? true : false,
-      userCart: response ? response : "Some thing went wrong",
+      success: response ? true : false,
+      mes: response ? "Updated your cart" : "Some thing went wrong",
     });
   } else {
     const response = await User.findByIdAndUpdate(
@@ -410,11 +388,32 @@ const addToCart = asyncHandler(async (req, res) => {
     );
     return res.json({
       success: response ? true : false,
-      userCart: response ? response : "Some thing went wrong",
+      mes: response ? "Updated your cart" : "Some thing went wrong",
     });
   }
 });
-
+const removeProductCart = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+  const { pid } = req.params;
+  if (!pid || !quantity || !color) throw new Error("Missing Inputs");
+  const user = await User.findById(_id).select("cart");
+  const alreadyProduct = user?.cart?.find(
+    (element) => element.product.toString() === pid
+  );
+  if (alreadyProduct) {
+    const response = await User.findById(
+      _id,
+      {
+        $pull: { cart: { product: pid } },
+      },
+      { new: true }
+    );
+    return res.status(200).json({
+      success: response ? true : false,
+      mes: response ? "Removed" : "Something went wrong",
+    });
+  }
+});
 const createUsers = asyncHandler(async (req, res) => {
   const rs = await User.create(users);
   return res.status(200).json({
@@ -438,4 +437,5 @@ module.exports = {
   updateAddressUser,
   addToCart,
   createUsers,
+  removeProductCart,
 };

@@ -20,6 +20,7 @@ import {
   ManageUsers,
 } from "./pages/admin";
 import { Cart, MemberLayout, Personal } from "./pages/member";
+import { CartUi } from "./components";
 import { getCategories } from "./store/app/asyncThunks";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
@@ -36,8 +37,9 @@ function App() {
   }, [dispatch]);
   return (
     <>
-      <div className=" font-main overflow-hidden relative ">
+      <div className=" font-main overflow-hidden h-screen ">
         {isShowModal && <Modal modalChildren={modalChildren} />}
+        <Modal modalChildren={<CartUi />} />
         <Routes>
           <Route path={path.PUBLIC} element={<Public />}>
             <Route path={path.HOME} element={<Home />} />

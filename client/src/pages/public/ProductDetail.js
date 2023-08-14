@@ -1,7 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import * as api from "../../api";
+import { apiUpdateCart } from "../../api";
 import {
   BreadCumbs,
   Button,
@@ -10,6 +13,7 @@ import {
   SelectQuantity,
   CustomSlider,
 } from "../../components/";
+import { getCurrentUser } from "../../store/user/asyncThunk";
 import { extraInfo } from "../../utils/constants";
 
 import {
@@ -32,11 +36,17 @@ const ProductDetail = () => {
   const [relatedProducts, setRelatedProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [previewImg, setPreviewImg] = useState("");
+  const [colors, setColors] = useState([]);
+  const [selectedColor, setSelectedColor] = useState("");
   const [update, setUpdate] = useState(false);
+
+  const { current } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const fetchProduct = async () => {
     const response = await api.apiGetProduct(pid);
     if (response.success) {
       setProduct(response.productData);
+      setColors(response.productData.color.split(" "));
       setPreviewImg(response.productData?.thumb);
     }
   };
@@ -44,6 +54,29 @@ const ProductDetail = () => {
     const response = await api.apiGetProducts({ category });
     if (response.success) {
       setRelatedProduct(response.listProduct);
+    }
+  };
+  const AddToCart = async () => {
+    console.log(product);
+    console.log({
+      pid: product._id,
+      quantity: quantity,
+      color: selectedColor,
+    });
+    if (!current) {
+      toast.info("Please login to add product");
+    } else {
+      const res = await apiUpdateCart({
+        pid: product._id,
+        quantity: quantity,
+        color: selectedColor,
+      });
+      if (res.success) {
+        toast.success(res.mes);
+        dispatch(getCurrentUser());
+      } else {
+        toast.error(res.mes);
+      }
     }
   };
   useEffect(() => {
@@ -134,16 +167,39 @@ const ProductDetail = () => {
                 );
               })}
             {product?.description?.length === 1 && (
-              <div className="line-clamp-6" dangerouslySetInnerHTML={{ __html:product.description[0]}}></div>
+              <div
+                className="line-clamp-6"
+                dangerouslySetInnerHTML={{ __html: product.description[0] }}
+              ></div>
             )}
           </ul>
+          <div className="flex items-center">
+            <span className="font-semibold">Color: </span>
+            {colors?.map((color, index) => {
+              return (
+                <span
+                  onClick={() => setSelectedColor(color)}
+                  className={`flex items-center p-2 border-main border mx-2 cursor-pointer ${
+                    selectedColor?.toLowerCase() === color?.toLowerCase()
+                      ? "text-main"
+                      : ""
+                  }`}
+                  key={index}
+                >
+                  {color}
+                </span>
+              );
+            })}
+          </div>
           <div className="flex flex-col gap-8">
             <SelectQuantity
               handleChangeQuantity={handleChangeQuantity}
               quantity={quantity}
               handleQuantity={handleQuantity}
             />
-            <Button fullWidth>Add to cart</Button>
+            <Button fullWidth handleClick={AddToCart}>
+              Add to cart
+            </Button>
           </div>
         </div>
         <div className="lg:flex-2 flex flex-col gap-2">

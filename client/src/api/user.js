@@ -49,3 +49,9 @@ export const apiDeleteUser = (uid) => {
 export const apiUpdateCurrentUser = (data) => {
   return axios({ url: "/user/currentuser", method: "put", data });
 };
+export const apiUpdateCart = (data) => {
+  return axios({ url: "/user/cart", method: "put", data });
+};
+export const apiRemoveCart = (pid) => {
+  return axios({ url: "/user/remove-cart" + pid, method: "delete"});
+};

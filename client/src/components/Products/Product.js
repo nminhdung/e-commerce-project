@@ -2,25 +2,50 @@
 // eslint-disable-next-line jsx-a11y/img-redundant-alt
 import React, { useState } from "react";
 import defaultImage from "../../assets/default.png";
-import { Link } from "react-router-dom";
-import { formatMoney } from "../../utils/helpers";
-import label from "../../assets/label.png";
-import { renderStarFromNumber } from "../../utils/helpers";
-import { SelectOptions } from "../../components";
 import icons from "../../utils/icons";
 import path from "../../utils/paths";
+import label from "../../assets/label.png";
+import { formatMoney } from "../../utils/helpers";
+import { Link, useNavigate } from "react-router-dom";
+import { renderStarFromNumber } from "../../utils/helpers";
+import { SelectOptions } from "../../components";
+import { showModal } from "../../store/app/appSlice";
+import { useDispatch } from "react-redux";
+import {QuickView} from "../../components";
+
 
 const { AiFillEye, AiOutlineMenu, BsFillSuitHeartFill } = icons;
 
 const Product = ({ productData, isNew, normal }) => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  const handleClickOption = (e, option) => {
+    e.stopPropagation();
+    if (option.toLowerCase() === "menu") {
+      navigate(
+        `/${productData?.category?.toLowerCase()}/${productData?._id}/${
+          productData?.title
+        }`
+      );
+    }
+    if (option.toLowerCase() === "wishlist") {
+      console.log("wishlist");
+    } else {
+      dispatch(showModal({modalChildren: <QuickView product={productData}/>}))
+    }
+  };
   const [isShowOptions, setShowOptions] = useState(false);
   return (
     <div className="w-full text-base px-[10px]">
-      <Link
-        to={`/${productData?.category?.toLowerCase()}/${productData?._id}/${
-          productData?.title
-        }`}
-        className="flex flex-col border h-full w-full p-[15px] items-center "
+      <div
+        onClick={() =>
+          navigate(
+            `/${productData?.category?.toLowerCase()}/${productData?._id}/${
+              productData?.title
+            }`
+          )
+        }
+        className="flex flex-col border h-full w-full p-[15px] items-center cursor-pointer "
         onMouseEnter={(e) => {
           e.stopPropagation();
           setShowOptions(true);
@@ -33,9 +58,15 @@ const Product = ({ productData, isNew, normal }) => {
         <div className="w-full relative">
           {isShowOptions && (
             <div className="absolute bottom-[-10px] left-0 right-0 flex justify-center gap-2 animate-slide-top">
-              <SelectOptions icon={<BsFillSuitHeartFill />} />
-              <SelectOptions icon={<AiFillEye />} />
-              <SelectOptions icon={<AiOutlineMenu />} />
+              <span title="Wish List" onClick={(e) => handleClickOption(e, "wishlist")}>
+                <SelectOptions icon={<BsFillSuitHeartFill />} />
+              </span>
+              <span title="Quick View" onClick={(e) => handleClickOption(e, "quick_view")}>
+                <SelectOptions icon={<AiFillEye />} />
+              </span>
+              <span title="More Options" onClick={(e) => handleClickOption(e, "menu")}>
+                <SelectOptions icon={<AiOutlineMenu />} />
+              </span>
             </div>
           )}
 
@@ -77,7 +108,7 @@ const Product = ({ productData, isNew, normal }) => {
           <span className="line-clamp-1">{productData.title}</span>
           <span className="">{formatMoney(productData.price)} VND</span>
         </div>
-      </Link>
+      </div>
     </div>
   );
 };

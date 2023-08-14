@@ -58,7 +58,7 @@ const Header = ({ handleNav }) => {
             <>
               <div className="flex items-center justify-center gap-2 border-r px-6 cursor-pointer">
                 <BsFillBagFill color="red" size={15} />
-                <span>O item(s)</span>
+                <span>{`${current.cart?.length|| 0 } item(s)` }</span>
               </div>
               <div
                 className="relative flex gap-2 px-6 items-center"
