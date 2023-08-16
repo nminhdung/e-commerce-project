@@ -163,7 +163,15 @@ const expiredToken = asyncHandler(async (req, res) => {
 const getUser = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   // khong hien thi 3 truong trong select
-  const user = await User.findById(_id).select("-refreshToken -password ");
+  const user = await User.findById(_id)
+    .select("-refreshToken -password ")
+    .populate({
+      path: "cart",
+      populate: {
+        path: "product",
+        select: "title price thumb",
+      },
+    });
   return res.status(200).json({
     success: user ? true : false,
     result: user ? user : "User not found",
@@ -278,7 +286,7 @@ const getUsers = asyncHandler(async (req, res) => {
       { email: { $regex: req.query.searchKey, $options: "i" } },
     ];
   }
-  console.log(formatedQueries)
+  console.log(formatedQueries);
   let queryCommand = User.find(formatedQueries);
   if (req.query.sort) {
     const sortBy = req.query.sort.split(",").join(" ");
@@ -366,10 +374,11 @@ const addToCart = asyncHandler(async (req, res) => {
   if (!pid || !quantity || !color) throw new Error("Missing Inputs");
   const user = await User.findById(_id).select("cart");
   const alreadyProduct = user?.cart?.find(
-    (element) => element.product.toString() === pid && element.color.toLowerCase() === color.toLowerCase()
+    (element) =>
+      element.product.toString() === pid &&
+      element.color.toLowerCase() === color.toLowerCase()
   );
   if (alreadyProduct) {
-
     const response = await User.updateOne(
       { cart: { $elemMatch: alreadyProduct } },
       { $set: { "cart.$.quantity": quantity } },
@@ -394,17 +403,17 @@ const addToCart = asyncHandler(async (req, res) => {
 });
 const removeProductCart = asyncHandler(async (req, res) => {
   const { _id } = req.user;
-  const { pid } = req.params;
-  if (!pid || !quantity || !color) throw new Error("Missing Inputs");
+  const { pid, color } = req.params;
+  if (!pid) throw new Error("Missing Inputs");
   const user = await User.findById(_id).select("cart");
   const alreadyProduct = user?.cart?.find(
     (element) => element.product.toString() === pid
   );
   if (alreadyProduct) {
-    const response = await User.findById(
+    const response = await User.findByIdAndUpdate(
       _id,
       {
-        $pull: { cart: { product: pid } },
+        $pull: { cart: { product: pid, color } },
       },
       { new: true }
     );

@@ -52,6 +52,9 @@ export const apiUpdateCurrentUser = (data) => {
 export const apiUpdateCart = (data) => {
   return axios({ url: "/user/cart", method: "put", data });
 };
-export const apiRemoveCart = (pid) => {
-  return axios({ url: "/user/remove-cart" + pid, method: "delete"});
+export const apiRemoveCart = (pid, color) => {
+  return axios({
+    url: "/user/remove-cart/" + pid + "/" + color,
+    method: "delete",
+  });
 };

@@ -16,7 +16,7 @@ const QuickView = ({ product }) => {
     setPreviewImg(product?.thumb);
   }, [product]);
   return (
-    <div className="xl:w-main mx-auto mt-4 flex flex-col lg:flex-row md:gap-1 gap-2 bg-white p-2">
+    <div className="xl:w-main absolute top-[10%] left-[50$] mx-auto mt-4 flex flex-col lg:flex-row md:gap-1 gap-2 bg-white p-2">
       <div className=" lg:flex-4 flex flex-col gap-4 w-full ">
         <img
           src={previewImg}

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import logo from "../../assets/logo.png";
 import icons from "../../utils/icons";
-import { Link } from "react-router-dom";
 import path from "../../utils/paths";
+import { CartUi } from "../../components";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/user/userSlice";
+import { showCart, showModal } from "../../store/app/appSlice";
 const {
   RiPhoneFill,
   MdEmail,
@@ -56,9 +58,14 @@ const Header = ({ handleNav }) => {
           </div>
           {current && (
             <>
-              <div className="flex items-center justify-center gap-2 border-r px-6 cursor-pointer">
+              <div
+                className="flex items-center justify-center gap-2 border-r px-6 cursor-pointer"
+                onClick={() => {
+                  dispatch(showCart("open"));
+                }}
+              >
                 <BsFillBagFill color="red" size={15} />
-                <span>{`${current.cart?.length|| 0 } item(s)` }</span>
+                <span>{`${current.cart?.length || 0} item(s)`}</span>
               </div>
               <div
                 className="relative flex gap-2 px-6 items-center"
@@ -86,7 +93,7 @@ const Header = ({ handleNav }) => {
                         Admin
                       </Link>
                     )}
-                    <span 
+                    <span
                       onClick={() => dispatch(logout())}
                       className="p-2 w-full cursor-pointer hover:bg-sky-100 flex transition duration-300"
                     >

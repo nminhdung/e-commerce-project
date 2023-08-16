@@ -8,15 +8,31 @@ export const appSlice = createSlice({
     isLoading: false,
     isShowModal: false,
     modalChildren: null,
+    isShowCart: false,
+    subTotal: 0,
   },
   reducers: {
     showModal: (state, action) => {
       state.isShowModal = true;
       state.modalChildren = action.payload.modalChildren;
     },
-    closeModal: (state,action) => {
+    closeModal: (state, action) => {
       state.isShowModal = false;
       state.modalChildren = action.payload.modalChildren;
+    },
+    showCart: (state, action) => {
+      if (action.payload?.toLowerCase() === "open") {
+        state.isShowCart = true;
+      } else {
+        state.isShowCart = false;
+      }
+    },
+    getSubTotal: (state, action) => {
+      let totalPrice = action.payload?.reduce((sum, current) => {
+        return +current.product.price * current.quantity + +sum;
+      }, 0);
+      console.log(totalPrice)
+      state.subTotal = totalPrice;
     },
   },
   extraReducers: (builder) => {
@@ -32,5 +48,6 @@ export const appSlice = createSlice({
     });
   },
 });
-export const { showModal ,closeModal} = appSlice.actions;
+export const { showModal, closeModal, showCart, getSubTotal } =
+  appSlice.actions;
 export default appSlice.reducer;

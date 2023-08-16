@@ -25,8 +25,8 @@ const MemberSidebar = () => {
   };
 
   return (
-    <div className="w-full h-full bg-main text-white">
-      <div className="w-full flex flex-col justify-center items-center  py-4">
+    <div className="w-full h-full bg-gray-100 shadow-md text-black ">
+      <div className="w-full  flex flex-col justify-center items-center  py-4">
         <img
           src={current?.avatar || avatar}
           alt="logo"
@@ -38,7 +38,7 @@ const MemberSidebar = () => {
         <AiFillHome />
         <span>Home</span>
       </Link> */}
-      <div>
+      <div className="h-full w-full">
         {MemberSidebarList?.map((item) => {
           return (
             <div key={item.id} className="">

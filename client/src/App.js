@@ -27,19 +27,33 @@ import { ToastContainer } from "react-toastify";
 
 import path from "./utils/paths";
 import { Modal } from "./components";
+import { getSubTotal, showCart } from "./store/app/appSlice";
 
 function App() {
   const dispatch = useDispatch();
-  const { isShowModal, modalChildren } = useSelector((state) => state.app);
+  const { isShowModal, modalChildren, isShowCart } = useSelector(
+    (state) => state.app
+  );
   const { isLoggedIn, current } = useSelector((state) => state.user);
+  useEffect(()=>{
+    dispatch(getSubTotal([...current?.cart]))
+  },[current?.cart])
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
   return (
     <>
-      <div className=" font-main overflow-hidden h-screen ">
+      <div className=" font-main relative ">
         {isShowModal && <Modal modalChildren={modalChildren} />}
-        <Modal modalChildren={<CartUi />} />
+        {isShowCart && (
+          <div
+            className="fixed inset-0 bg-overlay z-40"
+            onClick={() => dispatch(showCart("close"))}
+          >
+            <CartUi />
+          </div>
+        )}
+
         <Routes>
           <Route path={path.PUBLIC} element={<Public />}>
             <Route path={path.HOME} element={<Home />} />
@@ -52,6 +66,10 @@ function App() {
               path={path.PRODUCT_DETAIL_CATEGORY_PID_TITLE}
               element={<ProductDetail />}
             />
+            <Route path={path.MEMBER} element={<MemberLayout />}>
+              <Route path={path.PERSONAL} element={<Personal />} />
+              <Route path={path.CART} element={<Cart />} />
+            </Route>
           </Route>
           <Route path={path.LOGIN} element={<Login />} />
 
@@ -63,10 +81,7 @@ function App() {
 
             <Route path={path.CREATE_PRODUCT} element={<CreateProduct />} />
           </Route>
-          <Route path={path.MEMBER} element={<MemberLayout />}>
-            <Route path={path.PERSONAL} element={<Personal />} />
-            <Route path={path.CART} element={<Cart />} />
-          </Route>
+
           <Route path={path.CONFIRM_REGISTER} element={<ConfirmRegister />} />
         </Routes>
       </div>

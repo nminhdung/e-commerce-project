@@ -30,7 +30,7 @@ const Product = ({ productData, isNew, normal }) => {
     }
     if (option.toLowerCase() === "wishlist") {
       console.log("wishlist");
-    } else {
+    } if(option.toLowerCase() === "quick view") {
       dispatch(showModal({modalChildren: <QuickView product={productData}/>}))
     }
   };
@@ -61,7 +61,7 @@ const Product = ({ productData, isNew, normal }) => {
               <span title="Wish List" onClick={(e) => handleClickOption(e, "wishlist")}>
                 <SelectOptions icon={<BsFillSuitHeartFill />} />
               </span>
-              <span title="Quick View" onClick={(e) => handleClickOption(e, "quick_view")}>
+              <span title="Quick View" onClick={(e) => handleClickOption(e, "quick view")}>
                 <SelectOptions icon={<AiFillEye />} />
               </span>
               <span title="More Options" onClick={(e) => handleClickOption(e, "menu")}>

@@ -46,7 +46,7 @@ const ProductDetail = () => {
     const response = await api.apiGetProduct(pid);
     if (response.success) {
       setProduct(response.productData);
-      setColors(response.productData.color.split(" "));
+      setColors(response.productData?.color?.split(" "));
       setPreviewImg(response.productData?.thumb);
     }
   };
@@ -61,7 +61,7 @@ const ProductDetail = () => {
     console.log({
       pid: product._id,
       quantity: quantity,
-      color: selectedColor,
+      color: selectedColor || "BLACK",
     });
     if (!current) {
       toast.info("Please login to add product");
@@ -69,7 +69,7 @@ const ProductDetail = () => {
       const res = await apiUpdateCart({
         pid: product._id,
         quantity: quantity,
-        color: selectedColor,
+        color: selectedColor ||"BLACK",
       });
       if (res.success) {
         toast.success(res.mes);
@@ -84,7 +84,12 @@ const ProductDetail = () => {
       fetchProduct();
       fetchOtherProducts();
     }
-    window.scrollTo(0, 0);
+   
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
   }, [pid]);
   useEffect(() => {
     if (pid) {
