@@ -15,6 +15,7 @@ const createOrder = asyncHandler(async (req, res) => {
       product: element.product._id,
       color: element.color,
       quantity: element.quantity,
+      price: element.product.price,
     };
   });
 
@@ -34,7 +35,7 @@ const createOrder = asyncHandler(async (req, res) => {
   const rs = await Order.create(createOrderData);
   return res.status(200).json({
     success: rs ? true : false,
-    rs: rs ? rs : "Can not create order",
+    mes: rs ? "Ordered" : "Can not order",
   });
 });
 const updateStatusOrder = asyncHandler(async (req, res) => {
@@ -61,7 +62,6 @@ const getOrderByUser = asyncHandler(async (req, res) => {
   });
 });
 const getOrdersByAdmin = asyncHandler(async (req, res) => {
- 
   const response = await Order.find();
   return res.status(200).json({
     success: response ? true : false,
@@ -69,4 +69,9 @@ const getOrdersByAdmin = asyncHandler(async (req, res) => {
   });
 });
 
-module.exports = { createOrder, updateStatusOrder, getOrderByUser,getOrdersByAdmin };
+module.exports = {
+  createOrder,
+  updateStatusOrder,
+  getOrderByUser,
+  getOrdersByAdmin,
+};

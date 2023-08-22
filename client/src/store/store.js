@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import appReducer from "./app/appSlice";
 import productReducer from "./products/productSlice";
 import userReducer from "./user/userSlice";
+import cartReducer from "./cart/cartSlice";
 import storage from "redux-persist/lib/storage";
 import {
   persistReducer,
@@ -20,13 +21,19 @@ const commonConfig = {
 };
 const userConfig = {
   ...commonConfig,
-  whitelist: ["isLoggedIn","token","current"],
+  whitelist: ["isLoggedIn", "token", "current"],
+};
+const cartConfig = {
+  key: "shop/cart",
+  storage,
+  whitelist: ["cartItems", "isShow",'total'],
 };
 export const store = configureStore({
   reducer: {
     app: appReducer,
     products: productReducer,
     user: persistReducer(userConfig, userReducer),
+    cart: persistReducer(cartConfig, cartReducer),
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

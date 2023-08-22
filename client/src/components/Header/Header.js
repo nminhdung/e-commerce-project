@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/user/userSlice";
 import { showCart, showModal } from "../../store/app/appSlice";
+import { showCartUi } from "../../store/cart/cartSlice";
 const {
   RiPhoneFill,
   MdEmail,
@@ -17,6 +18,7 @@ const {
 } = icons;
 const Header = ({ handleNav }) => {
   const { current } = useSelector((state) => state.user);
+  const { cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const [showOption, setShowOption] = useState(false);
   return (
@@ -61,11 +63,13 @@ const Header = ({ handleNav }) => {
               <div
                 className="flex items-center justify-center gap-2 border-r px-6 cursor-pointer"
                 onClick={() => {
-                  dispatch(showCart("open"));
+                  // dispatch(showCart("open"));
+                  dispatch(showCartUi("open"))
                 }}
               >
                 <BsFillBagFill color="red" size={15} />
-                <span>{`${current.cart?.length || 0} item(s)`}</span>
+                {/* <span>{`${current.cart?.length || 0} item(s)`}</span> */}
+                <span>{cartItems.length || 0} item(s)</span>
               </div>
               <div
                 className="relative flex gap-2 px-6 items-center"

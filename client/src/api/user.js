@@ -58,3 +58,9 @@ export const apiRemoveCart = (pid, color) => {
     method: "delete",
   });
 };
+export const apiRemoveAllProductCart = () => {
+  return axios({
+    url: "/user/remove-all/",
+    method: "put",
+  });
+};

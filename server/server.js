@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 const app = express();
+// giup client có thể nhận được cookie bên server gửi 
 app.use(
   cors({
     origin: process.env.URL_CLIENT,

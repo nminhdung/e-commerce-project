@@ -13,6 +13,7 @@ import {
   SelectQuantity,
   CustomSlider,
 } from "../../components/";
+import { addItem } from "../../store/cart/cartSlice";
 import { getCurrentUser } from "../../store/user/asyncThunk";
 import { extraInfo } from "../../utils/constants";
 
@@ -56,35 +57,38 @@ const ProductDetail = () => {
       setRelatedProduct(response.listProduct);
     }
   };
-  const AddToCart = async () => {
-    console.log(product);
-    console.log({
-      pid: product._id,
-      quantity: quantity,
-      color: selectedColor || "BLACK",
-    });
-    if (!current) {
-      toast.info("Please login to add product");
-    } else {
-      const res = await apiUpdateCart({
-        pid: product._id,
-        quantity: quantity,
-        color: selectedColor ||"BLACK",
-      });
-      if (res.success) {
-        toast.success(res.mes);
-        dispatch(getCurrentUser());
-      } else {
-        toast.error(res.mes);
-      }
-    }
+  const AddCart = (product) => {
+    dispatch(addItem({...product,quantity,color: selectedColor || colors.length>0 ? colors[0]:"Black",}));
   };
+  // const AddToCart = async () => {
+  //   console.log(product);
+  //   console.log({
+  //     pid: product._id,
+  //     quantity: quantity,
+  //     color: selectedColor || "BLACK",
+  //   });
+  //   if (!current) {
+  //     toast.info("Please login to add product");
+  //   } else {
+  //     const res = await apiUpdateCart({
+  //       pid: product._id,
+  //       quantity: quantity,
+  //       color: selectedColor || colors.length>0 ? colors[0]:"Black",
+  //     });
+  //     if (res.success) {
+  //       toast.success(res.mes);
+  //       dispatch(getCurrentUser());
+  //     } else {
+  //       toast.error(res.mes);
+  //     }
+  //   }
+  // };
   useEffect(() => {
     if (pid) {
       fetchProduct();
       fetchOtherProducts();
     }
-   
+
     window.scrollTo({
       top: 0,
       left: 0,
@@ -202,9 +206,16 @@ const ProductDetail = () => {
               quantity={quantity}
               handleQuantity={handleQuantity}
             />
-            <Button fullWidth handleClick={AddToCart}>
+            {/* <Button fullWidth handleClick={AddToCart}>
               Add to cart
-            </Button>
+            </Button> */}
+            {/* <Button fullWidth handleClick={()=>AddCart()}></Button> */}
+            <button
+              className="px-4 py-2 w-full bg-main text-white rounded-md"
+              onClick={() => AddCart(product)}
+            >
+              Add to cart
+            </button>
           </div>
         </div>
         <div className="lg:flex-2 flex flex-col gap-2">

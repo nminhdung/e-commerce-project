@@ -28,16 +28,24 @@ import { ToastContainer } from "react-toastify";
 import path from "./utils/paths";
 import { Modal } from "./components";
 import { getSubTotal, showCart } from "./store/app/appSlice";
+import { showCartUi } from "./store/cart/cartSlice";
 
 function App() {
   const dispatch = useDispatch();
   const { isShowModal, modalChildren, isShowCart } = useSelector(
     (state) => state.app
   );
+  const { isShow } = useSelector((state) => state.cart);
   const { isLoggedIn, current } = useSelector((state) => state.user);
-  useEffect(()=>{
-    dispatch(getSubTotal([...current?.cart]))
-  },[current?.cart])
+  // useEffect(() => {
+  //   if (current) {
+  //     if (current?.cart?.length === 0) {
+  //       dispatch(getSubTotal([]));
+  //     } else {
+  //       dispatch(getSubTotal([...current.cart]));
+  //     }
+  //   }
+  // }, [current]);
   useEffect(() => {
     dispatch(getCategories());
   }, [dispatch]);
@@ -45,10 +53,13 @@ function App() {
     <>
       <div className=" font-main relative ">
         {isShowModal && <Modal modalChildren={modalChildren} />}
-        {isShowCart && (
+        {isShow && (
           <div
             className="fixed inset-0 bg-overlay z-40"
-            onClick={() => dispatch(showCart("close"))}
+            onClick={() => {
+              dispatch(showCartUi("close"));
+              // dispatch(showCart("close"));
+            }}
           >
             <CartUi />
           </div>

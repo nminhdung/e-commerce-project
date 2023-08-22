@@ -61,6 +61,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
   }
   if (queries?.color) {
     delete formatedQueries.color;
+   
     const colorArray = queries.color?.split(",");
     const colorQuery = colorArray.map((item) => {
       return { color: { $regex: item, $options: "i" } };
@@ -81,11 +82,14 @@ const getAllProducts = asyncHandler(async (req, res) => {
   const q = { ...colorQueryObject, ...formatedQueries, ...querySearchObject };
   let queryCommand = Product.find(q);
   if (req.query.sort) {
+    console.log(req.query.sort)
     const sortBy = req.query.sort.split(",").join(" ");
-    queryCommand = queryCommand.sort(sortBy);
+    console.log(sortBy)
+    queryCommand = queryCommand.sort(req.query.sort);
   }
   //fields limit
   if (req.query.fields) {
+    
     const fields = req.query.fields.split(",").join(" ");
     queryCommand = queryCommand.select(fields);
   }

@@ -110,8 +110,8 @@ const login = asyncHandler(async (req, res) => {
   }
   const response = await User.findOne({ email });
 
-  const correcPassword = await response.isCorrectPassword(password);
-  if (response && correcPassword) {
+  const correctPassword = await response.isCorrectPassword(password);
+  if (response && correctPassword) {
     //Tach password va role khoi response
     const { password, role, refreshToken, ...data } = response.toObject();
     //Tao accessToken
@@ -423,6 +423,15 @@ const removeProductCart = asyncHandler(async (req, res) => {
     });
   }
 });
+const removeAllProductCart = asyncHandler(async (req, res) => {
+  const { _id } = req.user;
+
+  const response = await User.findOneAndUpdate({ _id }, { cart: [] }, { new: true });
+  return res.status(200).json({
+    success: response ? true : false,
+    mes: response ? "Cleared All Products" : "Can't clear",
+  });
+});
 const createUsers = asyncHandler(async (req, res) => {
   const rs = await User.create(users);
   return res.status(200).json({
@@ -447,4 +456,5 @@ module.exports = {
   addToCart,
   createUsers,
   removeProductCart,
+  removeAllProductCart,
 };
