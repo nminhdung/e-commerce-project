@@ -34,13 +34,13 @@ var userSchema = new mongoose.Schema(
       enum:[12,13],
       default: 13,
     },
-    cart: [
-      {
-        product: { type: mongoose.Types.ObjectId, ref: "Product" },
-        quantity: Number,
-        color: String,
-      },
-    ],
+    // cart: [
+    //   {
+    //     product: { type: mongoose.Types.ObjectId, ref: "Product" },
+    //     quantity: Number,
+    //     color: String,
+    //   },
+    // ],
     address: { type: String },
     wishList: [{ type: mongoose.Types.ObjectId, ref: "Product" }],
     isBlocked: {

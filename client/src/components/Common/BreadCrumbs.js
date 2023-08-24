@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import useBreadcrumbs from "use-react-router-breadcrumbs";
 import { IoIosArrowForward } from "react-icons/io";
 
-const BreadCumbs = ({ title, category }) => {
+const BreadCumbs = ({ title, category}) => {
   const routes = [
     { path: "/", breadcrumb: "Home" },
     { path: "/:category/", breadcrumb: category },

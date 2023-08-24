@@ -216,7 +216,7 @@ const CartUi = () => {
             </span>
           </Link>
           <Link
-            to={`/${path.MEMBER}`}
+            to={`/${path.CHECKOUT}`}
             className="w-full flex items-center justify-center p-2 text-sm bg-main text-white  tracking-widest "
           >
             CHECK OUT

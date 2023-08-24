@@ -58,7 +58,7 @@ const ProductDetail = () => {
     }
   };
   const AddCart = (product) => {
-    dispatch(addItem({...product,quantity,color: selectedColor || colors.length>0 ? colors[0]:"Black",}));
+    dispatch(addItem({...product,quantity,color: selectedColor || colors?.length>0 ? colors[0]:"Black",}));
   };
   // const AddToCart = async () => {
   //   console.log(product);

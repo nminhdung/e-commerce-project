@@ -12,7 +12,7 @@ const InputForm = ({
   placeholder,
   fullWidth,
   defaultValue,
-  style
+  style,
 }) => {
   return (
     <div className={`mb-2 flex flex-col gap-1 h-[78px] ${style}`}>
@@ -28,7 +28,9 @@ const InputForm = ({
         // defaultValue={defaultValue}
         disabled={disabled}
         placeholder={placeholder}
-        className="w-full outline-none border p-2 rounded-md text-black"
+        className={`${fullWidth ? "w-full" : ""} ${
+          style ? style : ""
+        }outline-none border p-2 rounded-md text-black `}
       />
       {errors[name] && (
         <small className="text-xs text-main">{errors[name]?.message}</small>

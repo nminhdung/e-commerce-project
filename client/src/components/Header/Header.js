@@ -58,19 +58,19 @@ const Header = ({ handleNav }) => {
             </span>
             <span>Online Support 24/7</span>
           </div>
+          <div
+            className="flex items-center justify-center gap-2 border-r px-6 cursor-pointer"
+            onClick={() => {
+              // dispatch(showCart("open"));
+              dispatch(showCartUi("open"));
+            }}
+          >
+            <BsFillBagFill color="red" size={15} />
+            {/* <span>{`${current.cart?.length || 0} item(s)`}</span> */}
+            <span>{cartItems.length || 0} item(s)</span>
+          </div>
           {current && (
             <>
-              <div
-                className="flex items-center justify-center gap-2 border-r px-6 cursor-pointer"
-                onClick={() => {
-                  // dispatch(showCart("open"));
-                  dispatch(showCartUi("open"))
-                }}
-              >
-                <BsFillBagFill color="red" size={15} />
-                {/* <span>{`${current.cart?.length || 0} item(s)`}</span> */}
-                <span>{cartItems.length || 0} item(s)</span>
-              </div>
               <div
                 className="relative flex gap-2 px-6 items-center"
                 onMouseEnter={() => setShowOption(true)}

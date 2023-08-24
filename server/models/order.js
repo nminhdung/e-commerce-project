@@ -19,9 +19,16 @@ var orderSchema = new mongoose.Schema({
 
   total: { type: Number },
   coupon: { type: mongoose.Types.ObjectId, ref: "Coupon" },
-  orderBy: {
+  orderByUser: {
     type: mongoose.Types.ObjectId,
     ref: "User",
+  },
+  orderBy: {
+    user:{type: mongoose.Types.ObjectId,ref:"User"},
+    fullname: { type: String },
+    email: { type: String, unique: true },
+    address: { type: String },
+    phone: { type: Number, unique: true },
   },
 });
 

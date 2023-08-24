@@ -277,6 +277,7 @@ const EditProduct = ({ editProduct, setEditProduct, render }) => {
           Update
         </button>
       </div>
+    
     </form>
   );
 };

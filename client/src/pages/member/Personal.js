@@ -44,6 +44,7 @@ const Personal = () => {
       email: current?.email,
       phone: current?.phone,
       avatar: current?.avatar,
+      address: current?.address,
     });
   }, [current]);
   return (
@@ -97,6 +98,16 @@ const Personal = () => {
             },
           }}
           placeholder="Your Phone Number"
+        />
+        <InputForm
+          name="address"
+          label="Address"
+          register={register}
+          errors={errors}
+          validate={{
+            required: "Please fill this field",
+          }}
+          placeholder="Your address"
         />
         <div className="flex items-center gap-1">
           <span className="font-medium">Account Status: </span>

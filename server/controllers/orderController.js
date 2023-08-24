@@ -4,26 +4,33 @@ const Coupon = require("../models/coupon");
 const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
 
+
 const createOrder = asyncHandler(async (req, res) => {
-  const { _id } = req.user;
-  const { coupon } = req.body;
-  const userCart = await User.findById(_id)
-    .select("cart")
-    .populate("cart.product", "title price");
-  const products = userCart?.cart?.map((element) => {
+  // const { _id } = req.user;
+  const { fullname, address, email, phone, coupon, cart, _id } = req.body;
+  if ((!fullname || !address || !phone || !email) && !_id)
+    throw new Error("Missing inputs");
+
+  const products = cart?.map((element) => {
     return {
-      product: element.product._id,
+      product: element._id,
+      title: element.title,
       color: element.color,
       quantity: element.quantity,
-      price: element.product.price,
+      price: element.price,
     };
   });
 
-  let total = userCart?.cart?.reduce(
-    (sum, element) => element.product.price * element.quantity + sum,
+  let total = cart?.reduce(
+    (sum, element) => element.price * element.quantity + sum,
     0
   );
-  const createOrderData = { products, total, orderBy: _id };
+  const createOrderData = {
+    products,
+    total,
+    orderBy: {user:_id  ,fullname, address, email, phone },
+  };
+
   if (coupon) {
     const selectedDiscount = await Coupon.findById(coupon);
     total =
@@ -74,4 +81,5 @@ module.exports = {
   updateStatusOrder,
   getOrderByUser,
   getOrdersByAdmin,
+
 };

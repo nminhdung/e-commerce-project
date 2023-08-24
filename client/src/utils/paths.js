@@ -9,7 +9,7 @@ const path = {
   OUR_SERVICES:"services",
   FAQ:'faq',
   PRODUCT_DETAIL_CATEGORY_PID_TITLE: ':category/:pid/:title',
-  
+  CHECKOUT:"checkout",
   CONFIRM_REGISTER: 'confirmregister/:status',
   RESET_PASSWORD: 'reset-password/:token',
   
