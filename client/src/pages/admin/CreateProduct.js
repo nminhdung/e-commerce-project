@@ -1,19 +1,21 @@
 /* eslint-disable react/style-prop-object */
-import React, { useEffect, useRef, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { Button, InputForm, SelectForm, Loading } from "../../components";
-import { useSelector, useDispatch } from "react-redux";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
+import React, { useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, InputForm, Loading, SelectForm } from "../../components";
 // import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import ClassicEditor from "../../ckeditor/build/ckeditor";
-import { fileToBase64 } from "../../utils/helpers";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { apiCreateProduct } from "../../api";
+import ClassicEditor from "../../ckeditor/build/ckeditor";
 import { closeModal, showModal } from "../../store/app/appSlice";
-import { useNavigate,useLocation } from "react-router-dom";
+import { fileToBase64 } from "../../utils/helpers";
 
 const CreateProduct = () => {
-  const { categories } = useSelector((state) => state.app);
+  const { categories, brands } = useSelector((state) => state.app);
+  console.log(categories);
+  console.log(brands);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -48,7 +50,7 @@ const CreateProduct = () => {
     }
     dispatch(showModal({ modalChildren: <Loading /> }));
     const res = await apiCreateProduct(formData);
-   
+
     if (res.success) {
       reset();
       toast.success(res.mes);
@@ -167,9 +169,10 @@ const CreateProduct = () => {
               label="Brand"
               name="brand"
               validate={{}}
-              options={categories
-                .find((cate) => cate._id === watch("category"))
-                ?.brand?.map((item) => ({ code: item, value: item }))}
+              options={brands?.map((brand) => ({
+                code: brand.title,
+                value: brand.title,
+              }))}
               register={register}
               errors={errors}
               style="flex-1"

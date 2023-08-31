@@ -8,8 +8,7 @@ export const appSlice = createSlice({
     isLoading: false,
     isShowModal: false,
     modalChildren: null,
-    isShowCart: false,
-    subTotal: 0,
+    brands: [],
   },
   reducers: {
     showModal: (state, action) => {
@@ -19,20 +18,6 @@ export const appSlice = createSlice({
     closeModal: (state, action) => {
       state.isShowModal = false;
       state.modalChildren = action.payload.modalChildren;
-    },
-    showCart: (state, action) => {
-      if (action.payload?.toLowerCase() === "open") {
-        state.isShowCart = true;
-      } else {
-        state.isShowCart = false;
-      }
-    },
-    getSubTotal: (state, action) => {
-      let totalPrice = action.payload?.reduce((sum, current) => {
-        return +current.product.price * current.quantity + +sum;
-      }, 0);
-      console.log(totalPrice)
-      state.subTotal = totalPrice;
     },
   },
   extraReducers: (builder) => {
@@ -44,6 +29,17 @@ export const appSlice = createSlice({
       state.categories = action.payload;
     });
     builder.addCase(actions.getCategories.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    builder.addCase(actions.getBrands.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(actions.getBrands.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.brands = action.payload;
+    });
+    builder.addCase(actions.getBrands.rejected, (state) => {
       state.isLoading = false;
     });
   },

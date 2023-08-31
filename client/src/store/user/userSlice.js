@@ -24,6 +24,7 @@ export const userSlice = createSlice({
     clearMess: (state) => {
       state.mes = "";
     },
+  
   },
   extraReducers: (builder) => {
     builder.addCase(actions.getCurrentUser.pending, (state) => {
@@ -40,7 +41,6 @@ export const userSlice = createSlice({
       state.current = null;
       state.token = null;
       state.mes = "Login session has expired.Please login again.";
-      
     });
   },
 });

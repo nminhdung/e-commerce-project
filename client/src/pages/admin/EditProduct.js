@@ -12,7 +12,7 @@ import { apiUpdateProduct } from "../../api";
 import { closeModal, showModal } from "../../store/app/appSlice";
 
 const EditProduct = ({ editProduct, setEditProduct, render }) => {
-  const { categories } = useSelector((state) => state.app);
+  const { categories, brands } = useSelector((state) => state.app);
   const [previewImg, setPreviewImg] = useState({
     thumb: null,
     images: [],
@@ -41,15 +41,11 @@ const EditProduct = ({ editProduct, setEditProduct, render }) => {
     }
     console.log(data.images);
     if (data.images)
-      data.images =
-        data.images?.length === 0
-          ? previewImg.images
-          : data.images
+      data.images = data.images?.length === 0 ? previewImg.images : data.images;
     console.log(data.images);
     for (let image of data.images) {
       formData.append("images", image);
     }
-   
 
     dispatch(showModal({ modalChildren: <Loading /> }));
     const res = await apiUpdateProduct(formData, editProduct._id);
@@ -88,7 +84,7 @@ const EditProduct = ({ editProduct, setEditProduct, render }) => {
       quantity: editProduct?.quantity,
       color: editProduct?.color,
       category: editProduct?.category,
-      brand: editProduct?.brand?.toLowerCase(),
+      brand: editProduct?.brand,
     });
     if (typeof editProduct?.description === "object") {
       setDescription(editProduct?.description.join(", "));
@@ -97,7 +93,9 @@ const EditProduct = ({ editProduct, setEditProduct, render }) => {
     }
     setPreviewImg({
       thumb: editProduct?.thumb || "",
-      images: editProduct?.images.filter(item=>item!=="[object FileList]") || [],
+      images:
+        editProduct?.images.filter((item) => item !== "[object FileList]") ||
+        [],
     });
     setValue("description", description);
   }, [editProduct]);
@@ -114,7 +112,7 @@ const EditProduct = ({ editProduct, setEditProduct, render }) => {
       handlePreviewImg(watch("images"));
     }
   }, [watch("images")]);
-  console.log(previewImg.images)
+  console.log(previewImg.images);
   return (
     <form onSubmit={handleSubmit(onSubmitEdit)}>
       <InputForm
@@ -174,9 +172,10 @@ const EditProduct = ({ editProduct, setEditProduct, render }) => {
           label="Brand"
           name="brand"
           validate={{}}
-          options={categories
-            .find((cate) => cate.title === watch("category"))
-            ?.brand?.map((item) => ({ code: item.toLowerCase(), value: item }))}
+          options={brands?.map((brand) => ({
+            code: brand.title,
+            value: brand.title,
+          }))}
           register={register}
           errors={errors}
           style="flex-1"
@@ -277,7 +276,6 @@ const EditProduct = ({ editProduct, setEditProduct, render }) => {
           Update
         </button>
       </div>
-    
     </form>
   );
 };

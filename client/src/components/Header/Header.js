@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import logo from "../../assets/logo.png";
 import icons from "../../utils/icons";
 import path from "../../utils/paths";
-import { CartUi } from "../../components";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/user/userSlice";
-import { showCart, showModal } from "../../store/app/appSlice";
 import { showCartUi } from "../../store/cart/cartSlice";
 const {
   RiPhoneFill,

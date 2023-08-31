@@ -11,3 +11,15 @@ export const getCategories = createAsyncThunk(
     }
   }
 );
+
+export const getBrands = createAsyncThunk(
+  "app/brands",
+  async (data, { rejectWithValue }) => {
+    const response = await api.apiGetBrands();
+    if (response.success) {
+      return response.listBrand;
+    } else {
+      return rejectWithValue(response);
+    }
+  }
+);

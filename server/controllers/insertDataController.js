@@ -1,9 +1,12 @@
 const Product = require("../models/product");
 const ProductCategory = require("../models/productCategory");
+const Brand = require("../models/brand");
 const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
 const data = require("../../data/data.json");
 const dataCategory = require("../../data/cate-brand.js");
+const dataBrand = require("../../data/brand.js");
+
 const prepareData = async (product) => {
   await Product.create({
     title: product?.productName,
@@ -18,14 +21,19 @@ const prepareData = async (product) => {
     images: product?.images,
     color: product?.variants?.find((element) => element.label === "Color")
       ?.variants[0],
-    totalRatings:0,
+    totalRatings: 0,
   });
 };
 const prepareProductCategory = async (category) => {
   await ProductCategory.create({
     title: category?.cate,
-    brand: category?.brand || [],
+ 
     image: category?.image,
+  });
+};
+const prepareBrand = async (brand) => {
+  await Brand.create({
+    title: brand.title,
   });
 };
 const insertProduct = asyncHandler(async (req, res) => {
@@ -36,6 +44,14 @@ const insertProduct = asyncHandler(async (req, res) => {
   await Promise.all(promises);
   return res.json("Done");
 });
+const insertBrand = asyncHandler(async (req, res) => {
+  const promises = [];
+  for(let brand of dataBrand){
+    promises.push(prepareBrand(brand))
+  }
+  await Promise.all(promises)
+  return res.json("Done")
+});
 const insertCategory = asyncHandler(async (req, res) => {
   const promises = [];
   for (let category of dataCategory) {
@@ -44,4 +60,4 @@ const insertCategory = asyncHandler(async (req, res) => {
   await Promise.all(promises);
   return res.json("Done");
 });
-module.exports = { insertProduct, insertCategory };
+module.exports = { insertProduct, insertCategory ,insertBrand};

@@ -9,7 +9,7 @@ router.post("/mock", UserControllers.createUsers);
 router.put("/confirmregister/:token", UserControllers.confirmRegister);
 router.get("/current", verifyAccessToken, UserControllers.getUser);
 router.post("/login", UserControllers.login);
-router.post("/refreshtoken", UserControllers.expiredToken);
+router.get("/refreshtoken", UserControllers.expiredToken);
 router.get("/logout", UserControllers.logout);
 router.post("/forgotpassword", UserControllers.forgotPassword);
 router.put("/resetpassword", UserControllers.resetPassword);

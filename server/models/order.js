@@ -19,10 +19,7 @@ var orderSchema = new mongoose.Schema({
 
   total: { type: Number },
   coupon: { type: mongoose.Types.ObjectId, ref: "Coupon" },
-  orderByUser: {
-    type: mongoose.Types.ObjectId,
-    ref: "User",
-  },
+
   orderBy: {
     user:{type: mongoose.Types.ObjectId,ref:"User"},
     fullname: { type: String },

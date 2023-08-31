@@ -18,6 +18,12 @@ export const apiLogin = (data) => {
     method: "post",
     data,
   });
+};export const apiLogout = () => {
+  return axios({
+    url: "/user/logout",
+    method: "get",
+    
+  });
 };
 export const getCurrentUser = () => {
   return axios({ url: "/user/current", method: "get" });

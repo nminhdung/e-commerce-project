@@ -3,7 +3,6 @@ import path from "../../utils/paths";
 import defaultImage from "../../assets/default.png";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { showCart } from "../../store/app/appSlice";
 import { formatMoney, formatPrice } from "../../utils/helpers";
 import { BsArrowRightShort } from "react-icons/bs";
 import { apiRemoveCart, apiRemoveAllProductCart } from "../../api";
@@ -18,27 +17,11 @@ import {
   showCartUi,
 } from "../../store/cart/cartSlice";
 const CartUi = () => {
-  const { subTotal } = useSelector((state) => state.app);
-  const { current } = useSelector((state) => state.user);
   const { cartItems,total } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
-  const handleRemoveCart = async (pid, color) => {
-    const res = await apiRemoveCart(pid, color);
-    if (res.success) {
-      dispatch(getCurrentUser());
-    } else {
-      return;
-    }
-  };
-  const handleRemoveAllCart = async () => {
-    const res = await apiRemoveAllProductCart();
-    if (res.success) {
-      dispatch(getCurrentUser());
-    } else {
-      return;
-    }
-  };
+
+
   const handleRemoveAll = () => {
     dispatch(removeAllItems());
   };
@@ -52,7 +35,6 @@ const CartUi = () => {
         <span
           className="text-main text-xl cursor-pointer"
           onClick={() => {
-            // dispatch(showCart("close"));
             dispatch(showCartUi("close"));
           }}
         >
@@ -218,6 +200,7 @@ const CartUi = () => {
           <Link
             to={`/${path.CHECKOUT}`}
             className="w-full flex items-center justify-center p-2 text-sm bg-main text-white  tracking-widest "
+            onClick={()=>dispatch(showCartUi("close"))}
           >
             CHECK OUT
             <span>

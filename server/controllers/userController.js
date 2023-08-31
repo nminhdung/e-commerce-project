@@ -132,6 +132,7 @@ const login = asyncHandler(async (req, res) => {
     res.status(200).json({
       success: true,
       accessToken,
+
       userData: data,
     });
   } else {
@@ -139,9 +140,7 @@ const login = asyncHandler(async (req, res) => {
   }
 });
 const expiredToken = asyncHandler(async (req, res) => {
-  //lay cookie
   const cookie = req.cookies;
-  //Check co token ko
   if (!cookie && !cookie.refreshToken) {
     throw new Error("No refresh token in cookies");
   } else {
@@ -320,8 +319,8 @@ const deleteUser = asyncHandler(async (req, res) => {
 });
 const updateUser = asyncHandler(async (req, res) => {
   const { _id } = req.user;
-  const { firstname, lastname, email, phone,address } = req.body;
-  const data = { firstname, lastname, email, phone ,address};
+  const { firstname, lastname, email, phone, address } = req.body;
+  const data = { firstname, lastname, email, phone, address };
   if (!_id || Object.keys(req.body).length === 0)
     throw new Error("Missing input");
   if (req.file) {
@@ -385,5 +384,4 @@ module.exports = {
   updateAddressUser,
 
   createUsers,
-  
 };

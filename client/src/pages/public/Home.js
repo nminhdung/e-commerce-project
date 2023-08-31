@@ -17,9 +17,8 @@ const { FaAngleRight } = icons;
 const Home = () => {
   const newProducts = useSelector((state) => state.products.products);
   const { isLoggedIn, current } = useSelector((state) => state.user);
-  const categories = useSelector((state) => state.app.categories).filter(
-    (el) => el.brand.length > 0
-  );
+  const {categories,brands} = useSelector((state) => state.app)
+  console.log(brands)
   return (
     <>
       <div className=" w-full xl:w-main grid grid-cols-10 gap-4">
@@ -65,14 +64,14 @@ const Home = () => {
                   </h3>
 
                   <ul>
-                    {cate.brand.map((brand, index) => {
+                    {brands.map((brand, index) => {
                       return (
                         <li
                           key={index}
                           className="flex items-center gap-1 text-gray-500"
                         >
                           <FaAngleRight size={15} />
-                          {brand}
+                          {brand.title}
                         </li>
                       );
                     })}

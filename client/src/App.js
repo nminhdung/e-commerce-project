@@ -22,34 +22,27 @@ import {
 } from "./pages/admin";
 import { Cart, MemberLayout, Personal } from "./pages/member";
 import { CartUi } from "./components";
-import { getCategories } from "./store/app/asyncThunks";
+import { getCategories,getBrands } from "./store/app/asyncThunks";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 
 import path from "./utils/paths";
 import { Modal } from "./components";
-import { getSubTotal, showCart } from "./store/app/appSlice";
 import { showCartUi } from "./store/cart/cartSlice";
 
 function App() {
   const dispatch = useDispatch();
-  const { isShowModal, modalChildren, isShowCart } = useSelector(
+  const { isShowModal, modalChildren } = useSelector(
     (state) => state.app
   );
   const { isShow } = useSelector((state) => state.cart);
   const { isLoggedIn, current } = useSelector((state) => state.user);
-  // useEffect(() => {
-  //   if (current) {
-  //     if (current?.cart?.length === 0) {
-  //       dispatch(getSubTotal([]));
-  //     } else {
-  //       dispatch(getSubTotal([...current.cart]));
-  //     }
-  //   }
-  // }, [current]);
+
   useEffect(() => {
     dispatch(getCategories());
+    dispatch(getBrands())
   }, [dispatch]);
+  
   return (
     <>
       <div className=" font-main relative ">

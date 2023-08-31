@@ -111,7 +111,7 @@ const ManageProducts = () => {
   return (
     <div className="w-full flex flex-col gap-4">
       <h1 className="capitalize text-3xl p-4 flex items-center border-main border-b-2">
-        {editProduct ? "Update Product" : "Manage Users"}
+        {editProduct ? "Update Product" : "Manage Products"}
       </h1>
       <div className="flex w-full px-4 flex-col ">
         {!editProduct && (
@@ -175,6 +175,7 @@ const ManageProducts = () => {
             </thead>
             <tbody>
               {listProduct?.map((product, index) => {
+                
                 return (
                   <tr key={product._id} className="border">
                     <td className="py-2 px-4 border-r">

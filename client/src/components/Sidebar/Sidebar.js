@@ -4,7 +4,7 @@ import { createSlug } from "../../utils/helpers";
 import { useSelector } from "react-redux";
 const Sidebar = () => {
   const categories = useSelector((state) => state.app.categories);
-
+ 
   return (
     <div className="flex flex-col border">
       <h1 className="px-5 pt-[15px] pb-[14px] text-base bg-main text-white font-semibold">

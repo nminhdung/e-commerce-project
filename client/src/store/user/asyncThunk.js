@@ -8,6 +8,13 @@ export const getCurrentUser = createAsyncThunk(
     if (response.success) {
       return response.result;
     } else {
+      let refreshToken = localStorage.getItem("shop/user").refreshToken;
+      console.log("error")
+      const res = await api.apiRefreshToken({ refreshToken: refreshToken });
+      if (res.success) {
+        localStorage.getItem("shop/user").token = res.newAccessToken;
+      }
+      console.log(localStorage.getItem("shop/user").token);
       return rejectWithValue(response);
     }
   }

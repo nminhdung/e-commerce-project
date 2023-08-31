@@ -6,21 +6,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearMess, logout } from "../../store/user/userSlice";
 import icons from "../../utils/icons";
 import { toast } from "react-toastify";
+import { apiLogout } from "../../api";
 
 const { AiOutlineLogout } = icons;
 const TopHeader = () => {
   const dispatch = useDispatch();
-  const { isLoggedIn, current, mes } = useSelector((state) => state.user);
+  const { isLoggedIn, current, mes,token } = useSelector((state) => state.user);
+
+  const handleLogout = async () => {
+    const res = await apiLogout();
+    if (res.success) {
+      toast.success(res.mes);
+      dispatch(logout());
+    }
+  };
 
   useEffect(() => {
     const setTimeoutId = setTimeout(() => {
       if (isLoggedIn) {
         dispatch(getCurrentUser());
-      
       }
     }, 500);
     return () => clearTimeout(setTimeoutId);
-  }, [dispatch, isLoggedIn]);
+  }, [dispatch, isLoggedIn,token]);
   useEffect(() => {
     if (mes) {
       dispatch(clearMess());
@@ -53,9 +61,7 @@ const TopHeader = () => {
             <div className="flex items-center gap-2 text-sm">
               <span>{`Welcome, ${current?.firstname} ${current?.lastname}`}</span>
               <span
-                onClick={() => {
-                  dispatch(logout());
-                }}
+                onClick={() => handleLogout()}
                 className="hover:rounded-full hover:bg-gray-200 hover:text-main p-2 cursor-pointer"
               >
                 <AiOutlineLogout size={18} />
