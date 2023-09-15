@@ -25,6 +25,7 @@ instance.interceptors.request.use(
   }
 );
 
+//truoc khi tra du lieu ve cho nguoi dung
 // Add a response interceptor
 instance.interceptors.response.use(
   function (response) {

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from "react";
 import path from "../../utils/paths";
 import icons from "../../utils/icons";
-import loginBg from "../../assets/bglogin.jpg"
+import loginBg from "../../assets/bglogin.jpg";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { InputField, Button } from "../../components";
@@ -62,7 +62,7 @@ const Login = () => {
   }, [isRegister]);
   useEffect(() => {
     if (isLoggedIn) {
-      toast.success("You Logined")
+      toast.success("You Logined");
       navigate(`/${path.HOME}`);
     }
   }, [isLoggedIn]);
@@ -121,7 +121,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-screen h-screen relative">
+    <div className="w-screen h-screen  relative">
       {isVerifyEmail && (
         <div className="bg-overlay absolute top-0 left-0 right-0 bottom-0 z-50 flex flex-col justify-center items-center">
           <div className="bg-white p-8 w-[500px] rounded-md relative">
@@ -182,10 +182,10 @@ const Login = () => {
       <img
         src={loginBg}
         alt="background"
-        className="w-full h-full  object-cover"
+        className="w-full h-full object-cover"
       />
-      <div className="absolute top-0 bottom-0 lef-0 right-1/2 flex items-center ">
-        <div className="p-8 bg-white rounded-md min-w-[500px] flex flex-col items-center">
+      <div className="absolute top-0 bottom-0  left-[10%]  md:right-1/2 right-0 flex items-center ">
+        <div className="p-8 bg-white rounded-md md:min-w-[500px]  min-w-[200px] flex flex-col items-center">
           <h1 className="text-[28px] font-semibold  text-main mb-8 ">
             {isRegister ? "Register" : "Login"}
           </h1>

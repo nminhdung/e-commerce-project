@@ -10,8 +10,7 @@ const createProduct = asyncHandler(async (req, res) => {
     throw new Error("Missing inputs");
   const thumb = req.files.thumb[0].path;
   const images = req.files?.images?.map((item) => item.path);
-  console.log(brand);
-  console.log(category);
+ 
   if (thumb) req.body.thumb = thumb;
   if (images) req.body.images = images;
   if (req.body.title) {

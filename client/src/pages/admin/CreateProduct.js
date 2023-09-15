@@ -37,6 +37,9 @@ const CreateProduct = () => {
     if (data.category) {
       data.category = categories?.find((el) => el._id === data.category)?.title;
     }
+    if(data.brand){
+      data.brand = brands?.find(el=>el._id===data.brand)?.title
+    }
     const formData = new FormData();
 
     for (let i of Object.entries(data)) {
@@ -170,7 +173,7 @@ const CreateProduct = () => {
               name="brand"
               validate={{}}
               options={brands?.map((brand) => ({
-                code: brand.title,
+                code: brand._id,
                 value: brand.title,
               }))}
               register={register}

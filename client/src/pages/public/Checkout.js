@@ -51,10 +51,61 @@ const Checkout = () => {
           <BreadCumbs category="checkout" />
         </div>
       </div>
-      <div className="xl:w-main mx-auto grid grid-cols-2 mt-6">
+      <div className="xl:w-main mx-auto grid md:grid-cols-2 mt-6 gap-2">
+        <div className="w-full p-4 shadow-md ">
+          <h2 className="font-semibold text-xl">Your order</h2>
+          <div className="mt-4">
+            {cartItems.length === 0 && (
+              <h4>You don't have any product in your order.</h4>
+            )}
+            {cartItems.length > 0 &&
+              cartItems.map((productCart) => {
+                return (
+                  <article
+                    key={productCart._id}
+                    className=" flex items-center relative  p-2 gap-2"
+                  >
+                    <div className="border">
+                      {" "}
+                      <img
+                        src={productCart.thumb}
+                        className="w-[80px] h-[80px] object-cover"
+                        alt="thumb"
+                      />
+                    </div>
+
+                    <span
+                      className="flex p-1 items-center justify-center text-white
+                     rounded-full w-[20px] h-[20px] text-sm absolute top-[0px] left-[80px] bg-main"
+                    >
+                      {productCart.quantity}
+                    </span>
+                    <div className="flex flex-col ">
+                      <h4 className="text-sm">{productCart.title}</h4>
+                      <span className="text-gray-400 text-xs">
+                        {productCart.color}
+                      </span>
+                    </div>
+                    <span className="ml-auto font-semibold">
+                      {formatMoney(
+                        formatPrice(productCart.quantity * productCart.price)
+                      )}{" "}
+                      VND
+                    </span>
+                  </article>
+                );
+              })}
+          </div>
+          <div className="py-2 border-t-4 flex items-center justify-between">
+            <h2 className="font-semibold tracking-wide">Total</h2>
+            <span className="ml-auto font-semibold">
+              {formatMoney(formatPrice(total))} VND
+            </span>
+          </div>
+        </div>
         <form
           onSubmit={handleSubmit(handleCheckout)}
-          className="w-full  pr-4 border-r"
+          className="w-full pr-4  mt-4 md:mt-0"
         >
           <InputForm
             name="fullname"
@@ -120,57 +171,6 @@ const Checkout = () => {
             </button>
           </div>
         </form>
-        <div className="w-full p-4 shadow-md ">
-          <h2 className="font-semibold text-xl">Your order</h2>
-          <div className="mt-4">
-            {cartItems.length === 0 && (
-              <h4>You don't have any product in your order.</h4>
-            )}
-            {cartItems.length > 0 &&
-              cartItems.map((productCart) => {
-                return (
-                  <article
-                    key={productCart._id}
-                    className=" flex items-center relative  p-2 gap-2"
-                  >
-                    <div className="border">
-                      {" "}
-                      <img
-                        src={productCart.thumb}
-                        className="w-[80px] h-[80px] object-cover"
-                        alt="thumb"
-                      />
-                    </div>
-
-                    <span
-                      className="flex p-1 items-center justify-center text-white
-                     rounded-full w-[20px] h-[20px] text-sm absolute top-[0px] left-[80px] bg-main"
-                    >
-                      {productCart.quantity}
-                    </span>
-                    <div className="flex flex-col ">
-                      <h4 className="text-sm">{productCart.title}</h4>
-                      <span className="text-gray-400 text-xs">
-                        {productCart.color}
-                      </span>
-                    </div>
-                    <span className="ml-auto font-semibold">
-                      {formatMoney(
-                        formatPrice(productCart.quantity * productCart.price)
-                      )}{" "}
-                      VND
-                    </span>
-                  </article>
-                );
-              })}
-          </div>
-          <div className="py-2 border-t-4 flex items-center justify-between">
-            <h2 className="font-semibold tracking-wide">Total</h2>
-            <span className="ml-auto font-semibold">
-              {formatMoney(formatPrice(total))} VND
-            </span>
-          </div>
-        </div>
       </div>
     </div>
   );
