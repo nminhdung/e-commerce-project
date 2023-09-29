@@ -21,11 +21,10 @@ var orderSchema = new mongoose.Schema({
   coupon: { type: mongoose.Types.ObjectId, ref: "Coupon" },
 
   orderBy: {
-    user:{type: mongoose.Types.ObjectId,ref:"User"},
+    userId:{type: String},
     fullname: { type: String },
-    email: { type: String, unique: true },
     address: { type: String },
-    phone: { type: Number, unique: true },
+    phone: { type: Number, dropDups: true},
   },
 });
 

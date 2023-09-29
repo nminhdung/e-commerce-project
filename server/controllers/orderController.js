@@ -4,11 +4,10 @@ const Coupon = require("../models/coupon");
 const asyncHandler = require("express-async-handler");
 const slugify = require("slugify");
 
-
 const createOrder = asyncHandler(async (req, res) => {
   // const { _id } = req.user;
-  const { fullname, address, email, phone, coupon, cart, _id } = req.body;
-  if ((!fullname || !address || !phone || !email) && !_id)
+  const { fullname, address, phone, coupon, cart, _id } = req.body;
+  if ((!fullname || !address || !phone) && !_id)
     throw new Error("Missing inputs");
 
   const products = cart?.map((element) => {
@@ -28,9 +27,20 @@ const createOrder = asyncHandler(async (req, res) => {
   const createOrderData = {
     products,
     total,
-    orderBy: {user:_id  ,fullname, address, email, phone },
+   
   };
-
+  if (!_id) {
+    createOrderData.orderBy = { fullname, address, phone };
+  } else {
+    const res = await User.findById(_id);
+    const data = {
+      userId: _id,
+      fullname: `${res.lastname} ${res.firstname}`,
+      address: res.address,
+      phone: res.phone,
+    };
+    createOrderData.orderBy = { ...data };
+  }
   if (coupon) {
     const selectedDiscount = await Coupon.findById(coupon);
     total =
@@ -62,10 +72,11 @@ const updateStatusOrder = asyncHandler(async (req, res) => {
 const getOrderByUser = asyncHandler(async (req, res) => {
   const { _id } = req.user;
 
-  const response = await Order.find({ orderBy: _id });
+  const response = await Order.find({ orderBy: { user: _id } });
+
   return res.status(200).json({
     success: response ? true : false,
-    response: response ? response : "Can not create order",
+    orders: response ? response : "Can not create order",
   });
 });
 const getOrdersByAdmin = asyncHandler(async (req, res) => {
@@ -81,5 +92,4 @@ module.exports = {
   updateStatusOrder,
   getOrderByUser,
   getOrdersByAdmin,
-
 };

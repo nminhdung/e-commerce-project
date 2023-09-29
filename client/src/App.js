@@ -29,6 +29,7 @@ import { ToastContainer } from "react-toastify";
 import path from "./utils/paths";
 import { Modal } from "./components";
 import { showCartUi } from "./store/cart/cartSlice";
+import MyOrder from "./pages/member/MyOrder";
 
 function App() {
   const dispatch = useDispatch();
@@ -75,6 +76,7 @@ function App() {
             <Route path={path.MEMBER} element={<MemberLayout />}>
               <Route path={path.PERSONAL} element={<Personal />} />
               <Route path={path.CART} element={<Cart />} />
+              <Route path={path.ORDER} element={<MyOrder />} />
             </Route>
           </Route>
           <Route path={path.LOGIN} element={<Login />} />

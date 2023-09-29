@@ -23,6 +23,7 @@ const path = {
   MEMBER:"member",
   PERSONAL:"personal",
   CART:"cart",
+  ORDER:"my-order"
 };
 
 export default path;

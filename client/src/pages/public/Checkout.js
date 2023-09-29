@@ -3,7 +3,7 @@ import { BreadCumbs, InputForm } from "../../components/";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { formatMoney, formatPrice } from "../../utils/helpers";
-import { apiCreateOrder } from "../../api";
+import { apiCreateOrder,apiGetOrderByUser } from "../../api";
 import { toast } from "react-toastify";
 import { removeAllItems } from "../../store/cart/cartSlice";
 const Checkout = () => {
@@ -29,6 +29,7 @@ const Checkout = () => {
     if (res.success) {
       toast.success(res.mes);
       dispatch(removeAllItems());
+      
     } else {
       toast.error(res.mes);
     }
@@ -37,7 +38,6 @@ const Checkout = () => {
   useEffect(() => {
     if (current) {
       setValue("fullname", `${current.lastname}  ${current.firstname}`);
-      setValue("email", current.email);
       setValue("phone", current.phone);
       setValue("address", current.address);
     }
@@ -117,20 +117,7 @@ const Checkout = () => {
             validate={{ required: "Please fill this field" }}
             placeholder="Enter your full name"
           />
-          <InputForm
-            name="email"
-            label="Contact"
-            register={register}
-            errors={errors}
-            validate={{
-              required: "Please fill this field",
-              pattern: {
-                value: /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/i,
-                message: "Invalid email address",
-              },
-            }}
-            placeholder="Email"
-          />
+         
           <InputForm
             name="phone"
             label="Phone"

@@ -262,4 +262,11 @@ export const MemberSidebarList = [
     //   },
     // ],
   },
+  {
+    id: 3,
+    type: "single",
+    text: "My Order",
+    path: `/${path.MEMBER}/${path.ORDER}`,
+    icon: <MdDashboard />,
+  },
 ];
