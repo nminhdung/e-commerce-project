@@ -82,11 +82,7 @@ const Home = () => {
           })}
         </div>
       </div>
-      <div className="my-8 w-full xl:w-main">
-        <h3 className="font-semibold capitalize text-[20px] border-b-2 border-main cursor-pointer text-black">
-          blog posts
-        </h3>
-      </div>
+     
     </>
   );
 };

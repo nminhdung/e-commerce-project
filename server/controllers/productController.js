@@ -5,10 +5,11 @@ const slugify = require("slugify");
 //CRUD Product
 const createProduct = asyncHandler(async (req, res) => {
   const { title, price, description, brand, category, color } = req.body;
+  console.log(req.body)
   console.log(req.files);
   if (!title || !price || !description || !brand || !category || !color)
     throw new Error("Missing inputs");
-  const thumb = req.files.thumb[0].path;
+  const thumb = req.files?.thumb.path;
   const images = req.files?.images?.map((item) => item.path);
  
   if (thumb) req.body.thumb = thumb;

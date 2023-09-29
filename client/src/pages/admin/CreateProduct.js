@@ -37,20 +37,33 @@ const CreateProduct = () => {
     if (data.category) {
       data.category = categories?.find((el) => el._id === data.category)?.title;
     }
-    if(data.brand){
-      data.brand = brands?.find(el=>el._id===data.brand)?.title
+    if (data.brand) {
+      data.brand = brands?.find((el) => el._id === data.brand)?.title;
     }
+
     const formData = new FormData();
 
     for (let i of Object.entries(data)) {
       formData.append(i[0], i[1]);
     }
-    if (data.thumb) formData.append("thumb", data.thumb[0]);
+    for (var pair of formData.entries(data)) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+    if (data.thumb) {
+      formData.delete("thumb");
+      formData.append("thumb", data.thumb[0]);
+    }
     if (data.images) {
+      formData.delete("images");
       for (let image of data.images) {
         formData.append("images", image);
       }
     }
+    for (var a of formData.entries(data)) {
+      console.log(a[0] + ", " + a[1]);
+    }
+    console.log(formData.getAll("thumb"));
+    console.log(formData.getAll("images"));
     dispatch(showModal({ modalChildren: <Loading /> }));
     const res = await apiCreateProduct(formData);
 
@@ -63,10 +76,11 @@ const CreateProduct = () => {
     } else {
       toast.error(res.mes);
     }
-    // console.log(res);
-    // console.log(formData);
-    // console.log(data);
+    console.log(res);
+    console.log(formData);
+    console.log(data);
   };
+
   const handlePreviewThumb = async (file) => {
     const base64Thumb = await fileToBase64(file);
     setPreviewImg((prev) => ({ ...prev, thumb: base64Thumb }));
@@ -100,11 +114,13 @@ const CreateProduct = () => {
   // };
   useEffect(() => {
     if (watch("thumb").length > 0) {
+      console.log(watch("thumb"));
       handlePreviewThumb(watch("thumb")[0]);
     }
   }, [watch("thumb")]);
   useEffect(() => {
     if (watch("images").length > 0) {
+      console.log(watch("images"));
       handlePreviewImg(watch("images"));
     }
   }, [watch("images")]);

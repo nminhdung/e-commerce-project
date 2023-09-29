@@ -108,7 +108,7 @@ const Header = ({ handleNav }) => {
           )}
         </div>
 
-        <div className="lg:hidden">
+        <div className="lg:hidden cursor-pointer" onClick={ ()=>dispatch(showCartUi("open"))}>
           <AiOutlineShoppingCart size={30} color="black" />
         </div>
       </header>

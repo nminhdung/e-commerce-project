@@ -11,7 +11,6 @@ const Checkout = () => {
     register,
     handleSubmit,
     formState: { errors },
-
     watch,
     setValue,
   } = useForm();
@@ -45,14 +44,16 @@ const Checkout = () => {
   }, [current]);
   return (
     <div className="w-full pb-[100px]">
-      <div className="bg-gray-100 h-[81px] flex justify-center items-center">
+      <div className="bg-gray-100 h-[81px] flex md:justify-center items-center">
         <div className="xl:w-main">
           <h3 className="font-bold">Check out</h3>
           <BreadCumbs category="checkout" />
         </div>
       </div>
+
       <div className="xl:w-main mx-auto grid md:grid-cols-2 mt-6 gap-2">
         <div className="w-full p-4 shadow-md ">
+          
           <h2 className="font-semibold text-xl">Your order</h2>
           <div className="mt-4">
             {cartItems.length === 0 && (
@@ -105,7 +106,7 @@ const Checkout = () => {
         </div>
         <form
           onSubmit={handleSubmit(handleCheckout)}
-          className="w-full pr-4  mt-4 md:mt-0"
+          className="w-full pr-4  flex flex-col justify-between mt-4 md:mt-0"
         >
           <InputForm
             name="fullname"
@@ -159,7 +160,7 @@ const Checkout = () => {
             errors={errors}
             placeholder="Coupon"
           />
-          <div className="flex  items-center justify-end gap-4 mt-6">
+          <div className="flex w-full items-center justify-end gap-4 ">
             <button className="px-4 py-2 bg-black text-white rounded-md ">
               Continue Shopping
             </button>
@@ -167,9 +168,10 @@ const Checkout = () => {
               type="submit"
               className="px-4 py-2 bg-main text-white rounded-md"
             >
-              Check out{" "}
+              Order
             </button>
           </div>
+     
         </form>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import logoAdmin from "../../assets/logoadmin.png";
 import { AiFillHome } from "react-icons/ai";
-import { adminSidebarList,MemberSidebarList } from "../../utils/constants";
+import { MemberSidebarList } from "../../utils/constants";
 import { useSelector } from "react-redux";
 import { AiOutlineDown, AiOutlineRight } from "react-icons/ai";
 import avatar from "../../assets/avatar-default.png";
