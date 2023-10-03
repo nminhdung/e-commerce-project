@@ -27,7 +27,6 @@ const createOrder = asyncHandler(async (req, res) => {
   const createOrderData = {
     products,
     total,
-   
   };
   if (!_id) {
     createOrderData.orderBy = { fullname, address, phone };
@@ -72,8 +71,11 @@ const updateStatusOrder = asyncHandler(async (req, res) => {
 const getOrderByUser = asyncHandler(async (req, res) => {
   const { _id } = req.user;
 
-  const response = await Order.find({ orderBy: { user: _id } });
-
+  const response = await Order.find({ "orderBy.userId": _id }).populate({
+    path: "products",
+    populate: { path: "product" ,select:"title"},
+  });
+  console.log(response);
   return res.status(200).json({
     success: response ? true : false,
     orders: response ? response : "Can not create order",
