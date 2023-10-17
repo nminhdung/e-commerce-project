@@ -1,8 +1,6 @@
 import axios from "axios";
 import { apiRefreshToken } from "./api";
-import { useDispatch } from "react-redux";
 
-import { getCurrentUser } from "./store/user/asyncThunk";
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
