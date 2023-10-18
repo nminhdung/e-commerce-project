@@ -50,11 +50,9 @@ const CreateProduct = () => {
       console.log(pair[0] + ", " + pair[1]);
     }
     if (data.thumb) {
-      formData.delete("thumb");
       formData.append("thumb", data.thumb[0]);
     }
     if (data.images) {
-      formData.delete("images");
       for (let image of data.images) {
         formData.append("images", image);
       }
