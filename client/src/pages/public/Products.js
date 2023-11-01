@@ -78,15 +78,14 @@ const Products = () => {
 
     const q = { ...queries, ...priceQuery };
     if (category.toLowerCase() === "all") {
-      delete q.category;
-    } else {
       q.category = category;
-    }
+    } 
     // console.log(q);
     fetchProductsByCategory({
       ...q,
       limit: +process.env.REACT_APP_ITEM_PERPAGE,
     });
+    window.scrollTo(0, 0)
   }, [params, sort, category]);
   useEffect(() => {
     const paramsList = [];
@@ -142,6 +141,7 @@ const Products = () => {
           {data?.listProduct?.map((item) => {
             return <Product key={item._id} productData={item} normal={true} />;
           })}
+          {data?.listProduct?.length === 0 && <h1>Products are coming soon...</h1>}
         </div>
       </div>
       <div className="xl:w-main mx-auto mt-8 flex ">

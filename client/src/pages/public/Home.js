@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React from "react";
 import { useSelector } from "react-redux";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import {
   Banner,
   DealDaily,
@@ -17,7 +18,8 @@ const { FaAngleRight } = icons;
 const Home = () => {
   const newProducts = useSelector((state) => state.products.products);
   const { isLoggedIn, current } = useSelector((state) => state.user);
-  const {categories,brands} = useSelector((state) => state.app)
+  const { categories, brands } = useSelector((state) => state.app)
+  const navigate = useNavigate()
   console.log(brands)
   return (
     <>
@@ -68,7 +70,15 @@ const Home = () => {
                       return (
                         <li
                           key={index}
-                          className="flex items-center gap-1 text-gray-500"
+                          className="flex items-center gap-1 text-gray-500 cursor-pointer hover:underline"
+                          onClick={() => {
+                            navigate({
+                              pathname: `/${cate.title}`,
+                              search: createSearchParams({
+                                brand: brand.title,
+                              }).toString()
+                            })
+                          }}
                         >
                           <FaAngleRight size={15} />
                           {brand.title}
@@ -82,7 +92,7 @@ const Home = () => {
           })}
         </div>
       </div>
-     
+
     </>
   );
 };
