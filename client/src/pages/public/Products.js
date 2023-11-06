@@ -18,9 +18,9 @@ const Products = () => {
   const [params] = useSearchParams();
   const [sort, setSort] = useState("");
   const navigate = useNavigate();
-  console.log(category);
 
   const fetchProductsByCategory = async (queries) => {
+    if (category && category !== 'products') queries.category = category
     const response = await api.apiGetProducts(queries);
 
     if (response.success) {
@@ -45,14 +45,7 @@ const Products = () => {
   );
 
   useEffect(() => {
-    let paramsList = [];
-    for (let i of params.entries()) {
-      paramsList.push(i);
-    }
-    const queries = {};
-    for (let i of paramsList) {
-      queries[i[0]] = i[1];
-    }
+    const queries = Object.fromEntries([...params])
     let priceQuery = {};
     if (queries.from && queries.to) {
       priceQuery = {
@@ -70,23 +63,16 @@ const Products = () => {
         queries.price = { lte: queries.to };
       }
     }
-
+  
     delete queries.from;
     delete queries.to;
-    console.log(queries);
-    console.log(paramsList);
+
 
     const q = { ...queries, ...priceQuery };
-    if (category.toLowerCase() === "all") {
-      q.category = category;
-    } 
-    // console.log(q);
-    fetchProductsByCategory({
-      ...q,
-      limit: +process.env.REACT_APP_ITEM_PERPAGE,
-    });
+
+    fetchProductsByCategory(q);
     window.scrollTo(0, 0)
-  }, [params, sort, category]);
+  }, [params]);
   useEffect(() => {
     const paramsList = [];
     //giu lai cac truong filter truoc do
@@ -106,6 +92,7 @@ const Products = () => {
       search: createSearchParams(queries).toString(),
     });
   }, [sort]);
+
   return (
     <div className="w-full">
       <div className="bg-gray-100 h-[81px] flex justify-center items-center">
