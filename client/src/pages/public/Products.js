@@ -63,7 +63,7 @@ const Products = () => {
         queries.price = { lte: queries.to };
       }
     }
-  
+
     delete queries.from;
     delete queries.to;
 
@@ -87,10 +87,14 @@ const Products = () => {
     if (sort) {
       queries.sort = sort;
     } else delete queries.sort;
-    navigate({
-      pathname: `/${category}`,
-      search: createSearchParams(queries).toString(),
-    });
+    console.log('render sort')
+    // Nếu dùng fetch sau khi filter có thể fix được lỗi back về trang trước
+    fetchProductsByCategory(queries);
+    // Dùng navigate thì có thể tạo được nhứng field filter trên thanh search nhưng găp lỗi back về trang trước
+    // navigate({
+    //   path: `/${category}`,
+    //   search: createSearchParams(queries).toString()
+    // })
   }, [sort]);
 
   return (
@@ -106,12 +110,15 @@ const Products = () => {
           <span className="font-semibold text-sm">Filter by:</span>
           <div className="flex gap-2">
             <FilterProduct
+              fetchProductsByCategory={fetchProductsByCategory}
               name="price"
               activeClick={activeClick}
               changeFilter={changeFilter}
               type="input"
             />
             <FilterProduct
+              fetchProductsByCategory={fetchProductsByCategory}
+
               name="color"
               activeClick={activeClick}
               changeFilter={changeFilter}

@@ -6,6 +6,7 @@ import {
   useNavigate,
   useParams,
   useSearchParams,
+  useLocation
 } from "react-router-dom";
 import { useEffect } from "react";
 import * as api from "../../api";
@@ -18,6 +19,7 @@ const FilterProduct = ({
   activeClick,
   changeFilter,
   type = "checkbox",
+  fetchProductsByCategory
 }) => {
   const [selected, setSelected] = useState([]);
   const { category } = useParams();
@@ -25,7 +27,7 @@ const FilterProduct = ({
   const [highestPrice, setHighestPrice] = useState();
   const [price, setPrice] = useState({ from: "", to: "" });
   const navigate = useNavigate();
-
+  const location = useLocation()
   const handleSelect = (e) => {
     const alreadyElement = selected?.find((item) => item === e.target.value);
     if (alreadyElement) {
@@ -50,15 +52,20 @@ const FilterProduct = ({
       queries[i[0]] = i[1];
     }
     //###############################
-    
+
     if (selected.length > 0) {
       queries.color = selected.join(",");
       queries.page = 1;
     } else delete queries.color;
-    navigate({
-      pathname: `/${category}`,
-      search: createSearchParams(queries).toString(),
-    });
+    // Nếu dùng fetch sau khi filter có thể fix được lỗi back về trang trước nhưng ko tạo được field trên thanh search
+    fetchProductsByCategory(queries);
+    // Dùng navigate thì có thể tạo được nhứng field filter trên thanh search nhưng găp lỗi back về trang trước
+    // navigate({
+    //   pathname: location.pathname,
+    //   search: createSearchParams(queries).toString(),
+    // });
+
+
   }, [selected]);
 
   const debouncePriceFrom = useDebounce(price.from, 2000);
@@ -81,11 +88,14 @@ const FilterProduct = ({
     if (Number(price.to) > 0) {
       queries.to = price.to;
     } else delete queries.to;
-    queries.page = 1;
-    navigate({
-      pathname: `/${category}`,
-      search: createSearchParams(queries).toString(),
-    });
+    // queries.page = 1;
+    // Nếu dùng fetch sau khi filter có thể fix được lỗi back về trang trước
+    fetchProductsByCategory(queries);
+    // Dùng navigate thì có thể tạo được nhứng field filter trên thanh search nhưng găp lỗi back về trang trước
+    // navigate({
+    //   pathname: location.pathname,
+    //   search: createSearchParams(queries).toString(),
+    // });
   }, [debouncePriceFrom, debouncePriceTo]);
 
   useEffect(() => {
@@ -103,7 +113,7 @@ const FilterProduct = ({
       {activeClick === name && (
         <div
           className="absolute w-fit left-0 top-[calc(100%+1px)] bg-white  border z-10 min-w-[150px]"
-          // onClick={(e) => e.stopPropagation()}
+        // onClick={(e) => e.stopPropagation()}
         >
           {type === "checkbox" && (
             <div className="">
