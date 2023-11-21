@@ -52,27 +52,7 @@ instance.interceptors.response.use(
         return instance(originalRequest);
       }
     }
-    // if (error.response.status === 401) {
-    //   const res = await apiRefreshToken();
-    //   if (res.success) {
-    //     window.localStorage.setItem(
-    //       "persist:shop/user",
-    //       JSON.stringify({
-    //         ...window.localStorage.getItem("persist:shop/user"),
-    //         token: res.newAccessToken,
-    //         isLoggedIn: true,
-    //       })
-    //     );
-    //     error.config.headers = {
-    //       ...error.config.headers,
-    //       authorization: `Bearer ${res.newAccessToken}`,
-    //     };
-    //   } else {
-    //     return Promise.reject(error);
-    //   }
-    //   return instance(error.config);
-    // }
-    // // return error.response.data;
+
     return Promise.reject(error);
   }
 );
