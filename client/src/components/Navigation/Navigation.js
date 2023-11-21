@@ -17,7 +17,7 @@ const Navigation = ({ isNav, handleNav }) => {
         {navigation.map((navElement) => {
           return (
             <NavLink
-              to={navElement.path}
+              to={navElement.value === "PRODUCTS" ? "/all" : navElement.path}
               key={navElement.id}
               className={(navActive) =>
                 navActive.isActive

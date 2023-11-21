@@ -20,7 +20,6 @@ const Products = () => {
   const navigate = useNavigate();
 
   const fetchProductsByCategory = async (queries) => {
-    if (category && category !== 'products') queries.category = category
     const response = await api.apiGetProducts(queries);
 
     if (response.success) {
@@ -45,7 +44,14 @@ const Products = () => {
   );
 
   useEffect(() => {
-    const queries = Object.fromEntries([...params])
+    let paramsList = [];
+    for (let i of params.entries()) {
+      paramsList.push(i);
+    }
+    const queries = {};
+    for (let i of paramsList) {
+      queries[i[0]] = i[1];
+    }
     let priceQuery = {};
     if (queries.from && queries.to) {
       priceQuery = {
@@ -66,13 +72,20 @@ const Products = () => {
 
     delete queries.from;
     delete queries.to;
-
+    console.log(queries);
+    console.log(paramsList);
 
     const q = { ...queries, ...priceQuery };
-
-    fetchProductsByCategory(q);
+    if (category.toLowerCase() === "all") {
+      q.category = category;
+    }
+    // console.log(q);
+    fetchProductsByCategory({
+      ...q,
+      limit: +process.env.REACT_APP_ITEM_PERPAGE,
+    });
     window.scrollTo(0, 0)
-  }, [params]);
+  }, [params, sort, category]);
   useEffect(() => {
     const paramsList = [];
     //giu lai cac truong filter truoc do
@@ -87,16 +100,14 @@ const Products = () => {
     if (sort) {
       queries.sort = sort;
     } else delete queries.sort;
-    console.log('render sort')
     // Nếu dùng fetch sau khi filter có thể fix được lỗi back về trang trước
     fetchProductsByCategory(queries);
     // Dùng navigate thì có thể tạo được nhứng field filter trên thanh search nhưng găp lỗi back về trang trước
     // navigate({
-    //   path: `/${category}`,
-    //   search: createSearchParams(queries).toString()
-    // })
+    //   pathname: location.pathname,
+    //   search: createSearchParams(queries).toString(),
+    // });
   }, [sort]);
-
   return (
     <div className="w-full">
       <div className="bg-gray-100 h-[81px] flex justify-center items-center">
@@ -110,18 +121,17 @@ const Products = () => {
           <span className="font-semibold text-sm">Filter by:</span>
           <div className="flex gap-2">
             <FilterProduct
-              fetchProductsByCategory={fetchProductsByCategory}
               name="price"
               activeClick={activeClick}
               changeFilter={changeFilter}
+              fetchProductsByCategory={fetchProductsByCategory}
               type="input"
             />
             <FilterProduct
-              fetchProductsByCategory={fetchProductsByCategory}
-
               name="color"
               activeClick={activeClick}
               changeFilter={changeFilter}
+              fetchProductsByCategory={fetchProductsByCategory}
             />
           </div>
         </div>

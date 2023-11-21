@@ -9,7 +9,7 @@ export const navigation = [
   },
   {
     id: 2,
-    value: "ALL PRODUCTS",
+    value: "PRODUCTS",
     path: `/${path.PRODUCTS}`,
   },
 
