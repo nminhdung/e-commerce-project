@@ -237,7 +237,7 @@ const Login = () => {
           <Button handleClick={handleSubmit} fullWidth>
             {isRegister ? "Register" : "Login"}
           </Button>
-          <div className="flex justify-between items-center my-2 w-full text-sm">
+          <div className="flex md:flex-row flex-col justify-between items-center my-2 w-full text-sm">
             {!isRegister && (
               <span
                 className="text-blue-500 hover:underline cursor-pointer"
