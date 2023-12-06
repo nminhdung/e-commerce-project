@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { formatMoney, renderStarFromNumber } from "../../utils/helpers";
+import { formatMoney, renderStarFromNumber,slugify } from "../../utils/helpers";
 
 const ProductCard = ({ data }) => {
   const { title, thumb, price, totalRatings, category, _id } = data;

@@ -8,7 +8,8 @@ import {
   Sidebar,
   FeatureProducts,
   NewArrivals,
-  BestSeller
+  BestSeller,
+  Loading
 } from "../../components";
 
 import icons from "../../utils/icons";
@@ -51,6 +52,7 @@ const Home = () => {
         <h3 className="font-semibold capitalize text-[20px] border-b-2 border-main cursor-pointer text-black">
           hot collections
         </h3>
+        {categories.length === 0 && <div className="flex items-center justify-center h-full mt-8"><Loading /></div>}
         <div className="grid lg:grid-cols-3 gap-4 mt-4">
           {categories.map((cate) => {
             return (

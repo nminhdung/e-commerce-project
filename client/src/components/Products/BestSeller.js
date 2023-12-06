@@ -3,7 +3,7 @@ import * as api from "../../api"
 import { Product, CustomSlider } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import { getNewProducts } from "../../store/products/asyncThunks";
-
+import Loading from "../Common/Loading"
 const tabs = [
   {
     id: 1,
@@ -48,9 +48,8 @@ const BestSeller = () => {
           return (
             <span
               key={tab.id}
-              className={`font-semibold capitalize px-8 border-r cursor-pointer text-black-300 ${
-                activeTab === tab.id ? "text-main" : ""
-              }`}
+              className={`font-semibold capitalize px-8 border-r cursor-pointer text-black-300 ${activeTab === tab.id ? "text-main" : ""
+                }`}
               onClick={() => setActiveTab(tab.id)}
             >
               {tab.title}
@@ -59,7 +58,9 @@ const BestSeller = () => {
         })}
       </div>
       <div className="mt-4 mx-[-10px] border-main border-t-2 pt-[15px]">
-        <CustomSlider products={products} activeTab={activeTab} />
+        {products.length === 0 ? <div className="flex justify-center items-center"><Loading/></div> : 
+        <CustomSlider products={products} activeTab={activeTab} />}
+
       </div>
       <div className="flex flex-col lg:flex-row w-full gap-4 mt-8">
         <img

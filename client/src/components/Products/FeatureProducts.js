@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import * as api from "../../api";
 import ProductCard from "./ProductCard";
+import Loading from "../Common/Loading"
+
 const FeatureProducts = () => {
   const [products, setProducts] = useState([]);
   const fetchProducts = async () => {
@@ -20,11 +22,15 @@ const FeatureProducts = () => {
       <h3 className="uppercase text-[20px] font-semibold py-4  border-b-2 border-main">
         Feature Products
       </h3>
-      <div className="grid lg:grid-cols-3  gap-6   mt-4">
-        {products?.map((product) => {
-          return <ProductCard key={product._id} data={product} />;
-        })}
-      </div>
+      {products?.length === 0 ? <div className="flex items-center justify-center h-full mt-8"><Loading /></div> :
+        <div className="grid lg:grid-cols-3  gap-6   mt-4">
+
+          {products?.map((product) => {
+            return <ProductCard key={product._id} data={product} />;
+          })}
+        </div>
+      }
+
       <div className="grid grid-cols-4 grid-rows-2 gap-4 mt-6">
         <img
           src="https://cdn.shopify.com/s/files/1/1903/4853/files/banner1-bottom-home2_b96bc752-67d4-45a5-ac32-49dc691b1958_600x.jpg?v=1613166661"

@@ -19,13 +19,12 @@ const DealDaily = () => {
 
   const fetchDealDaily = async () => {
     const res = await api.apiGetProducts({
-      limit: 1,
-      page: Math.round(Math.random() * 10),
-      totalRatings: 5,
+      limit: 20,
+      sort:"-totalRatings"
     });
 
     if (res.success) {
-      setProductDealDaily(res.listProduct[0]);
+      setProductDealDaily(res.listProduct[Math.round(Math.random()*20)]);
       const today = `${moment().format("MM/DD/YYYY")} 7:00:00`;
       const seconds =
         new Date(today).getTime() - new Date().getTime() + 24 * 3600 * 1000;

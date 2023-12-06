@@ -105,3 +105,4 @@ export const fileToBase64 = (filename) => {
     reader.onerror = reject;
   });
 };
+
